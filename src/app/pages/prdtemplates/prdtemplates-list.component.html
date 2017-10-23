@@ -1,0 +1,201 @@
+﻿<!--<button class="btn btn-primary" type="button" *ngIf="messages">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Thông báo
+   <span class="badge">{{totalItems}}</span>
+</button>-->
+<hr/>
+<button class="btn btn-primary btn-sm" (click)="viewAddTemplate()">
+    <i class="fa fa-plus" aria-hidden="true"></i>Thêm template</button>
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+            <div class="input-group">
+                
+                <input type="text" placeholder="Tìm kiếm theo tên template, đường dẫn, mã template" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn" ><button    (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-1"><strong>Mã template</strong></th>
+                <th class="col-md-3"><strong>Tên template</strong></th>
+                 <th class="col-md-2"><strong>Đường dẫn</strong></th> 
+                <th class="col-md-1"><strong>Giá gốc</strong></th>
+                
+                <th class="col-md-1"><strong>VAT (%)</strong></th>
+                <th class="col-md-1"><strong>Giảm giá</strong></th>
+                <th class="col-md-1"><strong>Số tiền VAT</strong></th>
+                <th class="col-md-2"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Templates">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.TemplateCode}}</td>
+                <td>{{item.TemplateName}}</td>
+                 <td>{{item.TemplateLocation}}</td> 
+                <td>{{item.Price | number}}</td>
+                
+                <td>{{item.Vat | number }}</td>
+                <td>{{item.DiscoutAmt | number}}</td>
+                <td>{{item.PriceVat | number}}</td>
+                <td>
+                    <!-- <a data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="btn btn-info btn-sm" (click)="viewDetail(item)"><i class="fa fa-eye" ></i>Xem chi tiết</a> -->
+                    <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết"  (click)="viewDetail(item)" style="cursor:pointer;"><i class="fa fa-eye fa-lg" style="color:#1E88E5" ></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Xem ảnh"  (click)="viewImageModal(item)" style="cursor:pointer;"><i class="fa fa-picture-o fa-lg" style="color:#1E88E5" ></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Cập nhật" (click)="viewTemplateDetails(item)" style="cursor:pointer;"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"  ></i></a>
+
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" (click)="deleteTemplate(item)" style="cursor:pointer;"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedTemplateLoaded">
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4> Thông tin template</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #viewTemplateForm="ngForm" *ngIf="selectedTemplateLoaded" novalidate>
+                    <fieldset>
+                        <div class="alert alert-danger" [hidden]="isValid">
+                        <!-- <ul *ngIf="formErrors.TemplateCode">
+                            
+                            <li>{{formErrors.TemplateCode}}</li>
+                        </ul> -->
+                        <ul *ngIf="formErrors.TemplateName">
+                            <li>{{formErrors.TemplateName}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.TemplateLocation">
+                            <li>{{formErrors.TemplateLocation}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Notes">
+                            <li>{{formErrors.Notes}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Price">
+                            <li>{{formErrors.Price}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.DiscountAmt">
+                            <li>{{formErrors.DiscountAmt}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Vat">
+                            <li>{{formErrors.Vat}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.DemoLink">
+                            <li>{{formErrors.DemoLink}}</li>
+                            </ul>
+      
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+          <div class="form-group">
+                <label >Mã template:</label>
+                <input type="text"  class="form-control"  [(ngModel)]="selectedTemplate.TemplateCode" name="TemplateCode" #TemplateCodeInput="ngModel"  readonly/>
+            </div>
+            <div class="form-group">
+                <label >Tên template:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedTemplate.TemplateName" name="TemplateName" #TemplateNameInput="ngModel" required pattern=".{1,256}"/>
+            </div>
+            <div class="form-group">
+                <label >Vị trí lưu:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedTemplate.TemplateLocation" name="TemplateLocation" #TemplateLocationInput="ngModel" required pattern=".{1,1000}"/>
+            </div>
+            <div class="form-group">
+                <label >Ghi chú:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedTemplate.Notes" name="Notes" #NotesInput="ngModel" pattern=".{1,500}"/>
+            </div>
+            <div class="form-group">
+                <label >Giá gốc:</label>
+                <input type="number" [readonly]="this.isViewDetail" (change)="priceChange()" class="form-control"  [(ngModel)]="selectedTemplate.Price" name="Price" #PriceInput="ngModel" pattern="[0-9]{1,9}" maxlength="9"  required/>
+            </div>
+            <div class="form-group">
+                <label >Vat (%):</label>
+                <input type="text" [readonly]="this.isViewDetail" (change)="vatChange()" class="form-control"  [(ngModel)]="selectedTemplate.Vat" name="Vat" #VatInput="ngModel" pattern="^[+]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" min="0" required/>
+            </div>
+            <div class="form-group">
+                <label >Giảm giá:</label>
+                <input type="number" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedTemplate.DiscountAmt" name="DiscountAmt" #DiscountAmtInput="ngModel" pattern="[0-9]{1,9}" maxlength="9"  required/>
+            </div>
+            <div class="form-group">
+                <label >Số tiền Vat:</label>
+                <input type="number" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedTemplate.PriceVat" name="PriceVat" #PriceVatInput="ngModel" pattern="[0-9]{1,9}" maxlength="9"  required/>
+            </div>
+            <div class="form-group">
+                <label >Link demo:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedTemplate.DEMO_LINK" name="DEMOLINK" #DEMOLINKInput="ngModel" pattern=".{1,500}"  />
+            </div>
+            <div class="form-group" [class.hidden]="this.isViewDetail">
+                <label >Chọn ảnh: </label>
+                <div class="row" >
+                    <div class="col-md-3">
+                    <input #chooseFileInput  type="file"  (change)="onChange($event,showFileNames)" multiple/>
+                    </div>
+                    <div class="col-md-9">
+                    <textarea #listSelectedFileInput type="text" class="form-control"  #showFileNames readonly></textarea>
+                    </div>
+                </div>
+            </div>
+                    <hr/>          
+                    <button [class.hidden]="this.addingTemplate || this.isViewDetail" [disabled]="!viewTemplateForm.form.valid " (click)="editTemplate(selectedTemplate)" type="button" class="btn btn-warning">Cập nhật</button>
+                    <button [class.hidden]="!this.addingTemplate || this.isViewDetail" [disabled]="!viewTemplateForm.form.valid " (click)="addNewTemplate(selectedTemplate)" type="button" class="btn btn-success">Thêm</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #imageModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideImageModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4>Ảnh minh họa:</h4>
+            </div>
+            <div class="modal-body">
+    
+  <div class="row" style="height:500px; overflow:auto;" >
+    <div  *ngFor="let item of listImages">
+      <img class="d-block img-fluid" src="{{item}}">
+    </div>
+
+  </div>
+
+            </div>
+        </div>
+    </div>
+</div>

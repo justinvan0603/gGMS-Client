@@ -1,0 +1,291 @@
+﻿<button class="btn btn-outline-primary" [routerLink]="['/pages/contract/contractlist']">
+  <span class="fa fa-backward" aria-hidden="true"></span> Quay về
+</button>
+<br />
+<br />
+<h4 *ngIf="this.type=='e'">Cập nhật hợp đồng</h4>
+<h4 *ngIf="this.type=='a'">Thêm hợp đồng</h4>
+<h4 *ngIf="this.type=='v'">Chi tiết hợp đồng</h4>
+<div class="container-fluid">
+  <form method="post" #viewContractForm="ngForm" enctype="multipart/form-data" novalidate>
+    <fieldset>
+      <!--Validate-->
+      <div class="alert alert-danger" [hidden]="isValid">
+        <ul *ngIf="formErrors.ContractCode">
+          <li>{{formErrors.ContractCode}}</li>
+        </ul>
+        <ul *ngIf="formErrors.CustomerId">
+          <li>{{formErrors.CustomerId}}</li>
+        </ul>
+        <ul *ngIf="formErrors.Value">
+          <li>{{formErrors.Value}}</li>
+        </ul>
+        <ul *ngIf="formErrors.ExpContract">
+          <li>{{formErrors.ExpContract}}</li>
+        </ul>
+        <ul *ngIf="formErrors.SignContract">
+          <li>{{formErrors.SignContract}}</li>
+        </ul>
+        <ul *ngIf="formErrors.ChargeDt">
+          <li>{{formErrors.ChargeDt}}</li>
+        </ul>
+        <ul *ngIf="formErrors.MonthCharge">
+          <li>{{formErrors.MonthCharge}}</li>
+        </ul>
+        <ul *ngIf="formErrors.Status">
+          <li>{{formErrors.Status}}</li>
+        </ul>
+        <ul *ngIf="formErrors.DebitBalance">
+          <li>{{formErrors.DebitBalance}}</li>
+        </ul>
+        <ul *ngIf="formErrors.PaidAMT">
+          <li>{{formErrors.PaidAMT}}</li>
+        </ul>
+        <ul *ngIf="invalidDate">
+          <li>{{messageValidDate}}</li>
+        </ul>
+        <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+          <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+
+        </ul>-->
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Begin Column 1-->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Mã hợp đồng:</label>
+              <input [class.hidden]="(type=='v')" type="text" class="form-control" placeholder="Mã hợp đồng" [(ngModel)]="this.contractModel.ContractCode" name="ContractCode" #ContractCodeInput="ngModel" required pattern=".{1,50}" maxlength="50" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.contractModel.ContractCode}}</label>
+            </div>
+
+            <div class="form-group" [class.hidden]="(type=='v')">
+              <label>Khách hàng:</label>
+              <div>
+                <select class="form-control" [(ngModel)]="this.contractModel.CustomerId" name="CustomerId" #CustomerIdInput="ngModel" required>
+                  <option *ngFor="let item of this.Customers" [ngValue]="item.CustomerId">{{item.CustomerCode}} - {{item.CustomerName}}</option>
+                </select>
+                <br />
+                <button type="button" class="btn btn-outline-info" (click)="LoadCustomers()">Load</button>
+              </div>
+            </div>
+
+            <div class="form-group" [class.hidden]="!(type=='v')">
+              <label>Mã khách hàng: </label>
+              <label class="form-control">{{this.contractModel.CustomerCode}}</label>
+            </div>
+
+            <div class="form-group" [class.hidden]="!(type=='v')">
+              <label>Tên khách hàng: </label>
+              <label class="form-control">{{this.contractModel.CustomerName}}</label>
+            </div>
+            <!--<div class="form-group">
+              <label>Nhân viên phụ trách: </label>
+              <select class="form-control" [(ngModel)]="this.contractModel.MakerId" name="MakerId" #CustomerIdInput="ngModel" required>
+                <option>Lựa chọn...</option>
+                <option *ngFor="let item of this.Users" [ngValue]="item" value="{{item.UserId}}">{{item.UserName}}</option>
+              </select>
+              <br/>
+              <button type="button" class="btn btn-outline-info" (click)="LoadUsers()">Load</button>
+            </div>-->
+            <div class="form-group" >
+              <label>Loại hợp đồng</label>
+              <select [disabled]="(type=='v')" class="form-control" [(ngModel)]="this.contractModel.CONTRACT_TYPE" #CONTRACT_TYPEInput="ngModel" required name="CONTRACT_TYPE">
+                <option *ngFor="let item of ContractTypes" [ngValue]="item.Cdval">{{item.Content}}</option>
+              </select>
+            </div>
+
+            <!--END CONTRACT TYPE-->
+            <div class="form-group">
+              <label>Giá trị:</label>
+              <input [class.hidden]="(type=='v')" type="text" placeholder="Giá trị hợp đồng" class="form-control" [(ngModel)]="this.contractModel.Value" name="Value" #ValueInput="ngModel" pattern="^(?:[1-9]\d*|0)$" maxlength="18"  required min="0"/>
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.contractModel.Value}}</label>
+            </div>
+
+            <div class="form-group">
+              <label>Hạn hợp đồng: </label>
+              <input [class.hidden]="(type=='v')" class="form-control" type="text" placeholder="Hạn hợp đồng" [(ngModel)]="contractModel.ExpContract" name="ExpContract" #ExpContractInput="ngModel"   pattern="^(?:[1-9]\d*|0)$" maxlength="18"  required min="0"/>
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.contractModel.ExpContract}}</label>
+            </div>
+
+            <div class="form-group">
+              <label>Số tháng tính phí: </label>
+              <input [class.hidden]="(type=='v')" type="text" placeholder="Số tháng tính phí" class="form-control" [(ngModel)]="this.contractModel.MonthCharge" name="MonthCharge" #MonthCharge="ngModel"  pattern="^(?:[1-9]\d*|0)$" maxlength="18"  required min="0" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.contractModel.MonthCharge}}</label>
+            </div>
+
+            <div class="form-group">
+              <label>Trạng thái: </label>
+              <select [disabled]="(type=='v')" class="form-control" [(ngModel)]="this.contractModel.Status" name="Status" #StatusInput="ngModel" required>
+                <option *ngFor="let item of Status" [ngValue]="item.Cdval">
+                  {{item.Content}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ContractUpload">File Hợp đồng</label>
+              <input class="btn btn-outline-info" #ContractUpload type="file" name="ContractUpload" id="ContractUpload" (change)="ContractUploadOnChange($event)" accept="application/msword, application/vnd.ms-excel, text/plain, application/pdf, image/*" multiple />
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>File Name</th>
+                    <th>File Size (Kbytes)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="tBodyContractUpload"name="tBodyContractUpload">
+                <tr *ngFor="let f of ContractFileUploadList">
+                  <td scope="row">{{this.ContractFileUploadList.indexOf(f) + 1}}</td>
+                  <td>{{f.FILE_NAME}}</td>
+                  <td>{{f.FILE_SIZE / 1024 | number}}</td>
+                  <td><span class="btn btn-danger fa fa-remove" (click)="deleteContractUploadRow(f)"></span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="form-group">
+              <label for="FileUpload">File đính kèm</label>
+              <input class="btn btn-outline-info" #FileUpload type="file" name="FileUpload" id="FileUpload" (change)="FileUploadOnChange($event)" multiple accept="*.*" />
+              <table class="table table-responsive" >
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>File Name</th>
+                    <th>File Size (Kbytes)</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="tBodyFileUpload" name="tBodyFileUpload">
+                <tr *ngFor="let f of FileUploadList">
+                  <td scope="row">{{this.FileUploadList.indexOf(f) + 1}}</td>
+                  <td>{{f.FILE_NAME}}</td>
+                  <td>{{f.FILE_SIZE / 1024 | number}}</td>
+                  <td><span class="btn btn-danger fa fa-remove" (click)="deleteFileUploadRow(f)"></span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+
+          <!--End column 1-->
+          <!--Begin Columln 2-->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Ngày ký hợp đồng:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày ký hợp đồng" class="form-control" [(ngModel)]="contractModel.SignContractDt" name="SignContractDt" #SignContractDtInput="ngModel" (change)="validDate()" required />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.contractModel.SignContractDt | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            <div class="form-group">
+              <label>Ngày tính phí:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày tính phí" class="form-control" [(ngModel)]="this.contractModel.ChargeDt" name="ChargeDt" #ChargeDtInput="ngModel" required (change)="validDate()" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.contractModel.ChargeDt | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            <div class="form-group">
+              <label>Ghi chú:</label>
+              <textarea [class.hidden]="(type=='v')" rows="3" placeholder="Ghi chú" class="form-control" [(ngModel)]="this.contractModel.Notes" name="Notes" #Notes="ngModel">
+              </textarea>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.contractModel.Notes}}</label>
+            </div>
+            <div class="form-group" style="height: 280px; overflow: auto">
+              <label>Các sản phẩm đã ký: </label>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Loại</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of this.SelectedProducts">
+                    <td>{{item.ProductCode}}</td>
+                    <td>{{item.ProductName}}</td>
+                    <td>{{item.ProductType}}</td>
+                    <td [class.hidden]="(type=='v')" *ngIf="!(type=='v')">
+                      <span class="btn btn-danger fa fa-remove" (click)="DeleteSelectedProduct(item)" style="cursor: pointer"></span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+              </table>
+            </div>
+            <div class="form-group">
+              <button [class.hidden]="(type=='v')" type="button" (click)="showChildModal()" class="btn btn-outline-info">
+                <span class="fa fa-search-plus">Thêm sản phẩm</span>
+              </button>
+            </div>
+          </div>
+
+          <!--End column 2-->
+        </div>
+      </div>
+
+      <!--End Validate-->
+      <hr />
+      <button [class.hidden]="!(this.type=='e')" [disabled]="!viewContractForm.form.valid" (click)="editContract()" type="button" class="btn btn-warning">Cập nhật</button>
+      <button [class.hidden]="!(this.type=='a')" [disabled]="!viewContractForm.form.valid" (click)="addNewContract()" type="button" class="btn btn-success">Thêm</button>
+
+    </fieldset>
+  </form>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>Tìm kiếm sản phẩm</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <form class="form-inline" method="post" #ProductSearchForm="ngForm" novalidate>
+              <fieldset>
+                <label class="form-control-label mr-sm-2" for="inputSearch">Tìm kiếm:</label>
+                <input #searchInput placeholder="Tìm kiếm sản phẩm" class="form-control mb-2 mr-sm-2 mb-sm-0" />
+                <button (click)="searchProducts(searchInput.value)" type="button" class="btn btn-success"><span class="fa fa-search"></span> Tìm</button>
+              </fieldset>
+            </form>
+          </div>
+
+          <div class="row" style="height: 400px;overflow: auto">
+            <table class="table table-striped">
+              <thead class="navbar navbar-static-top">
+                <tr>
+                  <th>Mã sản phẩm</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Loại</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of Products">
+                  <td>{{item.ProductCode}}</td>
+                  <td>{{item.ProductName}}</td>
+                  <td>{{item.ProductType}}</td>
+                  <td>
+                    <span [class.hidden]="!(item.RecordStatus == '0')" class="glyphicon glyphicon-unchecked" (click)="selectProduct(item)" style="cursor: pointer">Chọn</span>
+                    <span [class.hidden]="!(item.RecordStatus == '1')" class="glyphicon glyphicon-check" (click)="DeleteSelectedProduct(item)" style="cursor:pointer">Đã chọn</span>
+                    <!--<span class="glyphicon glyphicon-unchecked" (click)="selectProduct(item)"  style="cursor: pointer">Chọn</span>-->
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot></tfoot>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

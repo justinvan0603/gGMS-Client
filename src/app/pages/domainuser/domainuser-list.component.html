@@ -1,0 +1,54 @@
+<h4>DANH SÁCH DOMAIN QUẢN TRỊ</h4>
+<hr/>
+<div [@flyInOut]="'in'">
+    <!--<div class="row">
+    <div class="col-md-9">
+    <form class="form-inline" method="post" #domainSearchForm="ngForm"  novalidate >
+            <div class="input-group">
+                <label >Tìm kiếm:</label>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <div class="input-group-btn" ><button style="margin-top:15%;"   (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+            </div>
+    </form>
+    </div>
+    </div>-->
+    <div class="row" style="height:370px; overflow:auto;">
+    <table class="table table-hover domaintable"  >
+        <thead>
+            <tr>
+                <th class="col-md-5">Domain</th>
+                <th class="col-md-3">Mô tả</th>
+    
+                <th class="col-md-4">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="text-xs-left"><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isCheckAll" (change)="checkAllEvent($event)"/> </td>
+            </tr>
+            <tr *ngFor="let item of ListDomainUser">
+                <td class="text-xs-left"> {{item.DomainId}}</td>
+                <td class="text-xs-left">{{item.Notes}}</td>     
+               <td class="text-xs-left">
+                   <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.IsChecked" (change)="item.IsChecked = $event.target.checked"> 
+                </td>
+        
+
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="row">
+        <div class="col-md-1 offset-md-8">
+            <button class="btn btn-md btn-primary" (click) = "insertDomainUser()"><span class="fa fa-floppy-o"></span> Lưu</button>
+        </div>
+    </div>
+</div>
+<style>
+    .domaintable{
+        overflow-y: auto !important;
+        height:100px !important;
+    }
+</style>

@@ -1,0 +1,23 @@
+<!--<div class="panel panel-default">
+  <div class="panel-heading">Cấu hình thông báo</div>
+  <div class="panel-body" style="color:black;">-->
+    <div [@flyInOut]="'in'">
+      <div class="row">
+      <form class="form-horizontal">
+        <div class="form-group" *ngFor="let item of this.userconfigs">
+        <label class="control-label col-sm-2">{{item.CONF_NAME}}</label>
+        <div class="col-sm-1">
+          <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.CONF_VALUE == 0 ? false:true" (change)="item.CONF_VALUE = $event.target.checked">
+          <!--<input #{{item.ID}} [ngModelOptions]="{standalone: true}"  [(ngModel)]="item.CONF_VALUE" type="checkbox" (change)="checkbox(item)" >-->
+          <!--<input type="checkbox" class="form-control input-sm" [ngModelOptions]="{standalone: true}" name="CONF_VALUE" [(ngModel)]="item.CONF_VALUE" (ngModelChange)="onChange(item.CONF_VALUE)">-->
+          <!--<input type="checkbox" class="form-control input-sm" name="CONF_VALUE" value="item.CONF_VALUE" [checked] = "item.CONF_VALUE">-->
+        </div>
+        </div>
+        <div class="button-wrapper" *ngIf = "this.userconfigs">
+          <button   (click)="saveConfig()" type="button" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+      </div>
+      </div>      
+  <!--</div>
+</div>-->

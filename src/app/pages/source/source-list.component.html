@@ -1,0 +1,128 @@
+﻿<hr />
+<div>
+  <button class="btn btn-outline-primary" (click)="viewAddSource()">
+    <span class="fa fa-plus" aria-hidden="true"></span>Tạo source mới
+  </button>
+</div>
+<br />
+<div [@flyInOut]="'in'">
+  <div class="col-md-9">
+    <form class="form-inline" method="post" #SourceSearchForm="ngForm" novalidate>
+      <label class="form-control-label mr-sm-2" for="inputSearch">Tìm kiếm:</label>
+      <input id="inputSearch" type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel" pattern=".{1,500}" />
+      <button (click)="search(this.searchString)" type="button" class="btn btn-success"><span class="fa fa-search"></span> Tìm</button>
+    </form>
+  </div>
+  <table class="table table-hover table-responsive">
+    <thead>
+      <tr>
+        <th> <label class="col-md-1">Mã source</label></th>
+        <th><label class="col-md-2">Tên souce</label></th>
+        <th><label class="col-md-1"> Vị trí</label></th>
+        <th><label class="col-md-2"> Giá</label></th>
+        <th><label class="col-md-2">Giá bao gồm VAT</label></th>
+        <th><label class="col-md-1">VAT</label></th>
+        <th><label class="col-md-2">Số tiền giảm</label></th>
+        <th><label class="col-md-1">Thao tác</label></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of this.sourceModel">
+        <td > {{item.SourceCode}}</td>
+        <td >{{item.SourceName}}</td>
+        <td >{{item.SourceLocation}}</td>
+        <td >{{item.Price | number}}</td>
+        <td >{{item.PriceVat | number}}</td>
+        <td >{{item.Vat | number}}</td>
+        <td >{{item.DiscountAmt | number}}</td>
+        <td>
+          <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewSourceDetails(item)"><span class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></span></a>
+          <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteSource(item)"><span class="fa fa-trash-o fa-lg" style="color:#D50000"></span></a>
+        </td>
+      </tr>
+    </tbody>
+  
+  </table>
+  
+  <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" *ngIf="selectedSourceLoaded">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 *ngIf="!this.addingSourceModel">Cập nhật source</h4>
+        <h4 *ngIf="this.addingSourceModel">Thêm source</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" #viewSourceForm="ngForm" *ngIf="selectedSourceLoaded" novalidate>
+          <fieldset>
+            <!--Validate-->
+            <div class="alert alert-danger" [hidden]="isValid">
+              <ul *ngIf="formErrors.SourceCode">
+                <li>{{formErrors.SourceCode}}</li>
+              </ul>
+              <ul *ngIf="formErrors.SourceName">
+                <li>{{formErrors.SourceName}}</li>
+              </ul>
+              <ul *ngIf="formErrors.SourceLocation">
+                <li>{{formErrors.SourceLocation}}</li>
+              </ul>
+              <ul *ngIf="formErrors.Price">
+                <li>{{formErrors.Price}}</li>
+              </ul>
+              <ul *ngIf="formErrors.DiscountAmt">
+                <li>{{formErrors.DiscountAmt}}</li>
+              </ul>
+              <ul *ngIf="formErrors.Vat">
+                <li>{{formErrors.Vat}}</li>
+              </ul>
+              <ul *ngIf="formErrors.PriceVat">
+                <li>{{formErrors.PriceVat}}</li>
+              </ul>
+              <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+              <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+
+              </ul>-->
+            </div>
+            <!--End Validate-->
+            <div class="form-group">
+              <label>Mã source:</label>
+              <input placeholder="Mã source" type="text" class="form-control" [(ngModel)]="this.selectedSourceModel.SourceCode" name="SourceCode" #SourceCodeInput="ngModel" required pattern=".{1,15}" />
+            </div>
+            <div class="form-group">
+              <label>Tên source:</label>
+              <input placeholder="Tên source" type="text" class="form-control" [(ngModel)]="this.selectedSourceModel.SourceName" name="SourceName" #SourceNameInput="ngModel" required pattern=".{1,70}" />
+            </div>
+            <div class="form-group">
+              <label>Vị trí:</label>
+              <input placeholder="Vị trị lưu source" type="text" class="form-control" [(ngModel)]="this.selectedSourceModel.SourceLocation" name="SourceLocation" #SourceLocationInput="ngModel" required  />
+            </div>
+            <div class="form-group">
+              <label>Giá:</label>
+              <input placeholder="Giá trị của sản phẩm" type="number" class="form-control" [(ngModel)]="this.selectedSourceModel.Price" name="Price" #PriceInput="ngModel" required maxlength="18" min="0" (change)="changePrice()"/>
+            </div>
+            <div class="form-group">
+              <label>VAT:</label>
+              <input placeholder="Vat (tính theo %)" type="number" class="form-control" [(ngModel)]="this.selectedSourceModel.Vat" name="Vat" #VatInput required maxlength="5" min="0" (change)="changePrice()" />
+            </div>
+            <div class="form-group">
+              <label>Giá VAT:</label>
+              <input placeholder="Giá vat" type="number" class="form-control" [(ngModel)]="this.selectedSourceModel.PriceVat" name="PriceVat" #PriceVatInput="ngModel" value="{{this.selectedSourceModel.Price * this.selectedSourceModel.Vat / 100}}" maxlength="18" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label>Số tiền giảm giá:</label>
+              <input placeholder="Số tiền được giảm giá" type="number" class="form-control" [(ngModel)]="this.selectedSourceModel.DiscountAmt" name="DiscountAmt" #DiscountAmtInput="ngModel" maxlength="18" min="0" />
+            </div>
+            <hr />
+            <button [class.hidden]="this.addingSourceModel" [disabled]="!viewSourceForm.form.valid " (click)="editSource(this.selectedSourceModel)" type="button" class="btn btn-warning">Cập nhật</button>
+            <button [class.hidden]="!this.addingSourceModel" [disabled]="!viewSourceForm.form.valid " (click)="addNewSource(this.selectedSourceModel)" type="button" class="btn btn-success">Thêm</button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

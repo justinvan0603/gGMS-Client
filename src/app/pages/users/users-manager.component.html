@@ -1,0 +1,177 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="users">
+  <i class="fa fa-calendar" aria-hidden="true"></i> Người dùng
+  <span class="badge">{{this.totalItems}}</span>
+</button>-->
+<hr/>
+
+<button class="btn btn-primary btn-sm" (click)="viewAddUser()">
+  <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>Tạo tài khoản
+</button>
+<div [@flyInOut]="'in'">
+  <div class="col-md-9">
+    <form class="span12" method="post" #userGroupSearchForm="ngForm"  novalidate >
+       <label >Tìm kiếm:</label>
+            <div class="input-group">
+               
+                <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn" ><button    (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+            </div>
+    </form>
+    </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+
+      <th>Tên đăng nhập</th>
+      <th>Họ tên</th>
+      <th>Email</th>
+      <th>Điện thoại</th>
+      <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let usr of users">
+      <td class="text-xs-left">{{usr.UserName}}</td>
+      <td>{{usr.FULLNAME}}</td>
+      <td>{{usr.Email}}</td>
+      <td class="text-xs-left">{{usr.PHONE}}</td>
+      <td>
+        <!-- <a class="btn btn-warning" (click)="viewUserDetails(usr)"><i class="fa fa-pencil-square-o"></i> Cập nhật</a> -->
+      <!-- <a class="btn btn-success" [routerLink]="['/pages/domainuser/domainuserlist',usr.UserName]"><i class="fa fa-link" ></i> Tên miền</a> -->
+        <!-- <a class="btn btn-danger" (click)="deleteUser(usr)"><i class="fa fa-trash-o"></i> Xóa</a> -->
+      
+        <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewUserDetails(usr)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+        
+          <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteUser(usr)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+      
+      
+      </td>
+
+
+    </tr>
+    </tbody>
+  </table>
+
+  <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage"
+              class="pagination-sm"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+              (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" *ngIf="selectedUserLoaded">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 *ngIf="!this.addingUser"> Cập nhật tài khoản: {{selectedUser.UserName}}</h4>
+        <h4 *ngIf="this.addingUser"> Thêm tài khoản</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" #viewUserForm="ngForm" *ngIf="selectedUserLoaded" novalidate>
+          <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.EMAIL">
+                            <li>{{formErrors.EMAIL}}</li>
+                            
+                        </ul>
+                        <ul *ngIf="formErrors.PHONE">
+                           <li>{{formErrors.PHONE}}</li>
+                            </ul>
+
+                            <ul *ngIf="formErrors.Username">
+                                <li>{{formErrors.Username}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.FULLNAME ">
+                                <li>{{formErrors.FULLNAME}}</li>
+                            </ul>
+
+                            <ul *ngIf="formErrors.Password && this.addingUser">
+                                    <li>{{formErrors.Password}}</li>
+                            </ul>
+                            
+                            <ul *ngIf="formErrors.DOMAIN && this.addingUser">
+                                    <li>{{formErrors.DOMAIN}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.DOMAINDESC && this.addingUser">
+                                    <li>{{formErrors.DOMAINDESC}}</li>
+                            </ul>
+                            
+                    </div>
+   
+          <!--End Validate-->
+          <div class="form-group">
+            <label><span style="color:red">*</span> Username:</label>
+            <input type="text" class="form-control form-control-sm input-sm" [readonly]="!this.addingUser"
+                   [(ngModel)]="this.selectedUser.UserName" name="Username" #USERNAMEInput="ngModel" required
+                   maxlength="50"/>
+          </div>
+          <!--<div class="form-group">-->
+          <!--<label ><span style="color:red">*</span> Group:</label>-->
+          <!--<input type="text" class="form-control" [readonly] = "!this.addingUser"  [(ngModel)]="this.selectedUser.Groups" name="Username" #USERNAMEInput="ngModel" required pattern=".{1,50}"/>-->
+          <!--</div>-->
+          <div class="form-group">
+            <label><span style="color:red">*</span> Mật khẩu:</label>
+            <input type="password" class="form-control form-control-sm input-sm" [readonly]="!this.addingUser"
+                   [(ngModel)]="this.selectedUser.PASSWORD" name="Password" #PASSWORDInput="ngModel" required
+                   maxlength="50"/>
+          </div>
+          <div class="form-group">
+            <label><span style="color:red">*</span> Họ tên:</label>
+            <input type="text" class="form-control form-control-sm input-sm" [(ngModel)]="this.selectedUser.FULLNAME" name="FULLNAME"
+                   #FULLNAMEInput="ngModel" required maxlength="200"/>
+          </div>
+          <div class="form-group">
+            <label><span style="color:red">*</span> Email:</label>
+            <input type="text" class="form-control form-control-sm input-sm" [(ngModel)]="this.selectedUser.Email" name="EMAIL"
+                   #EMAILInput="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"/>
+          </div>
+          <div class="form-group">
+            <label><span style="color:red">*</span> Điện thoại:</label>
+            <input type="text" class="form-control form-control-sm input-sm" [(ngModel)]="this.selectedUser.PHONE" name="PHONE"
+                   #PHONEInput="ngModel" required maxlength="20"/>
+            <!--<textarea type="text" class="form-control" readonly>{{selectedMessage.Content}}</textarea>-->
+          </div>
+
+          <div class="form-group" style="height:90px; overflow-y:scroll;">
+                  <label><span style="color:red">*</span> Quyền hệ thống:</label>
+
+            
+              <div *ngFor="let item of this.selectedUser.Groups,let i = index">
+                
+                  <div class="row" *ngIf = "i% 4 == 0">
+
+                    <div class="col-sm-3 text-center" *ngFor = "let x of this.selectedUser.Groups, let j = index ">
+                      <label *ngIf="j+i< i+4" >
+                      <input type="checkbox" class="form-control" name="role"
+                     [checked]="this.selectedUser.Groups[i+j]?.Check" (change)="this.selectedUser.Groups[i+j].Check = $event.target.checked">
+                      {{this.selectedUser.Groups[i+j]?.Name }} 
+                      </label>
+                    
+                    </div>
+
+                  </div>
+
+                
+
+              </div>
+
+                        
+          </div>
+
+
+          <hr/>
+          <button [class.hidden]="this.addingUser"
+                  [disabled]="!viewUserForm.form.valid "
+                  (click)="editUser(this.selectedUser)" type="button" class="btn btn-warning">Cập nhật
+          </button>
+          <button [class.hidden]="!this.addingUser" [disabled]="!viewUserForm.form.valid"
+                  (click)="addNewUser(this.selectedUser)" type="button" class="btn btn-success">Thêm
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

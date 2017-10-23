@@ -1,0 +1,119 @@
+
+<hr/>
+
+<button class="btn btn-primary btn-sm" (click)="viewAdd()">
+  <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>Tạo menu</button>
+<div [@flyInOut]="'in'">
+  <div class="col-md-9">
+    <form class="span12" method="post" #userRoleSearchForm="ngForm"  novalidate >
+       <label >Tìm kiếm:</label>
+      <div class="input-group">
+       
+        <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+        <span class="input-group-btn" ><button (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+      </div>
+    </form>
+  </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+
+      <th>Tên menu</th>
+      <th>Tên tiếng anh</th>
+      <th>Menu link</th>
+      <th>Icon</th>
+      <th>Quyền</th>
+      <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let usr of menus">
+      <!--<td class="text-xs-left"> {{usr.Id}}</td>-->
+      <td class="text-xs-left"> {{usr.MenuName}}</td>
+      <td class="text-xs-left"> {{usr.MenuNameEl}}</td>
+      <td class="text-xs-left"> {{usr.MenuLink}}</td>
+      <td class="text-xs-left"> {{usr.Icon}}</td>
+      <td class="text-xs-left"> {{usr.RoleName}}</td>
+      <td><a class="btn btn-warning" (click)="viewDetails(usr)"><i class="fa fa-pencil-square-o" ></i> Cập nhật</a>
+        <a class="btn btn-danger" (click)="delete(usr)"><i class="fa fa-trash-o" ></i> Xóa</a>
+      </td>
+
+
+    </tr>
+    </tbody>
+  </table>
+
+  <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" *ngIf="selectedApplicationGroupLoaded">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 *ngIf="!this.adding"> Cập nhật menu: {{selectedApplicationGroup.Name}}</h4>
+        <h4 *ngIf="this.adding"> Thêm menu</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" #viewUserForm="ngForm" *ngIf="selectedApplicationGroupLoaded" novalidate>
+
+          <!--Validate-->
+          <div class="alert alert-danger" [hidden]="this.isValid">
+            <ul *ngIf="formErrors.NAME">
+
+              <li>{{formErrors.NAME}}</li>
+            </ul>
+            <!--<ul *ngIf="NAMEInput.dirty && !NAMEInput.valid ">
+                <li *ngIf="NAMEInput.errors.required">Tên quyền không được bỏ trống</li>
+            <li *ngIf="NAMEInput.errors.pattern">Tên quyền phải từ 1-200 ký tự</li>
+            </ul>-->
+
+          </div>
+          <!--End Validate-->
+          <div class="form-group">
+            <label ><span style="color:red">*</span> Tên menu:</label>
+            <input type="text" class="form-control" [(ngModel)]="this.selectedApplicationGroup.MenuName" name="MENUNAME" #MENUNAMEInput="ngModel" required pattern=".{1,200}"/>
+          </div>
+
+          <div class="form-group">
+            <label ><span style="color:red">*</span> Tên tiếng anh:</label>
+            <input type="text" class="form-control" [(ngModel)]="this.selectedApplicationGroup.MenuNameEl" name="MENULINKEL" #NAMEInput="ngModel" required pattern=".{1,200}"/>
+          </div>
+
+          <div class="form-group">
+            <label ><span style="color:red">*</span> Menu Link:</label>
+            <input type="text" class="form-control" [(ngModel)]="this.selectedApplicationGroup.MenuLink" name="MENULINK" #NAMEInput="ngModel"/>
+          </div>
+
+          <div class="form-group">
+            <label ><span style="color:red">*</span> Menu icon:</label>
+            <input type="text" class="form-control" [(ngModel)]="this.selectedApplicationGroup.Icon" name="ICON" #NAMEInput="ngModel" />
+          </div>
+
+          <div class="form-group">
+            <label >Quyền:</label>
+            <select ngControl="RoleInput" name="Role" [(ngModel)]="selectedRole" #RoleInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm">
+              <option *ngFor="let role of roles" [ngValue]="role" [selected]="this.selectedApplicationGroup.RoleName === role.Name">{{role.Name}}</option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label >Menu cha:</label>
+            <select ngControl="MenuParrentInput" name="MenuParrent" [(ngModel)]="selectedMenuParrent" #MenuParrentInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm">
+              <option *ngFor="let menu of menus" [ngValue]="menu" [selected]="this.selectedApplicationGroup.MenuParent === menu.MenuId">{{menu.MenuName+' - '+menu.MenuId}}</option>
+            </select>
+          </div>
+
+          <hr/>
+          <button [class.hidden]="this.adding" [disabled]="!viewUserForm.form.valid" (click)="edit(this.selectedApplicationGroup)" type="button" class="btn btn-warning">Cập nhật</button>
+          <button [class.hidden]="!this.adding" [disabled]="!viewUserForm.form.valid" (click)="addNew(this.selectedApplicationGroup)" type="button" class="btn btn-success">Thêm</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

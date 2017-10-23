@@ -1,0 +1,73 @@
+﻿<hr />
+<div>
+  
+  <button class="btn btn-outline-primary" [routerLink]="['/pages/prjproject/prjprojectoperator/a']">
+    <span class="fa fa-plus" aria-hidden="true"></span> Thêm dự án
+  </button>
+</div>
+<br />
+
+<div [@flyInOut]="'in'">
+  <div>
+    <form class="form-inline" method="post" #ProjectSearchForm1>
+      <label class="form-control-label mr-sm-2" for="input01">Mã</label>
+      <input class="form-control mb-2 mr-sm-2 mb-sm-0" id="input01" [(ngModel)]="this.lookUpProject.Code" name="input01" #lookupProjectCode="ngModel" placeholder="Mã dự án"/>
+      <label class="form-control-label mr-sm-2" for="input02">Trạng thái</label>
+      <select class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="this.lookUpProject.State" name="input02" #lookupProjectState="ngModel">
+        <option value="">Tất cả</option>
+        <option *ngFor="let item of states" [ngValue]="item.Cdval">
+          {{item.Content}}
+        </option>
+      </select>
+      <label class="form-control-label mr-sm-2" for="input03">Ngày bắt đầu</label>
+      <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="input03" [(ngModel)]="this.lookUpProject.BeginDate" name="input03" #lookupProjectBeginDate="ngModel"/>
+      <label class="form-control-label mr-sm-2" for="input04">Ngày bắt đầu</label>
+      <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="input04" [(ngModel)]="this.lookUpProject.EndDate" name="input04" #lookupProjectEndDate="ngModel"/>
+      <button (click)="lookupProject()" type="button" class="btn btn-success"><span class="fa fa-search"></span> Lọc</button>
+    </form>
+  </div>
+  <div class="col-md-9">
+    <form class="form-inline" method="post" #ProjectSearchForm="ngForm" novalidate>
+      <label class="form-control-label mr-sm-2" for="inputSearch">Tìm kiếm:</label>
+      <input id="inputSearch" type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel" pattern=".{1,500}"/>
+      <button (click)="search(this.searchString)" type="button" class="btn btn-success"><span class="fa fa-search"></span> Tìm</button>
+    </form>
+  </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th><label class="pull-left">#</label></th>
+      <th> <label class="pull-left">Mã dự án</label></th>
+      <th><label class="pull-left">Tên dự án</label></th>
+      <th><label class="pull-left">Ngày bắt đầu</label></th>
+      <th><label class="pull-left">Ngày kết thúc</label></th>
+      <th><label class="pull-left">Ngày ước tính</label></th>
+      <th><label class="pull-left">Ngày hoàn thành</label></th>
+      <th><label class="pull-left">Mã hợp đồng</label></th>
+      <th><label class="pull-left">Thao tác</label></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of this.prjProjects">
+      <td class="text-xs-left">{{this.prjProjects.indexOf(item) + 1}}</td>
+      <td class="text-xs-left"> {{item.PROJECT_CODE}}</td>
+      <td class="text-xs-left">{{item.PROJECT_NAME}}</td>
+      <td class="text-xs-left">{{item.BEGIN_DATE | date:'dd/MM/yyyy'}}</td>
+      <td class="text-xs-left">{{item.END_DATE | date:'dd/MM/yyyy' }}</td>
+      <td class="text-xs-left">{{item.ESTIMATE_DATE | date:'dd/MM/yyyy'}}</td>
+      <td class="text-xs-left">{{item.COMPLETION_DATE | date:"dd/MM/yyyy" }}</td>
+      <td class="text-xs-left">{{item.CONTRACT_CODE}}</td>
+      <td>
+        <a data-toggle="tooltip" data-placement="top" title="Clone source" style="cursor: pointer" (click)="generateSource(item)"><i class="fa fa-file-code-o fa-lg" style="color:aqua"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor: pointer;" [routerLink]="['/pages/prjproject/prjprojectoperator/v/', item.PROJECT_ID]"><i class="fa fa-eye fa-lg" style="color: #1E88E5"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor: pointer;" [routerLink]="['/pages/prjproject/prjprojectoperator/e/', item.PROJECT_ID]"><i class="fa fa-pencil-square-o fa-lg" style="color: #EF6C00"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor: pointer;" (click)="deleteProject(item)"><i class="fa fa-trash-o fa-lg" style="color: #D50000"></i></a>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+  <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+
+</div>

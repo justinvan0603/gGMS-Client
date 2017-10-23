@@ -1,0 +1,236 @@
+﻿<button class="btn btn-outline-primary" [routerLink]="['/pages/prdproduct/productsnoteslist']">
+  <span class="fa fa-backward" aria-hidden="true"></span> Quay về
+</button>
+
+<h4>THÔNG TIN SẢN PHẨM</h4>
+<hr/>
+<div [@flyInOut]="'in'">
+    
+    <form method="post" #viewProductForm="ngForm"  novalidate>
+                        <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.ProductCode">
+                            
+                            <li>{{formErrors.ProductCode}}</li>
+                        </ul>
+                        <ul *ngIf="formErrors.ProductName">
+                            <li>{{formErrors.ProductName}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.ProductLocation">
+                            <li>{{formErrors.ProductLocation}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Notes">
+                            <li>{{formErrors.Notes}}</li>
+                            </ul>
+      
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                <label >Mã sản phẩm:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.CodeView" name="CodeView" #ProductCodeInput="ngModel" readonly />
+            </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                <label >Tên sản phẩm:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.ProductName" name="ProductName" #ProductNameInput="ngModel" readonly />
+            </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                <label >Vị trí lưu:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.ProductLocation" name="ProductLocation" #ProductLocationInput="ngModel"  readonly/>
+            </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                     <label >Loại sản phẩm:</label>
+                <select ngControl="ProductTypeInput" name="ProductType" [(ngModel)]="selectedProductType" #ProductTypeInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" disabled>
+                    <option *ngFor="let type of listProductType" [ngValue]="type" [selected]="this.selectedProductType.Cdval === type.Cdval">{{type.Content}}</option>
+                </select>
+                <!-- <label >Ghi chú:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.Notes" name="Notes" #NotesInput="ngModel" readonly/> -->
+            </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+        <div class="col-md-6">
+            <label >Loại sản phẩm:</label>
+                <select ngControl="ProductTypeInput" name="ProductType" [(ngModel)]="selectedProductType" #ProductTypeInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" disabled>
+                    <option *ngFor="let type of listProductType" [ngValue]="type" [selected]="this.selectedProductType.Cdval === type.Cdval">{{type.Content}}</option>
+                </select>
+        </div>
+        </div>           -->
+    </form>
+    <div class="row" >
+        <div class="col-md-6" style="height:400px; overflow:auto;">
+            <label>LĨNH VỰC:</label>
+            <tree-root #tree [nodes]="this.prdProductViewModel.ListCategory">
+        <template #treeNodeTemplate let-node="node" let-index="index" >
+    <input disabled
+      (change)="check( node, $event)"
+      type="checkbox"
+      [indeterminate]="node.data.indeterminate"
+      [checked]="node.data.data.RECORD_STATUS ==='1'? true:false ">
+
+      {{ node.data.name }}
+  </template>
+</tree-root>
+            <!--<tree-root  [options]="options" [nodes]="this.prdProductViewModel.ListCategory"></tree-root>-->
+            <!--<p-tree class="ui-tree" styleClass="ui-tree" [value]="this.prdProductViewModel.ListCategory" selectionMode="checkbox" [(selection)]="this.prdProductViewModel.ListCategory"></p-tree>-->
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label >Ghi chú:</label>
+            <textarea type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.Notes" name="Notes" #NotesInput="ngModel" readonly></textarea>
+          </div>
+          <div class="form-group">
+            <label>Đường dẫn file SQL</label>
+            <input placeholder="Đường dẫn file  script sql" type="text" class="form-control" [(ngModel)]="prdProductViewModel.PrdProduct.Scripts" name="Scripts" #Scripts="ngModel" readonly/>
+          </div>
+
+        </div>
+    </div>
+    <hr/>
+
+
+    <div class="row">
+        <h5>CHI TIẾT SẢN PHẨM</h5>
+        <div class="col-md-4" >
+            <div class="row" style="height:150px; overflow:auto;">
+             <table class="table table-hover domaintable table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <!--<th class="col-md-2"></th>-->
+                <th class="col-md-6"><strong>Tên source</strong></th>
+                <th class="col-md-6"><strong>Tổng trị giá</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of this.prdProductViewModel.ListSources">
+                <!--<td> {{msg.User}}</td>-->
+                <!--<td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false"  disabled readonly> </td>-->
+                <td>{{item.SourceName}}</td>
+                <td>{{item.Price + item.PriceVat - item.DiscountAmt | number}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row" style="height:150px; overflow:auto;">
+            <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <!--<th class="col-md-2"></th>-->
+                <th class="col-md-6"><strong>Tên Plugin</strong></th>
+                <th class="col-md-6"><strong>Tổng trị giá</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of this.prdProductViewModel.ListPlugins">
+                <!--<td> {{msg.User}}</td>-->
+                <!--<td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" disabled  readonly> </td>-->
+                <td>{{item.PluginName}}</td>
+                <td>{{item.Price + item.PriceVat - item.DiscountAmt | number}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row" style="height:150px; overflow:auto;">
+            <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <!--<th class="col-md-2"></th>-->
+                <th class="col-md-6"><strong>Tên Template</strong></th>
+                <th class="col-md-6"><strong>Tổng trị giá</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of this.prdProductViewModel.ListTemplates">
+                <!--<td> {{msg.User}}</td>-->
+                <!--<td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" disabled  readonly> </td>-->
+                <td>{{item.TemplateName}}</td>
+                <td>{{item.Price + item.PriceVat - item.DiscountAmt | number}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+        </div>
+    </div>
+
+  <div class="row">
+<h3 class="col-md-12 col-xs-12">Giá sản phẩm</h3>
+    <div class="col-md-3 col-xs-6">
+      <div class="form-group">
+        <label>Giá: </label>
+        <!--<input [(ngModel)]="prdProductViewModel.PrdProduct.Price" #ProductPrice="ngModel" min="0" placeholder="Giá sản phẩm" class="form-control" name="productPrice" type="number" (change)="changePrice()" />-->
+        <label >{{prdProductViewModel.PrdProduct.Price | number}} VND</label>
+      </div>
+    </div>
+    <div class="col-md-3 col-xs-6">
+      <div class="form-group">
+        <label>Vat: </label>
+        <!--<input [(ngModel)]="prdProductViewModel.PrdProduct.Vat" #ProductVat="ngModel" min="0" placeholder="Thuế VAT" class="form-control" name="productVat" type="number" (change)="changePrice()" />-->
+        <label>{{prdProductViewModel.PrdProduct.Vat | number}} %</label>
+      </div>
+    </div>
+    <div class="col-md-3 col-xs-6">
+      <div class="form-group">
+        <label>Giá VAT: </label>
+        <!--<input [(ngModel)]="prdProductViewModel.PrdProduct.PriceVat" #ProductPriceVat="ngModel" min="0" placeholder="Giá VAT" class="form-control" name="productPriceVat" type="number" />-->
+        <label >{{prdProductViewModel.PrdProduct.PriceVat | number}} VND</label>
+      </div>
+    </div>
+    <div class="col-md-3 col-xs-6">
+      <div class="form-group">
+        <label >Số tiền giảm giá: </label>
+        <!--<input [(ngModel)]="prdProductViewModel.PrdProduct.DiscountAmt" #ProductDiscountAmt="ngModel" min="0" placeholder="Số tiền giảm giá" class="form-control" name="productDiscountAmt" type="number" />-->
+        <label >{{prdProductViewModel.PrdProduct.DiscountAmt | number}} VND</label>
+      </div>
+    </div>
+    <!--<div class="col-md-3 offset-md-7">
+      <p style="color: #E53935;"><strong>Tổng cộng: {{this.totalPrice | currency:'VND'}}</strong>
+      </p>
+    </div>-->
+  </div>
+  <div class="row">
+    <p style="color:#E53935;"><strong>Tổng cộng: {{ (prdProductViewModel.PrdProduct.Price + prdProductViewModel.PrdProduct.PriceVat - prdProductViewModel.PrdProduct.DiscountAmt) | number}} VND</strong></p>
+  </div>
+<div class="row">
+    <div class="col-md-3 offset-md-4">
+        <div class="btn-group">
+        <button class="btn btn-md btn-info" [routerLink]="['/pages/prdproduct/productslist']"><i class="fa fa-arrow-left" ></i> Trở về</button>
+        <button class="btn btn-md btn-warning" [routerLink]="['/pages/prdproduct/productedit',this.productId]"><i class="fa fa-pencil-square-o" ></i> Cập nhật</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--<div class="row">
+    <div class="col-md-1 offset-md-9">
+        <button class="btn btn-success btn-md"><i class="fa fa-plus"></i> Lưu</button>
+    </div>
+</div>-->
+
+
+<style>
+    .domaintable{
+        overflow-y: auto !important;
+        height:100px !important;
+    }
+</style>

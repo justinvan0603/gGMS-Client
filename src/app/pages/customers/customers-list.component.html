@@ -1,0 +1,135 @@
+﻿
+<hr/>
+
+    <button class="btn btn-primary btn-sm" (click)="viewAddCustomer()">
+    <i class="fa fa-plus" aria-hidden="true"></i>Tạo khách hàng</button>
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+            <div class="input-group">
+                
+                <input type="text" placeholder="Tìm theo mã khách hàng, tên, địa chỉ, SĐT,Email,mã số thuế, tên công ty.." class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn">
+            <button (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button>
+            </span>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+                <th><strong>Mã khách hàng</strong></th>
+                <th><strong>Họ tên</strong></th>
+                <th><strong>Số điện thoại</strong></th>
+                <th><strong>Email</strong></th>
+                <th><strong>Địa chỉ</strong></th>       
+                <th><strong>Mã số thuế</strong></th>
+                <th><strong>Công ty</strong></th>
+                <th><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of customers">
+                <td class="text-xs-left"> {{item.CustomerCode}}</td>
+                <td class="text-xs-left">{{item.CustomerName}}</td>
+                <td class="text-xs-left">{{item.PhoneNumber}}</td>
+                <td class="text-xs-left">{{item.Email}}</td>
+                <td class="text-xs-left">{{item.Address}}</td>
+                <td class="text-xs-left">{{item.TaxCode}}</td>
+                <td class="text-xs-left">{{item.CompanyName}}</td>
+               <td><a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor:pointer;"  (click)="viewDetail(item)"><i class="fa fa-eye fa-lg" style="color:#1E88E5"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;"  (click)="viewCustomerDetails(item)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;"  (click)="deleteCustomer(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000" ></i></a>
+                </td>
+        
+
+            </tr>
+        </tbody>
+    </table>
+
+    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedCustomerLoaded">
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 *ngIf="!this.addingCustomer">Cập nhật khách hàng</h4>
+                <h4 *ngIf="this.addingCustomer">Thêm khách hàng</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #viewCustomerForm="ngForm" *ngIf="selectedCustomerLoaded" novalidate>
+                    <fieldset>
+                <!--Validate-->
+                    <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.CustomerCode">
+                            
+                            <li>{{formErrors.CustomerCode}}</li>
+                        </ul>
+                        <ul *ngIf="formErrors.CustomerName">
+                            <li>{{formErrors.CustomerName}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.TaxCode">
+                            <li>{{formErrors.TaxCode}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Address">
+                            <li>{{formErrors.Address}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.PhoneNumber">
+                            <li>{{formErrors.PhoneNumber}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.CompanyName">
+                            <li>{{formErrors.CompanyName}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Email">
+                            <li>{{formErrors.Email}}</li>
+                            </ul>
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+             <!--End Validate-->
+             <div class="form-group">
+                <label >Mã khách hàng:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.CustomerCode" name="CustomerCode" #DomainInput="ngModel" required pattern=".{1,15}"/>
+            </div>
+            <div class="form-group">
+                <label >Họ tên:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.CustomerName" name="CustomerName" #DescriptionInput="ngModel" required pattern=".{1,70}"/>
+            </div>
+            <div class="form-group">
+                <label >Công ty:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.CompanyName" name="CompanyName" #DescriptionInput="ngModel" required pattern=".{1,200}"/>
+            </div>
+            <div class="form-group">
+                <label >Email:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.Email" name="Email" #DescriptionInput="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"/>
+            </div>
+            <div class="form-group">
+                <label >Địa chỉ:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.Address" name="Address" #DescriptionInput="ngModel" required pattern=".{1,500}"/>
+            </div>
+             <div class="form-group">
+                <label >Số điện thoại:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.PhoneNumber" name="PhoneNumber" #DescriptionInput="ngModel" required pattern="[0-9]{1,50}" maxlength="50"/>
+            </div>
+            <div class="form-group">
+                <label >Mã số thuế:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.TaxCode" name="TaxCode" #DescriptionInput="ngModel" pattern="[0-9]{1,50}" maxlength="50" required />
+            </div>
+                    <hr/>          
+                    <button [class.hidden]="this.addingCustomer || this.isViewDetail" [disabled]="!viewCustomerForm.form.valid " (click)="editCustomer(selectedCustomer)" type="button" class="btn btn-warning">Cập nhật</button>
+                    <button [class.hidden]="!this.addingCustomer || this.isViewDetail" [disabled]="!viewCustomerForm.form.valid " (click)="addNewCustomer(selectedCustomer)" type="button" class="btn btn-success">Thêm</button>
+            </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

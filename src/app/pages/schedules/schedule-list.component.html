@@ -1,0 +1,98 @@
+<button class="btn btn-primary" type="button" *ngIf="schedules">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Domain  
+   <span class="badge">{{totalItems}}</span>
+</button>
+<hr/>
+<button class="btn btn-primary" (click)="viewAddSchedule()">
+    <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>Add</button>
+<div [@flyInOut]="'in'">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th><i class="fa fa-text-width fa-2x" aria-hidden="true"></i>Title</th>
+                <th><i class="fa fa-user fa-2x" aria-hidden="true"></i>Creator</th>
+                <th><i class="fa fa-calendar-o fa-2x" aria-hidden="true"></i>Time update</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let schedule of schedules">
+                <td> {{schedule.DOMAIN}}</td>
+                <td>{{schedule.Status}}</td>
+                <td>{{schedule.UpdatedDate | dateFormat | date:'medium'}}</td>
+               
+                <td><a class="btn btn-primary" (click)="viewScheduleDetails(schedule)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a></td>
+        
+                <td>
+                    <button class="btn btn-danger" (click)="removeSchedule(schedule)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedScheduleLoaded">
+        <div class="modal-content" style="background-color:darkcyan;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4>{{selectedSchedules.DOMAIN}} details</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #editScheduleForm="ngForm" *ngIf="selectedScheduleLoaded" novalidate>
+
+                <!--Validate-->
+                    <div class="alert alert-danger" [hidden]="editScheduleForm.form.valid">
+                        <ul *ngIf="DOMAIN.dirty && !DOMAIN.valid">
+                            <li *ngIf="DOMAIN.errors.required">Title is required</li>
+                            <li *ngIf="DOMAIN.errors.pattern">Title should have 5-20 characters</li>
+                        </ul>
+                    </div>
+             <!--End Validate-->
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><i class="fa fa-user" aria-hidden="true"></i>Domain</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedSchedules.DOMAIN" name="DOMAIN" #DOMAIN="ngModel" required pattern=".{5,20}"
+                                />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label"><i class="fa fa-text-width" aria-hidden="true"></i>Title</label>
+                                <input type="text" class="form-control" [(ngModel)]="selectedSchedules.Status" name="Status" #Status="ngModel" required
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label"><i class="fa fa-calendar-o" aria-hidden="true"></i>Ngày cập nhật</label>
+                                <datepicker [(ngModel)]="selectedSchedules.UpdatedDate" name="UpdatedDate" #UpdatedDate="ngModel" [showWeeks]="false" >
+
+                                </datepicker>
+                            </div>
+
+                            <div class="col-md-6">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button [class.hidden]="addingUser" [disabled]="!editScheduleForm.form.valid" (click)="editSchedule(selectedSchedules)" type="button" class="btn btn-danger">Update</button>
+                    <button [class.hidden]="!addingUser" [disabled]="!editScheduleForm.form.valid" (click)="addSchedule(selectedSchedules)" type="button" class="btn btn-danger">Add</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

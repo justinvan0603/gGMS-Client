@@ -1,0 +1,42 @@
+<div class="auth-main">
+  <div class="auth-block">
+    <h1>Đăng nhập</h1>
+    <!--<a routerLink="/register" class="auth-link">Đăng ký tài khoản</a>-->
+
+    <form #loginForm="ngForm" class="form-horizontal">
+      <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="Username" [(ngModel)]="_user.Username"
+                   name="username" id="username" #username="ngModel" required />
+            <div [hidden]="username.valid || username.untouched" class="alert alert-danger">
+              Tên đăng nhập không được để trống
+            </div>
+          </div>
+      <div class="form-group">
+            <input type="password" class="form-control input-lg" placeholder="Password" [(ngModel)]="_user.Password"
+                   name="password" id="password" #password="ngModel" required/>
+            <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
+              Password không được để trống
+            </div>
+          </div>
+      <div class="form-group">
+            <button class="btn btn-primary btn-lg btn-block" (click)="login()" [disabled]="!loginForm.form.valid">Đăng nhập</button>
+            
+          </div>
+          <!--<div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="_user.RememberMe" name="remember"> Ghi nhớ tài khoản
+            </label>
+          </div>-->
+    </form>
+
+    <!--<div class="auth-sep"><span><span>or Sign in with one click</span></span></div>
+
+    <div class="al-share-auth">
+      <ul class="al-share clearfix">
+        <li><i class="socicon socicon-facebook" title="Share on Facebook"></i></li>
+        <li><i class="socicon socicon-twitter" title="Share on Twitter"></i></li>
+        <li><i class="socicon socicon-google" title="Share on Google Plus"></i></li>
+      </ul>
+    </div>-->
+  </div>
+</div>

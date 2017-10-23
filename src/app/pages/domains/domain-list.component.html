@@ -1,0 +1,105 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="users">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Người dùng  
+   <span class="badge">{{this.totalItems}}</span>
+</button>-->
+<hr/>
+
+    <button class="btn btn-primary btn-sm" (click)="viewAddDomain()">
+    <i class="fa fa-plus" aria-hidden="true"></i>Tạo domain</button>
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="form-inline" method="post" #domainSearchForm="ngForm"  novalidate >
+            <div class="input-group">
+                <label >Tìm kiếm:</label>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <div class="input-group-btn" ><button style="margin-top:15%;"   (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Domain</th>
+                <th>Mô tả</th>
+                <th>Tên đăng nhập</th>
+                <th>Họ tên</th>       
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of domains">
+                <td class="text-xs-left"> {{item.DOMAIN}}</td>
+                <td class="text-xs-left">{{item.DESCRIPTION}}</td>
+                <td class="text-xs-left">{{item.USERNAME}}</td>
+                <td class="text-xs-left">{{item.FULLNAME}}</td>
+               <td> <!--<a class="btn btn-warning" (click)="viewDomainDetails(item)"><i class="fa fa-pencil-square-o" ></i>Cập nhật</a>-->
+                <a class="btn btn-success" [routerLink]="['/pages/optionlinks/optionlinklist',item.DOMAIN]"><i class="fa fa-link" ></i> Link</a>
+                <a class="btn btn-success" [routerLink]="['/pages/optionusers/optionuserlist',item.DOMAIN]"><i class="fa fa-users" ></i> User</a>
+                <a class="btn btn-danger" (click)="deleteDomain(item)"><i class="fa fa-trash-o" ></i>Xóa</a>
+                </td>
+        
+
+            </tr>
+        </tbody>
+    </table>
+
+    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedDomainLoaded">
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 *ngIf="!this.addingUser">Cập nhật domain</h4>
+                <h4 *ngIf="this.addingUser">Thêm domain</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #viewDomainForm="ngForm" *ngIf="selectedDomainLoaded" novalidate>
+                                            
+                <!--Validate-->
+                    <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.DOMAIN">
+                            
+                            <li>{{formErrors.DOMAIN}}</li>
+                        </ul>
+                        <ul *ngIf="formErrors.DESCRIPTION">
+                            <li>{{formErrors.DESCRIPTION}}</li>
+                            </ul>
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+             <!--End Validate-->
+             <div class="form-group">
+                <label >Domain:</label>
+                <input type="text" class="form-control"  [(ngModel)]="selectedDomain.DOMAIN" name="DOMAIN" #DomainInput="ngModel" required pattern=".{1,200}"/>
+            </div>
+            <div class="form-group">
+                <label >Mô tả:</label>
+                <input type="text" class="form-control"  [(ngModel)]="selectedDomain.DESCRIPTION" name="DESCRIPTION" #DescriptionInput="ngModel" required pattern=".{1,500}"/>
+            </div>
+            <div class="form-group" [class.hidden]="!this.addingUser" >
+                <label >Ngày tạo:{{selectedDomain.CREATE_DT}}</label>
+                
+            </div>
+             <div class="form-group">
+                <label >Người quản lý:</label>
+                <select ngControl="ManageUserInput" name="ManageUser" [(ngModel)]="selectedManageUser" #ManageUserInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" required>
+                    <option *ngFor="let usr of listManageUser" [ngValue]="usr" [selected]="this.selectedDomain.USERNAME === usr.UserName">{{usr.UserName}}</option>
+                </select>
+            </div>
+            
+                    <hr/>          
+                    <button [class.hidden]="this.addingDomain" [disabled]="!viewDomainForm.form.valid || (selectedManageUser == null ? true:false)" (click)="editDomain(selectedDomain)" type="button" class="btn btn-warning">Cập nhật</button>
+                    <button [class.hidden]="!this.addingDomain" [disabled]="!viewDomainForm.form.valid || (selectedManageUser == null ? true:false)" (click)="addNewDomain(selectedDomain)" type="button" class="btn btn-success">Thêm</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

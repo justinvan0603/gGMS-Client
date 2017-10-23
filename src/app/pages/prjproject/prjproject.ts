@@ -1,0 +1,54 @@
+﻿export class PrjProject {
+  PROJECT_ID: string;
+  PROJECT_CODE: string;
+  PROJECT_NAME: string;
+  BEGIN_DATE: Date;
+  END_DATE: Date;
+  ESTIMATE_DATE: Date;
+  COMPLETION_DATE: Date;
+  STATE: string;
+  CONTRACT_ID: string;
+  CONTRACT_CODE: string;
+  CONTRACT_TYPE: string;
+  NOTES: string;
+  RECORD_STATUS: string;
+  AUTH_STATUS: string;
+  MAKER_ID: string;
+  CREATE_DT: Date;
+  CHECKER_ID: string;
+  APPROVE_DT: Date;
+  EDITOR_ID: string;
+  EDIT_DT: Date;
+  MYSQL_USERNAME: string;
+  MYSQL_PASSWORD: string;
+  DATABASE_NAME: string;
+  DOMAIN: string;
+  SUB_DOMAIN: string;
+  constructor() {
+    this.PROJECT_ID = '';
+    this.PROJECT_CODE = '';
+    this.PROJECT_NAME = '';
+    this.BEGIN_DATE = new Date();
+    this.END_DATE = new Date();
+    this.ESTIMATE_DATE = new Date();
+    this.COMPLETION_DATE = new Date();
+    this.STATE = '';
+    this.CONTRACT_ID = '';
+    this.CONTRACT_CODE = '';
+    this.CONTRACT_TYPE = '';
+    this.NOTES = '';
+    this.RECORD_STATUS = '';
+    this.AUTH_STATUS = '';
+    this.MAKER_ID = '';
+    this.CREATE_DT = new Date();
+    this.CHECKER_ID = '';
+    this.APPROVE_DT = new Date();
+    this.EDITOR_ID = '';
+    this.EDIT_DT = new Date();
+    this.MYSQL_USERNAME = '';
+    this.MYSQL_PASSWORD = '';
+    this.DATABASE_NAME = '';
+    this.DOMAIN = '';
+    this.SUB_DOMAIN = '';
+  }
+}

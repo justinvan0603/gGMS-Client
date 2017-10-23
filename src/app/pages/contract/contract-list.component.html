@@ -1,0 +1,242 @@
+﻿<hr />
+<div>
+  
+  <button class="btn btn-outline-primary" [routerLink]="['/pages/contract/contractoperator/a']">
+    <span class="fa fa-plus" aria-hidden="true"></span> Tạo hợp đồng
+  </button>
+</div>
+<br />
+<div [@flyInOut]="'in'">
+  <div>
+    <form class="form-inline" method="post" #ContractSearchForm1="ngForm">
+      <label class="form-control-label mr-sm-2" for="input01">Mã</label>
+      <input class="form-control mb-2 mr-sm-2 mb-sm-0" id="input01" [(ngModel)]="this.contractSearch.ContractCode" name="input01" #lookupContractCode="ngModel" placeholder="Mã hợp đồng"/>
+      <label class="form-control-label mr-sm-2" for="input02">Loại hợp đồng</label>
+      <select class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="this.contractSearch.CONTRACT_TYPE" name="input02" #lookupContractTYPE="ngModel">
+        <option value="">Tất cả</option>
+        <option *ngFor="let item of contractTypes" [ngValue]="item.Cdval">
+          {{item.Content}}
+        </option>
+      </select>
+      <label class="form-control-label mr-sm-2" for="input02">Trạng thái</label>
+      <select class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="this.contractSearch.Status" name="input02" #lookupContractState="ngModel">
+        <option value="">Tất cả</option>
+        <option *ngFor="let item of states" [ngValue]="item.Cdval">
+          {{item.Content}}
+        </option>
+      </select>
+      <label class="form-control-label mr-sm-2" for="input03">Ngày ký</label>
+      <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="input03" [(ngModel)]="this.contractSearch.SignContractDt" name="input03" #lookuContractSignDate="ngModel"/>
+      <label class="form-control-label mr-sm-2" for="input004">Mã khách hàng</label>
+      <input type="text" name="input004" [(ngModel)]="this.contractSearch.CustomerCode"  class="form-control mb-2 mr-sm-2 mb-sm-0" id="input004" #CustomerCode="ngModel" placeholder="Mã khách hàng"/>
+      <label class="form-control-label mr-sm-2" for="input005">Tên khách hàng</label>
+      <input type="text" name="input005" [(ngModel)]="this.contractSearch.CustomerName"  class="form-control mb-2 mr-sm-2 mb-sm-0" id="input005" #CustomerName="ngModel" placeholder="Tên khách hàng"/>
+      <button (click)="lookupContract()" type="button" class="btn btn-success"><span class="fa fa-search"></span> Lọc</button>
+    </form>
+  </div>
+  
+
+  <div class="col-md-9">
+    <form class="form-inline" method="post" #ContractSearchForm="ngForm" novalidate>
+      <label class="form-control-label mr-sm-2" for="inputSearch">Tìm kiếm:</label>
+      <input id="inputSearch" type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel" pattern=".{1,500}"/>
+      <button (click)="search(this.searchString)" type="button" class="btn btn-success"><span class="fa fa-search"></span> Tìm</button>
+    </form>
+  </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th> <label class="pull-left">Mã hợp đồng</label></th>
+      <th><label class="pull-left">Mã Khách hàng</label></th>
+      <th><label class="pull-left">Tên khách hàng</label></th>
+      <th><label class="pull-left"> Giá trị</label></th>
+      <th><label class="pull-left">Hạn hợp đồng</label></th>
+      <th><label class="pull-left">Ngày ký</label></th>
+      <th><label class="pull-left">Ngày thu phí</label></th>
+      <!--<th><label class="pull-left">Trạng thái</label></th>-->
+      <th><label class="pull-left">Nhân viên phụ trách</label></th>
+      <th><label class="pull-left">Thao tác</label></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of this.contractModel">
+      <td class="text-xs-left"> {{item.ContractCode}}</td>
+      <td class="text-xs-left">{{item.CustomerCode}}</td>
+      <td class="text-xs-left">{{item.CustomerName}}</td>
+      <td class="text-xs-left">{{item.Value | number }}</td>
+      <td class="text-xs-left">{{item.ExpContract}}</td>
+      <td class="text-xs-left">{{item.SignContractDt | date:"dd/MM/yyyy" }}</td>
+      <td class="text-xs-left">{{item.ChargeDt | date:"dd/MM/yyyy"}}</td>
+      <!--<td class="text-xs-left">{{item.Status}}</td>-->
+      <td class="text-xs-left">{{item.MakerId}}</td>
+      <td>
+        <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor: pointer;" [routerLink]="['/pages/contract/contractoperator/v/', item.ContractId]"><i class="fa fa-eye fa-lg" style="color: #1E88E5"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor: pointer;" [routerLink]="['/pages/contract/contractoperator/e/', item.ContractId]"><i class="fa fa-pencil-square-o fa-lg" style="color: #EF6C00"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Xóa" (click)="deleteContract(item)"><i class="fa fa-trash-o fa-lg" style="color: #D50000"></i></a>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+    </tfoot>
+  </table>
+
+</div>
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" *ngIf="selectedContractLoaded">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 *ngIf="!this.addingContractModel">Cập nhật hợp đồng</h4>
+        <h4 *ngIf="this.addingContractModel">Thêm hợp đồng</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" #viewContractForm="ngForm" *ngIf="selectedContractLoaded" novalidate>
+          <fieldset>
+            <!--Validate-->
+            <div class="alert alert-danger" [hidden]="isValid">
+              <ul *ngIf="formErrors.ContractCode">
+                <li>{{formErrors.ContractCode}}</li>
+              </ul>
+              <ul *ngIf="formErrors.CustomerId">
+                <li>{{formErrors.CustomerId}}</li>
+              </ul>
+              <ul *ngIf="formErrors.Value">
+                <li>{{formErrors.Value}}</li>
+              </ul>
+              <ul *ngIf="formErrors.ExpContract">
+                <li>{{formErrors.ExpContract}}</li>
+              </ul>
+              <ul *ngIf="formErrors.SignContract">
+                <li>{{formErrors.SignContract}}</li>
+              </ul>
+              <ul *ngIf="formErrors.ChargeDt">
+                <li>{{formErrors.ChargeDt}}</li>
+              </ul>
+              <ul *ngIf="formErrors.MonthCharge">
+                <li>{{formErrors.MonthCharge}}</li>
+              </ul>
+              <ul *ngIf="formErrors.Status">
+                <li>{{formErrors.Status}}</li>
+              </ul>
+              <ul *ngIf="formErrors.DebitBalance">
+                <li>{{formErrors.DebitBalance}}</li>
+              </ul>
+              <ul *ngIf="formErrors.PaidAMT">
+                <li>{{formErrors.PaidAMT}}</li>
+              </ul>
+              <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+
+              </ul>-->
+            </div>
+
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Begin Column 1-->
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Mã hợp đồng:</label>
+                    <input type="text" class="form-control" placeholder="Mã hợp đồng" [(ngModel)]="this.selectedContractModel.ContractCode" name="ContractCode" #ContractCodeInput="ngModel" required pattern=".{1,15}" />
+                  </div>
+                  <div class="form-group">
+                    <label>Khách hàng:</label>
+                    <select class="form-control"  [(ngModel)]="this.selectedContractModel.CustomerId" name="CustomerId" #CustomerIdInput="ngModel" required>
+                      <option>Lựa chọn...</option>
+                      <option *ngFor="let item of this.Customers" [ngValue]="item.CustomerId">{{item.CustomerCode}} - {{item.CustomerName}}</option>
+                    </select>
+                    <br />
+                    <button type="button" class="btn btn-outline-info" (click)="LoadCustomers()">Load</button>
+                  </div>
+                  <!--<div class="form-group">
+                    <label>Nhân viên phụ trách: </label>
+                    <select class="form-control" [(ngModel)]="this.selectedContractModel.MakerId" name="MakerId" #CustomerIdInput="ngModel" required>
+                      <option>Lựa chọn...</option>
+                      <option *ngFor="let item of this.Users" [ngValue]="item" value="{{item.UserId}}">{{item.UserName}}</option>
+                    </select>
+                    <br />
+                    <button type="button" class="btn btn-outline-info" (click)="LoadUsers()">Load</button>
+                  </div>-->
+                  <div class="form-group">
+                    <label>Giá trị:</label>
+                    <input type="number" placeholder="Giá trị hợp đồng" class="form-control" [(ngModel)]="this.selectedContractModel.Value" name="Value" #ValueInput="ngModel" required min="0" />
+                  </div>
+                  <div class="form-group">
+                    <label>Hạn hợp đồng: </label>
+                    <input class="form-control" type="number" placeholder="Hạn hợp đồng" [(ngModel)]="selectedContractModel.ExpContract" name="ExpContract" #ExpContractInput="ngModel" required min="0" />
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Số tháng tính phí</label>
+                    <input type="number" placeholder="Số tháng tính phí" class="form-control" [(ngModel)]="this.selectedContractModel.MonthCharge" name="MonthCharge" #MonthCharge="ngModel" required min="0"/>
+                  </div>
+                  <!--<div class="form-group">
+                    <label>Trạng thái</label>
+                    <select class="form-control" [(ngModel)]="this.selectedContractModel.Status" name="Status" #StatusInput="ngModel" required>
+                      <option>Lựa chọn...</option>
+                      <option *ngFor="let item of Status" [ngValue]="item">{{item}}
+                      </option>
+                    </select>
+                  </div>-->
+
+                </div>
+
+                <!--End column 1-->
+
+                <!--Begin Columln 2-->
+                <div class="col-md-6">
+                  
+                  <div class="form-group">
+                    <label>Ngày ký hợp đồng:</label>
+                    <input type="date" id="SignContractDt" placeholder="Chọn ngày ký hợp đồng" class="form-control" [(ngModel)]="selectedContractModel.SignContractDt" name="SignContractDt" #SignContractDtInput="ngModel"   required/>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Ngày tính phí:</label>
+                    <input type="date" placeholder="Chọn ngày tính phí" class="form-control" [(ngModel)]="this.selectedContractModel.ChargeDt" name="ChargeDt" #ChargeDt="ngModel" required/>
+                  </div>
+                 
+                  <div class="form-group" style="height: 280px;overflow:auto">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th><input type="checkbox" name="CheckAll" [(ngModel)]="this.checkAll" [checked]="this.checkAll" #CheckAllInput="ngModel" (change)="changeCheck($event)"/></th>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Loại</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let item of this.Products">
+                        <td>
+                          <input type="checkbox"  class="form-check-input" [checked]="item.RecordStatus == '1' ? true : false"/>
+                        </td>
+                        <td>{{item.ProductCode}}</td>
+                        <td>{{item.ProductName}}</td>
+                        <td>{{item.ProductType}}</td>
+
+                      </tr>
+                      </tbody>
+                    </table>
+                 
+                  </div>
+                  <button type="button" (click)="LoadProds()" class="btn btn-outline-info">Load</button>
+                </div>
+                <!--End column 2-->
+
+              </div>
+            </div>
+            <!--End Validate-->
+
+            <hr />
+            <button [class.hidden]="this.addingContractModel" [disabled]="!viewContractForm.form.valid " (click)="editContract(this.selectedContractModel)" type="button" class="btn btn-warning">Cập nhật</button>
+            <button [class.hidden]="!this.addingContractModel" [disabled]="!viewContractForm.form.valid " (click)="addNewContract(this.selectedContractModel)" type="button" class="btn btn-success">Thêm</button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

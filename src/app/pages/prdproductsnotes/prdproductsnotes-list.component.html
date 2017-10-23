@@ -1,0 +1,84 @@
+﻿<!--<button class="btn btn-primary" type="button" *ngIf="messages">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Thông báo
+   <span class="badge">{{totalItems}}</span>
+</button>-->
+<hr/>
+
+<div [@flyInOut]="'in'">
+    
+        
+           
+    
+
+    
+    <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+      <div class="input-group">
+        <input type="text" placeholder="Tìm kiếm theo tên sản phẩm, đường dẫn, mã sản phẩm" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+        <span class="input-group-btn" ><button (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+      </div>
+      <div class="form-group">
+        <h3>Bộ lọc</h3>
+      </div>
+      <div class="form-group">
+        <input id="publishedCheckbox" type="checkbox" class="form-check-input" name="publishedCheckbox" (change)="published()" [(ngModel)]="isPublished" #PublishedCheckBox="ngModel"/>Có trên GWebsite
+      </div>
+    </form>
+    </div>
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-1"><strong>Mã sản phẩm</strong></th>
+                <th class="col-md-2"><strong>Tên sản phẩm</strong></th>
+                <th class="col-md-2"><strong>Đường dẫn</strong></th>
+              <th class="col-md-2"><strong>Ghi chú</strong></th>
+              <th class="col-md-2">Giá gốc</th>
+              <th class="col-md-2">Giá đã giảm</th>
+                <th class="col-md-1"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Products">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.CodeView}}</td>
+                <td>{{item.ProductName}}</td>
+                <td>{{item.ProductLocation}}</td>
+              <td>{{item.Notes}}</td>
+              <td>{{(item.Price + item.PriceVat) | number}}</td>
+              <td>{{(item.Price + item.PriceVat - item.DiscountAmt) | number}}</td>
+              
+                <td>
+                    <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor:pointer;"  [routerLink]="['/pages/prdproduct/productsnotesview',item.ProductId]" ><i class="fa fa-eye fa-lg" style="color:#1E88E5"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;"  [routerLink]="['/pages/prdproduct/productsnotesedit',item.ProductId]"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+                    <!-- <a data-toggle="tooltip" data-placement="top" title="Tạo Sourcecode" style="cursor:pointer;" (click)="generateSource(item)"><i class="fa fa-file-code-o fa-lg" style="color:#388E3C"></i></a> -->
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteProduct(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+

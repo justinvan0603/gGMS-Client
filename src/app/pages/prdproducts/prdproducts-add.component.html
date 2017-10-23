@@ -1,0 +1,486 @@
+﻿<button class="btn btn-outline-primary" [routerLink]="['/pages/prdproduct/productslist']">
+  <span class="fa fa-backward" aria-hidden="true"></span> Quay về
+</button>
+
+<h4>NHẬP THÔNG TIN SẢN PHẨM</h4>
+<hr/>
+<div [@flyInOut]="'in'">
+    
+    <form method="post" #viewProductForm="ngForm"  novalidate>
+                        <div class="alert alert-danger" [hidden]="isValid">
+                        <!-- <ul *ngIf="formErrors.ProductCode">
+                            
+                            <li>{{formErrors.ProductCode}}</li>
+                        </ul> -->
+                        <ul *ngIf="formErrors.ProductName">
+                            <li>{{formErrors.ProductName}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.ProductLocation">
+                            <li>{{formErrors.ProductLocation}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Notes">
+                            <li>{{formErrors.Notes}}</li>
+                            </ul>
+                          <ul *ngIf="formErrors.Price">
+                            <li>{{formErrors.Price}}</li>
+                          </ul>
+                          <ul *ngIf="formErrors.DiscountAmt">
+                            <li>{{formErrors.DiscountAmt}}</li>
+                          </ul>
+                          <ul *ngIf="formErrors.Vat">
+                            <li>{{formErrors.Vat}}</li>
+                          </ul>
+                          <ul *ngIf="formErrors.PriceVat">
+                            <li>{{formErrors.PriceVat}}</li>
+                          </ul>
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                <label >Mã sản phẩm:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.ProductCode" name="ProductCode" #ProductCodeInput="ngModel" required pattern=".{1,15}" readonly/>
+            </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label >Tên sản phẩm:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.ProductName" name="ProductName" #ProductNameInput="ngModel" required pattern=".{1,256}"/>
+            </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                <label >Vị trí lưu:</label>
+                <input type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.ProductLocation" name="ProductLocation" #ProductLocationInput="ngModel" required pattern=".{1,1000}"/>
+            </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                <label >Loại sản phẩm:</label>
+                <select ngControl="ProductTypeInput" name="ProductType" [(ngModel)]="selectedProductType" #ProductTypeInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" required>
+                    <option *ngFor="let type of listProductType" [ngValue]="type" [selected]="this.selectedProductType.Cdval === type.Cdval">{{type.Content}}</option>
+                </select>
+            </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+        <div class="col-md-6">
+            <label >Loại sản phẩm:</label>
+                <select ngControl="ProductTypeInput" name="ProductType" [(ngModel)]="selectedProductType" #ProductTypeInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" required>
+                    <option *ngFor="let type of listProductType" [ngValue]="type" [selected]="this.selectedProductType.Cdval === type.Cdval">{{type.Content}}</option>
+                </select>
+        </div>
+        </div> -->
+    </form>
+<div class="row" >
+        <div class="col-md-6" style="height:400px; overflow:auto;">
+            <h5>Lĩnh vực:</h5>
+            <tree-root #tree [nodes]="this.prdProductViewModel.ListCategory">
+        <template #treeNodeTemplate let-node="node" let-index="index" >
+    <input 
+      (change)="check( node, $event)"
+      type="checkbox"
+      [indeterminate]="node.data.indeterminate"
+      [checked]="node.data.data.RECORD_STATUS ==='1'? true:false ">
+
+      {{ node.data.name }}
+  </template>
+</tree-root>
+            <!--<tree-root  [options]="options" [nodes]="this.prdProductViewModel.ListCategory"></tree-root>-->
+            <!--<p-tree class="ui-tree" styleClass="ui-tree" [value]="this.prdProductViewModel.ListCategory" selectionMode="checkbox" [(selection)]="this.prdProductViewModel.ListCategory"></p-tree>-->
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label >Ghi chú:</label>
+            <textarea type="text" class="form-control"  [(ngModel)]="prdProductViewModel.PrdProduct.Notes" name="Notes" #NotesInput="ngModel" pattern=".{1,500}"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Đường dẫn file SQL</label>
+            <input placeholder="Đường dẫn file  script sql" type="text" class="form-control" [(ngModel)]="prdProductViewModel.PrdProduct.Scripts" name="Scripts" #Scripts="ngModel"/>
+          </div>
+        </div>
+        
+    </div>
+    <hr/>
+
+
+    <div class="row">
+        <h5>CHI TIẾT SẢN PHẨM</h5>
+        <div class="col-md-4" >
+            <p><strong>Chọn Source:</strong></p>
+            <button class="btn btn-primary btn-sm" (click)="viewSourceModal()">
+            <i class="fa fa-plus" aria-hidden="true"></i>Thêm Source</button>
+            <div class="row" style="height:150px; overflow:auto;">
+             <table class="table table-hover domaintable">
+                <thead>
+                    <tr>
+
+                <!--<th>Username</th>-->
+                        
+                        <th class="col-md-5"><strong>Tên source</strong></th>
+                        <th class="col-md-5"><strong>Tổng trị giá</strong></th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of this.prdProductViewModel.ListSources">
+                    <!--<td> {{msg.User}}</td>-->
+                        <!--<td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" (change)="onlistSourceChecked(item,$event)"> </td>-->
+                        <td class="h-25">{{item.SourceName}}</td>
+                        <td class="h-25">{{item.Price + item.PriceVat - item.DiscountAmt | number}}</td>
+                        <td class="h-25"><button class="btn btn-danger btn-sm" (click) = "deleteSource(item)">Xóa</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <p><strong>Chọn Plugin:</strong></p>
+            <button class="btn btn-primary btn-sm" (click)="viewPluginModal()">
+            <i class="fa fa-plus" aria-hidden="true"></i>Thêm Plugin</button>
+            
+            <div class="row" style="height:150px; overflow:auto;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+                <!--<th>Username</th>-->
+                
+                        <th class="col-md-5"><strong>Tên Plugin</strong></th>
+                        <th class="col-md-5"><strong>Tổng trị giá</strong></th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of this.prdProductViewModel.ListPlugins">
+                <!--<td> {{msg.User}}</td>-->
+                <!--<td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" (change)="onlistPluginChecked(item,$event)"> </td>-->
+                        <td>{{item.PluginName}}</td>
+                        <td>{{item.Price + item.PriceVat - item.DiscountAmt | number}}</td>
+                        <td><button class="btn btn-danger btn-sm" (click) = "deletePlugin(item)">Xóa</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <p><strong>Chọn Template:</strong></p>
+            <button class="btn btn-primary btn-sm" (click)="viewTemplateModal()">
+            <i class="fa fa-plus" aria-hidden="true"></i>Thêm Template</button>
+            <div class="row" style="height:150px; overflow:auto;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+                <!--<th>Username</th>-->
+                        
+                        <th class="col-md-5"><strong>Tên Template</strong></th>
+                        <th class="col-md-5"><strong>Tổng trị giá</strong></th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of this.prdProductViewModel.ListTemplates">
+                <!--<td> {{msg.User}}</td>-->
+                        <!--<td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" (change)="onlistTemplateChecked(item,$event)"> </td>-->
+                        <td>{{item.TemplateName}}</td>
+                        <td>{{item.Price + item.PriceVat - item.DiscountAmt | number}}</td>
+                        <td><button class="btn btn-danger btn-sm" (click) = "deleteTemplate(item)">Xóa</button></td>
+                        </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+    </div>
+
+
+<div class="row">
+  <h3 class="col-md-12 col-xs-12">Giá sản phẩm</h3>
+  <div class="col-md-3 col-xs-6">
+    <div class="form-group">
+      <label>Giá</label>
+      <input [(ngModel)]="prdProductViewModel.PrdProduct.Price" #ProductPrice="ngModel"  placeholder="Giá sản phẩm" class="form-control" name="productPrice" type="number" (change)="changePrice()" min="0" maxlength="18"/>
+      <label>{{prdProductViewModel.PrdProduct.Price | number}} VND</label>
+    </div>
+  </div>
+  <div class="col-md-3 col-xs-6">
+    <div class="form-group">
+      <label>Vat</label>
+      <input [(ngModel)]="prdProductViewModel.PrdProduct.Vat" #ProductVat="ngModel"  placeholder="Thuế VAT" class="form-control" name="productVat" type="number" (change)="changePrice()" min="0" maxlength="18"/>
+      <label>{{prdProductViewModel.PrdProduct.Vat | number}} %</label>
+    </div>
+  </div>
+  <div class="col-md-3 col-xs-6">
+    <div class="form-group">
+      <label>Giá VAT</label>
+      <input [(ngModel)]="prdProductViewModel.PrdProduct.PriceVat" #ProductPriceVat="ngModel"  placeholder="Giá VAT" class="form-control" name="productPriceVat" type="number" min="0" maxlength="18"/>
+      <label>{{prdProductViewModel.PrdProduct.PriceVat | number}} VND</label>
+    </div>
+  </div>
+  <div class="col-md-3 col-xs-6">
+    <div class="form-group">
+      <label>Số tiền giảm giá</label>
+      <input [(ngModel)]="prdProductViewModel.PrdProduct.DiscountAmt" #ProductDiscountAmt="ngModel"  placeholder="Số tiền giảm giá" class="form-control" name="productDiscountAmt" type="number" min="0" maxlength="18"/>
+      <label>{{prdProductViewModel.PrdProduct.DiscountAmt | number}} VND</label>
+    </div>
+  </div>
+  
+</div>
+<div class="row">
+  <p style="color:#E53935;"><strong>Tổng cộng: {{ (prdProductViewModel.PrdProduct.Price + prdProductViewModel.PrdProduct.PriceVat - prdProductViewModel.PrdProduct.DiscountAmt) | number}} VND</strong></p>
+</div>
+<div class="row">
+    <div class="col-md-1 offset-md-9">
+        <button class="btn btn-success btn-md" [disabled]="!viewProductForm.form.valid" (click)="addProduct()"><i class="fa fa-floppy-o"></i> Lưu</button>
+    </div>
+</div>
+</div>
+
+
+  
+<div bsModal #templateModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideTemplateModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 >Thêm Plugin</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-9">
+
+            <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+                <label>Tìm kiếm:</label>
+                <div class="input-group">
+                
+                <input type="text" placeholder="Tìm kiếm theo tên template, đường dẫn, mã template, mô tả" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+                <span class="input-group-btn">
+                    <div class="input-group-btn" ><button  (click)="searchTemplateModal(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+                </span>
+                </div>
+            </form>
+    </div>
+    </div>
+
+
+
+    <div class="row" style="height:400px; overflow:auto;">
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-1"><strong>Mã Template</strong></th>
+                <th class="col-md-2"><strong>Tên Template</strong></th>
+                <!-- <th class="col-md-2"><strong>Đường dẫn</strong></th> -->
+                <!--<th class="col-md-2">Mô tả</th>-->
+                <th class="col-md-1"><strong>Giá gốc</strong></th>
+                
+                <th class="col-md-1"><strong>VAT (%)</strong></th>
+                <th class="col-md-1"><strong>Giảm giá</strong></th>
+                <th class="col-md-1"><strong>Số tiền VAT</strong></th>
+                <th class="col-md-1"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Templates">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.TemplateCode}}</td>
+                <td>{{item.TemplateName}}</td>
+                <!-- <td>{{item.TemplateLocation}}</td> -->
+                <!--<td>{{item.PluginDescription}}</td>-->
+                <td>{{item.Price | number}}</td>
+                
+                <td>{{item.Vat | number}}</td>
+                <td>{{item.DiscountAmt | number}}</td>
+                <td>{{item.PriceVat | number}}</td>
+                <td>
+                    <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" (change)="onListTemplateModalChecked(item,$event)">
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+    </div>
+            <button class="btn btn-success btn-sm" (click)="addTemplate()">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #sourceModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideSourceModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 >Thêm Source</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-9">
+        <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+           
+                <label>Tìm kiếm:</label>
+               <div class="input-group">                  
+                    <input type="text" placeholder="Tìm kiếm theo tên source, đường dẫn, mã source, mô tả" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+                    <span class="input-group-btn">
+                        <button  (click)="searchSourceModal(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button>
+                    </span>
+               </div>
+                
+            
+    </form>
+    </div>
+    </div>
+    <div class="row" style="height:400px; overflow:auto;">
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-1"><strong>Mã Source</strong></th>
+                <th class="col-md-2"><strong>Tên Source</strong></th>
+                <th class="col-md-2"><strong>Đường dẫn</strong></th>
+                <!--<th class="col-md-2">Mô tả</th>-->
+                <th class="col-md-1"><strong>Giá gốc</strong></th>
+                <th class="col-md-1"><strong>VAT (%)</strong></th>
+                <th class="col-md-1"><strong>Giảm giá</strong></th>
+                <th class="col-md-1"><strong>Số tiền VAT</strong></th>
+                <th class="col-md-1"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Sources">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.SourceCode}}</td>
+                <td>{{item.SourceName}}</td>
+                <td>{{item.SourceLocation}}</td>
+                <!--<td>{{item.PluginDescription}}</td>-->
+                <td>{{item.Price | number}}</td>
+                
+                <td>{{item.Vat | number}}</td>
+                <td>{{item.DiscountAmt | number}}</td>
+                <td>{{item.PriceVat | number}}</td>
+                <td>
+                    <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" (change)="onListSourceModalChecked(item,$event)">
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+    </div>
+            <button class="btn btn-success btn-sm" (click)="addSource()">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div bsModal #pluginModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hidePluginModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4 >Thêm Plugin</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-9">
+
+            <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+                <label>Tìm kiếm:</label>
+                <div class="input-group">
+                
+                <input type="text" placeholder="Tìm kiếm theo tên plugin, đường dẫn, mã plugin, mô tả" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+                <span class="input-group-btn">
+                    <div class="input-group-btn" ><button  (click)="searchPluginModal(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+                </span>
+                </div>
+            </form>
+    </div>
+    </div>
+
+
+
+    <div class="row" style="height:400px; overflow:auto;">
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-1"><strong>Mã Plugin</strong></th>
+                <th class="col-md-2"><strong>Tên Plugin</strong></th>
+                <th class="col-md-2"><strong>Đường dẫn</strong></th>
+                <!--<th class="col-md-2">Mô tả</th>-->
+                <th class="col-md-1"><strong>Giá gốc</strong></th>
+                
+                <th class="col-md-1"><strong>VAT (%)</strong></th>
+                <th class="col-md-1"><strong>Giảm giá</strong></th>
+                <th class="col-md-1"><strong>Số tiền VAT</strong></th>
+                <th class="col-md-1"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Plugins">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.PluginCode}}</td>
+                <td>{{item.PluginName}}</td>
+                <td>{{item.PluginLocation}}</td>
+                <!--<td>{{item.PluginDescription}}</td>-->
+                <td>{{item.Price | number}}</td>
+                
+                <td>{{item.Vat | number}}</td>
+                <td>{{item.DiscountAmt | number}}</td>
+                <td>{{item.PriceVat | number}}</td>
+                <td>
+                    <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.RecordStatus == 1? true:false" (change)="onListPluginModalChecked(item,$event)">
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+    </div>
+            <button class="btn btn-success btn-sm" (click)="addPlugin()">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <style>
+    .domaintable{
+        overflow-y: auto !important;
+        height:100px !important;
+    }
+</style> -->

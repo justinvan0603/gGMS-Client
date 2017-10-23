@@ -1,0 +1,156 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="messages">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Thông báo
+   <span class="badge">{{totalItems}}</span>
+</button>-->
+<hr/>
+<!--<button class="btn btn-primary" (click)="viewAddSchedule()">
+    <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>Add</button>-->
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="form-inline" method="post" #domainSearchForm="ngForm"  novalidate >
+            <div class="input-group">
+                <label >Tìm kiếm:</label>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <div class="input-group-btn" ><button style="margin-top:15%;"   (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-3">Tiêu đề</th>
+                <th class="col-md-2">Nội dung</th>
+                <th class="col-md-1">Trạng thái</th>
+                <th class="col-md-1">Ngày nhận</th>
+                <th class="col-md-3">Domain</th>
+                <th class="col-md-2">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let msg of messages">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{msg.Title}}</td>
+                <td>{{msg.Content}}</td>
+                <td>{{msg.Status == 0 ? 'Đã xem': 'Chưa xem'}}</td>
+                <td>{{msg.CreateDt | date:"dd/MM/yy HH:mm:ss"}}</td>
+                <td>{{msg.Domain}}</td>
+                <td><a class="btn btn-success" (click)="viewMessageDetails(msg)"><i class="fa fa-pencil-square-o" ></i>Chi tiết</a></td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedMessageLoaded">
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4> Chi tiết thông báo: {{selectedMessage.Title}}</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #viewMessageForm="ngForm" *ngIf="selectedMessageLoaded" novalidate>
+
+                <!--Validate-->
+                <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.CONTENTS">
+                            <li>{{formErrors.CONTENTS}}</li>
+                            
+
+                        </ul>
+                    </div>
+
+             <!--End Validate-->
+             <div class="form-group">
+    <label for="email">Ngày tạo:</label>
+    <input type="text" class="form-control" readonly value="{{selectedMessage.CreateDt}}"/>
+  </div>
+<div class="form-group">
+    <label for="email">Nội dung:</label>
+    <textarea  type="text" class="form-control" readonly>{{selectedMessage.Content}}</textarea>
+  </div>
+  <form class="form form-inline ">
+  
+      <div class="checkbox">
+            <label class="inputdefault">Không nhận loại thông báo lỗi này trong tương lai <input type="checkbox" class="form-check-input form-control form-control-md"  [checked]="this.isDisableNotify" (change)="this.isDisableNotify = $event.target.checked"></label>
+        </div>
+  
+  </form>
+  <button class="btn btn-primary" data-toggle="collapse" data-target="#feedback">Nhập phản hồi</button>
+
+                    <div class="collapse form-group " id="feedback">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label class="control-label"><i class="fa fa-user" aria-hidden="true"></i>Nhập phản hồi:</label>
+                                <input type="text" class="form-control" [(ngModel)]="this.feature.Contents" name="CONTENTS" #CONTENTSInput="ngModel"  pattern=".{1,500}" required/>
+                            </div>
+                            
+                        </div>
+                        <div class="row" *ngIf="selectedMessage.Type === 'CIP'">
+                                <div class="col-md-10">
+                                        
+                                        <label class="control-label">Có phải IP mới của bạn là:</label>
+                                        <form class="form-inline row">
+                                            <div class="form-group col-md-8">
+                                                <input type="text" class="form-control" value={{this.Ip}} name="IP" readonly/>
+                                                
+                                            </div>
+                                            <div class="checkbox">
+                                                <label class="inputdefault"><input type="checkbox" class="form-check-input form-control input-md"  [checked]="this.isConfirm" (change)="this.isConfirm = $event.target.checked"/>Đúng</label>
+                                            </div>
+                                        </form>
+                                </div>
+                                
+                            </div>
+                            <div class="row" *ngIf="selectedMessage.Type === 'RDOM'">
+                                <div class="col-md-10">
+                                    <label class="control-label">Có phải tên miền mới của bạn là:</label>
+                                    <form class="form-inline row">
+                                         <div class="form-group col-md-8">
+                                        <input type="text" class="form-control" value={{this.Domain}} name="DOMAIN" readonly/>
+                                        </div>
+                                        <div class="checkbox">
+                                        <label class="inputdefault"><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isConfirm" (change)="this.isConfirm = $event.target.checked">Đúng</label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1">
+                        <re-captcha site_key="6LdYTxsUAAAAAG0lAiX0hqgQu6hVhs6PS6gadku1"></re-captcha>
+                        <button  (click)="addFeature(feature)" [disabled]="!viewMessageForm.form.valid" type="button" class="btn btn-primary">Lưu</button>
+                            </div>
+                            </div>
+                    </div>
+                    <hr/>
+
+                    <!--<button [class.hidden]="!addingUser" [disabled]="!viewMessageForm.form.valid" (click)="addSchedule(selectedSchedules)" type="button" class="btn btn-danger">Add</button>-->
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

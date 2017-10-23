@@ -1,0 +1,135 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="users">
+  <i class="fa fa-calendar" aria-hidden="true"></i> Nhóm người dùng
+  <span class="badge">{{this.totalItems}}</span>
+</button>-->
+<hr/>
+
+<button class="btn btn-primary btn-sm" (click)="viewAddApplicationGroup()">
+  <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>Tạo nhóm người dùng
+</button>
+<div [@flyInOut]="'in'">
+  <div class="col-md-9">
+    <form class="span12" method="post" #userGroupSearchForm="ngForm"  novalidate >
+      <label >Tìm kiếm:</label>
+            <div class="input-group">
+                
+                <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn" ><button (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+            </div>
+    </form>
+    </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+
+      <th>Tên nhóm</th>
+      <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let usr of users">
+      <td class="text-xs-left"> {{usr.Name}}</td>
+      <td>
+        <!-- <a class="btn btn-warning" (click)="viewApplicationGroupDetails(usr)"><i class="fa fa-pencil-square-o"></i>
+        Cập nhật</a>
+        <a class="btn btn-danger" (click)="deleteApplicationGroup(usr)"><i class="fa fa-trash-o"></i> Xóa</a> -->
+        <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewApplicationGroupDetails(usr)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+       <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteApplicationGroup(usr)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+      </td>
+
+
+    </tr>
+    </tbody>
+  </table>
+
+  <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage"
+              class="pagination-sm"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+              (pageChanged)="pageChanged($event)"></pagination>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg" *ngIf="selectedApplicationGroupLoaded">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 *ngIf="!this.addingApplicationGroup"> Cập nhật tài khoản: {{selectedApplicationGroup.Name}}</h4>
+        <h4 *ngIf="this.addingApplicationGroup"> Thêm tài khoản</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" #viewUserForm="ngForm" *ngIf="selectedApplicationGroupLoaded" novalidate>
+
+          <!--Validate-->
+          <div class="alert alert-danger" [hidden]="this.isValid">
+                            <ul *ngIf="formErrors.NAME">
+                            
+                            <li>{{formErrors.NAME}}</li>
+                        </ul>
+            <!--<ul *ngIf="NAMEInput.dirty && !NAMEInput.valid ">
+              <li *ngIf="NAMEInput.errors.required">Tên nhóm không được bỏ trống</li>
+              <li *ngIf="NAMEInput.errors.pattern">Tên nhóm phải từ 1-200 ký tự</li>
+            </ul>-->
+
+          </div>
+          <!--End Validate-->
+          <div class="form-group">
+            <label><span style="color:red">*</span> Tên nhóm:</label>
+            <input type="text" class="form-control" [(ngModel)]="this.selectedApplicationGroup.Name" name="NAME"
+                   #NAMEInput="ngModel" required pattern=".{1,200}"/>
+          </div>
+
+
+
+          <div class="form-group" style="height:325px; overflow-y:auto;">
+                  <label><span style="color:red">*</span> Quyền hệ thống:</label>
+
+            
+              <div *ngFor="let item of this.selectedApplicationGroup.Roles,let i = index" >
+                
+                  <div class="row" *ngIf = "i% 4 == 0">
+
+                    <div class="col-sm-3 text-center" *ngFor = "let x of this.selectedApplicationGroup.Roles, let j = index ">
+                      <label *ngIf="j+i< i+4" >
+                      <input type="checkbox" class="form-control" name="role"
+                     [checked]="this.selectedApplicationGroup.Roles[i+j]?.Check" (change)="this.selectedApplicationGroup.Roles[i+j].Check = $event.target.checked">
+                    {{this.selectedApplicationGroup.Roles[i+j]?.Name }} 
+                      </label>
+                    
+                    </div>
+
+                  </div>
+
+                
+
+              </div>
+                <!--<div class="form-group" *ngFor="let item of this.selectedApplicationGroup.Roles">
+
+            <div class="col-sm-2">
+
+              <input type="checkbox" class="form-control" name="item"
+                     [checked]="item.Check" (change)="item.Check = $event.target.checked"> {{item.Name}}
+
+            </div>
+          </div>-->
+
+                        
+          </div>
+          <hr/>
+          <div class="form-group">
+          <button  [class.hidden]="this.addingApplicationGroup" [disabled]="!viewUserForm.form.valid"
+                  (click)="editApplicationGroup(this.selectedApplicationGroup)" type="button" class="btn btn-warning">
+            Cập nhật
+          </button>
+          <button  [class.hidden]="!this.addingApplicationGroup" [disabled]="!viewUserForm.form.valid"
+                  (click)="addNewApplicationGroup(this.selectedApplicationGroup)" type="button" class="btn btn-success">
+            Thêm
+          </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

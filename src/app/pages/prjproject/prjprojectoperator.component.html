@@ -1,0 +1,207 @@
+﻿<button class="btn btn-outline-primary" [routerLink]="['/pages/prjproject/prjprojectlist']">
+  <span class="fa fa-backward" aria-hidden="true"></span> Quay về
+</button>
+<br />
+<br />
+<h4 *ngIf="this.type=='e'">Cập nhật dự án</h4>
+<h4 *ngIf="this.type=='a'">Thêm dự án</h4>
+<h4 *ngIf="this.type=='v'">Chi tiết dự án</h4>
+<div class="container-fluid">
+  <form method="post" #viewProjectForm="ngForm" enctype="multipart/form-data" novalidate>
+    <fieldset>
+      <!--Validate-->
+      <div class="alert alert-danger" [hidden]="isValid">
+        <ul *ngIf="formErrors.PROJECT_CODE">
+          <li>{{formErrors.PROJECT_CODE}}</li>
+        </ul>
+        <ul *ngIf="formErrors.PROJECT_NAME">
+          <li>{{formErrors.PROJECT_NAME}}</li>
+        </ul>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Begin Column 1-->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Mã dự án:</label>
+              <input [class.hidden]="(type=='v')" type="text" class="form-control" placeholder="Mã dự án" [(ngModel)]="this.project.PROJECT_CODE" name="PROJECT_CODE" #PROJECT_CODEInput="ngModel" required pattern=".{1,15}" maxlength="15" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.PROJECT_CODE}}</label>
+            </div>
+
+            <div class="form-group">
+              <label>Tên dự án</label>
+              <input [class.hidden]="(type=='v')" type="text" class="form-control" placeholder="Tên dự án" [(ngModel)]="this.project.PROJECT_NAME" name="PROJECT_NAME" #PROJECT_NAMEInput="ngModel" required pattern=".{10,256}" maxlength="256" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.PROJECT_CODE}}</label>
+            </div>
+
+            <div class="form-group">
+              <label>Hợp đồng</label>
+              <select class="form-control" [class.hidden]="(type=='v')" [(ngModel)]="this.project.CONTRACT_ID" #CONTRACT_IDSelect="ngModel" name="CONTRACT_ID" (change)="selectedContractOnChange(this.project.CONTRACT_ID)">
+                <option value=""></option>
+                <option *ngFor="let item of contracts" [ngValue]="item.ContractId">
+                  {{item.ContractCode}}
+                </option>
+              </select>
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.CONTRACT_CODE}} - {{this.project.CONTRACT_NAME}}</label>
+            </div>
+            <div class="form-group" style="height: 280px; overflow: auto">
+              <label>Các nhân viên đang tham gia: </label>
+              <table class="table table-responsive">
+                <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Mã</th>
+                  <th>Tên</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of this.selectedEmployees">
+                  <td>{{this.selectedEmployees.indexOf(item) + 1}}</td>
+                  <td>{{item.UserName}}</td>
+                  <td>{{item.FULLNAME}}</td>
+                  <td [class.hidden]="(type=='v')" *ngIf="!(type=='v')">
+                    <span class="btn btn-danger fa fa-remove" (click)="deleteSelectedEmployee(item)" style="cursor: pointer"></span>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+              </table>
+            </div>
+            <div class="form-group">
+              <button [class.hidden]="(type=='v')" type="button" (click)="showChildModal()" class="btn btn-outline-info">
+                <span class="fa fa-search-plus">Thêm nhân viên</span>
+              </button>
+            </div>
+          </div>
+
+          <!--End column 1-->
+          <!--Begin Columln 2-->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Ngày bắt đầu:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local"  placeholder="Ngày bắt đầu dự án" class="form-control" [(ngModel)]="project.BEGIN_DATE" name="BEGIN_DATE" #BEGIN_DATEInput="ngModel" (change)="validDate()" required />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.BEGIN_DATE | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            <div class="form-group">
+              <label>Ngày kết thúc:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày kết thúc dự án" class="form-control" [(ngModel)]="this.project.END_DATE" name="END_DATE" #END_DATEInput="ngModel" required (change)="validDate()" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.END_DATE | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            <div class="form-group">
+              <label>Ngày dự kiến:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Ngày bắt đầu dự án" class="form-control" [(ngModel)]="project.ESTIMATE_DATE" name="BEGIN_DATE" #ESTIMATE_DATEInput="ngModel" (change)="validDate()" required />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.ESTIMATE_DATE | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            <div class="form-group">
+              <label>Ngày hoàn thành:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày kết thúc dự án" class="form-control" [(ngModel)]="this.project.COMPLETION_DATE" name="COMPLETION_DATE" #COMPLETION_DATEInput="ngModel" required (change)="validDate()" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.COMPLETION_DATE | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            <div class="form-group">
+              <label>Trạng thái</label>
+              <select class="form-control" [disabled]="(type=='v')" [(ngModel)]="this.project.STATE" #STATESelect="ngModel" name="STATE" >
+                <option *ngFor="let item of states" [ngValue]="item.Cdval">
+                  {{item.Content}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ghi chú:</label>
+              <textarea [class.hidden]="(type=='v')" rows="3" placeholder="Ghi chú" class="form-control" [(ngModel)]="this.project.NOTES" name="NOTES" #Notes="ngModel">
+              </textarea>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.NOTES}}</label>
+            </div>
+            <div class="form-group">
+              <label>MySQL User Name:</label>
+              <input [class.hidden]="(type=='v')" rows="3" placeholder="MySql user name" class="form-control" [(ngModel)]="this.project.MYSQL_USERNAME" name="USERNAME" #MYSQL_USRNAME="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.MYSQL_USERNAME}}</label>
+            </div>
+            <div class="form-group">
+              <label>MySQL Password:</label>
+              <input [class.hidden]="(type=='v')" rows="3" placeholder="MySql password " class="form-control" [(ngModel)]="this.project.MYSQL_PASSWORD" name="PASSWORD" #MYSQL_PASSWORD="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.MYSQL_PASSWORD}}</label>
+            </div>
+            <div class="form-group">
+              <label>MySQL Database:</label>
+              <input [class.hidden]="(type=='v')" rows="3" placeholder="MySql database" class="form-control" [(ngModel)]="this.project.DATABASE_NAME" name="DATABASE_NAME" #DATABASE_NAME="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.DATABASE_NAME}}</label>
+            </div>
+            <div class="form-group">
+              <label>Domain:</label>
+              <input [class.hidden]="(type=='v')" rows="3" placeholder="Domain " class="form-control" [(ngModel)]="this.project.DOMAIN" name="DOMAIN" #DOMAIN="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.DOMAIN}}</label>
+            </div>
+            <div class="form-group">
+              <label>Subdomain:</label>
+              <input [class.hidden]="(type=='v')" rows="3" placeholder="Subdomain" class="form-control" [(ngModel)]="this.project.SUB_DOMAIN" name="DATABASE" #SUB_DOMAIN="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.SUB_DOMAIN}}</label>
+            </div>
+          </div>
+          <!--End column 2-->
+        </div>
+      </div>
+      <!--End Validate-->
+      <hr />
+      <button [class.hidden]="!(this.type=='e')" [disabled]="!viewProjectForm.form.valid" (click)="editProject()" type="button" class="btn btn-warning">Cập nhật</button>
+      <button [class.hidden]="!(this.type=='a')" [disabled]="!viewProjectForm.form.valid" (click)="addNewProject()" type="button" class="btn btn-success">Thêm</button>
+
+    </fieldset>
+  </form>
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background-color:whitesmoke;">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4>Tìm kiếm nhân viên</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <form class="form-inline" method="post" #ProductSearchForm="ngForm" novalidate>
+              <fieldset>
+                <label class="form-control-label mr-sm-2" for="inputSearch">Tìm kiếm:</label>
+                <input #searchInput placeholder="Tìm kiếm nhân viên" class="form-control mb-2 mr-sm-2 mb-sm-0" />
+                <button (click)="searchEmployee(searchInput.value)" type="button" class="btn btn-success"><span class="fa fa-search"></span> Tìm</button>
+              </fieldset>
+            </form>
+          </div>
+
+          <div class="row" style="height: 400px;overflow: auto">
+            <table class="table table-responsive">
+              <thead class="navbar navbar-static-top">
+              <tr>
+                <th>STT</th>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of employees">
+                <td>{{this.employees.indexOf(item) + 1}}</td>
+                <td>{{item.UserName}}</td>
+                <td>{{item.FULLNAME}}</td>
+                <td>
+                  <span [class.hidden]="!(item.RECORD_STATUS == '0')" class="glyphicon glyphicon-unchecked" (click)="selectEmployee(item)" style="cursor: pointer">Chọn</span>
+                  <span [class.hidden]="!(item.RECORD_STATUS == '1')" class="glyphicon glyphicon-check" (click)="deleteSelectedEmployee(item)" style="cursor: pointer">Đã chọn</span>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot></tfoot>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

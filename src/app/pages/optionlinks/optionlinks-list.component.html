@@ -1,0 +1,88 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="users">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Links  
+   <span class="badge">{{this.totalItems}}</span>
+</button>-->
+    <h4>DANH SÁCH LINK</h4>
+<hr/>
+
+    <!--<button class="btn btn-primary btn-sm" (click)="viewAddDomain()">
+    <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>Tạo domain</button>-->
+<div [@flyInOut]="'in'" >
+    <div class="row">
+    <div class= col-md-10>
+    <form  class="form-inline" method="post" #addOptionForm="ngForm"  novalidate>
+        <div class="alert alert-danger" [hidden]="isValid">
+            <ul *ngIf = "formErrors.Link">
+                <li>{{formErrors.Link}}</li>
+            </ul>
+                        <!--<ul *ngIf="LinkInput.dirty && !LinkInput.valid">
+                            <li *ngIf="LinkInput.errors.required">Link không được bỏ trống</li>
+                            <li *ngIf="LinkInput.errors.pattern">Link phải từ 1-500 ký tự</li>
+                            </ul>-->
+    
+                    </div>
+                    <div class="input-group">
+                <label >Link:</label>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="addOptionLink.Link" name="Link" #LinkInput="ngModel" required pattern=".{1,500}"/>
+            <div class="input-group-btn" ><button style="margin-top:11%;"  [disabled]="!addOptionForm.form.valid" (click)="addNewOption(addOptionLink)" type="button" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Thêm</button></div>
+            </div>
+        
+
+
+    </form>
+    </div>
+    </div>
+    
+    <div class="row" style="height:370px; overflow:auto;">
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+                <th class="col-md-4">Link</th>
+
+                <th class="col-md-1">Lỗi timeout</th>
+                <th class="col-md-1">Bị đổi IP</th>
+                <th class="col-md-1">Redirect link</th>
+                <th class="col-md-1">Lỗi mã nguồn</th>
+                <th class="col-md-1">Đổi nội dung</th>
+                <!--<th>Mô tả</th>
+                <th>Username</th>
+                <th>Họ tên</th>       -->
+                <th class="col-md-2">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isTOUTAll" (change)="checkToutAllEvent($event)"/></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isCIPAll" (change)="checkCipAllEvent($event)"/></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isRDOMAll" (change)="checkRdomAllEvent($event)"/></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isECODE" (change)="checkEcodeAllEvent($event)"/></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="this.isCCON" (change)="checkCconAllEvent($event)"/></td>
+                <td></td>
+            </tr>
+            <tr *ngFor="let item of optionlinks">
+                <td class="text-xs-left" > {{item.Link}}</td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="!(item.UserDomainNotify.IS_TOUT === '0' ? false:true)" (change)="item.UserDomainNotify.IS_TOUT = $event.target.checked"></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="!(item.UserDomainNotify.IS_CIP === '0' ? false:true)" (change)="item.UserDomainNotify.IS_CIP = $event.target.checked"></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="!(item.UserDomainNotify.IS_RDOM === '0' ? false:true)" (change)="item.UserDomainNotify.IS_RDOM = $event.target.checked"></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="!(item.UserDomainNotify.IS_ECODE === '0' ? false:true)" (change)="item.UserDomainNotify.IS_ECODE = $event.target.checked"></td>
+                <td><input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="!(item.UserDomainNotify.IS_CCON === '0' ? false:true)" (change)="item.UserDomainNotify.IS_CCON = $event.target.checked"></td>
+                <td>
+                <a class="btn btn-danger" (click)="deletOptionLink(item)"><i class="fa fa fa-trash-o" ></i>Xóa</a>
+                </td>
+        
+
+            </tr>
+        </tbody>
+    </table>
+   </div>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+        <div class="row">
+            <div class="col-md-12 col-md-offset-9">
+                <button (click)="saveOption()" type="button" class="btn btn-info btn-md">Lưu</button>
+            </div>
+        </div>
+</div>
+
