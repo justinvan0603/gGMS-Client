@@ -1,2 +1,2 @@
-# gGMS-Client
-Angular 2 giao dien he thong quan tri gGMS
+# ToolCheckingAngular2
+Trang admin Tool-checking

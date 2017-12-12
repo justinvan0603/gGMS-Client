@@ -1,6 +1,6 @@
 ﻿<hr />
 <div>
-  
+
   <button class="btn btn-outline-primary" [routerLink]="['/pages/prjproject/prjprojectoperator/a']">
     <span class="fa fa-plus" aria-hidden="true"></span> Thêm dự án
   </button>
@@ -60,6 +60,8 @@
       <td>
         <a data-toggle="tooltip" data-placement="top" title="Clone source" style="cursor: pointer" (click)="generateSource(item)"><i class="fa fa-file-code-o fa-lg" style="color:aqua"></i></a>
         <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor: pointer;" [routerLink]="['/pages/prjproject/prjprojectoperator/v/', item.PROJECT_ID]"><i class="fa fa-eye fa-lg" style="color: #1E88E5"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Tình hình hoạt động" style="cursor: pointer;" [routerLink]="['/pages/prjproject/prjproject-overviewecommerces/o/', item.PROJECT_ID]"><i class="fa fa-usd fa-lg" style="color: #1E88E5"></i></a>
+
         <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor: pointer;" [routerLink]="['/pages/prjproject/prjprojectoperator/e/', item.PROJECT_ID]"><i class="fa fa-pencil-square-o fa-lg" style="color: #EF6C00"></i></a>
         <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor: pointer;" (click)="deleteProject(item)"><i class="fa fa-trash-o fa-lg" style="color: #D50000"></i></a>
       </td>

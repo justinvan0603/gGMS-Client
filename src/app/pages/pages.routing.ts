@@ -28,6 +28,10 @@ export const routes: Routes = [
        //{ path: 'fileupload', loadChildren: 'app/pages/uploadfile/uploadfile.module#UploadFileModule' },
       { path: 'userprofile', loadChildren: 'app/pages/userprofile/userprofile.module#UserProfileModule' },
       { path: 'users', loadChildren: 'app/pages/users/users.module#UserModule' },
+
+//     { path: 'chart', loadChildren: 'app/pages/charts/charts.module#Charts' },
+
+
       { path: 'messages', loadChildren: 'app/pages/messages/messages.module#MessageModule' },
       //{ path: 'messageconfigurations', loadChildren: 'app/pages/messageconfigurations/messageconfigurations.module#MessageConfigurationModule' },
      // { path: 'domains', loadChildren: 'app/pages/domains/domains.module#DomainModule' },
@@ -38,10 +42,10 @@ export const routes: Routes = [
        //{ path: 'schedules', loadChildren: 'app/pages/schedules/schedules.module#SchedulesModule' },
        { path: 'menurole', loadChildren: 'app/pages/menu/menu.module#MenuModule' },
        { path: 'customers', loadChildren: 'app/pages/customers/customers.module#CustomerModule' },
-       
-  
+
+      { path: 'charts', loadChildren: 'app/pages/charts/charts.module#ChartsModule' },
      { path: 'contract', loadChildren: 'app/pages/contract/contract.module#ContractModule' },
-    
+
     { path: 'prdproduct',children:[
       { path: '', loadChildren: 'app/pages/prdtemplates/prdtemplates.module#PrdTemplateModule' },
       { path: '', loadChildren: 'app/pages/source/source.module#SourceModule' },
@@ -53,7 +57,7 @@ export const routes: Routes = [
      ]
      },
     { path: 'prjproject', loadChildren: 'app/pages/prjproject/prjproject.module#PrjProjectModule' },
-    
+
 
     ]
   }

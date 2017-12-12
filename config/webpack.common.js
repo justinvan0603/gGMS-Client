@@ -1,4 +1,4 @@
-﻿const webpack = require('webpack');
+const webpack = require('webpack');
 const helpers = require('./helpers');
 
 /*
@@ -25,7 +25,7 @@ const ngcWebpack = require('ngc-webpack');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'Site quản trị hệ thống gGMS',
+  title: 'Site quản trị Tool checking',
   description: 'Free Angular 2 and Bootstrap 4 Admin Template',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
@@ -151,13 +151,7 @@ module.exports = function (options) {
          */
         {
           test: /\.css$/,
-          use: ['raw-loader','style-loader', 'css-loader','to-string-loader'],
-           //loaders:"style-loader!css-loader",
-          
-          //loaders: ['to-string-loader', 'css-loader'],
-          //styles:[],
-          //loaders: ['style-loader', 'css-loader'],
-          include: [/node_modules/]
+          use: ['raw-loader']
         },
 
         {
@@ -355,9 +349,7 @@ module.exports = function (options) {
         Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
         Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
         Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
-        Util: "exports-loader?Util!bootstrap/js/dist/util",
-        
-        
+        Util: "exports-loader?Util!bootstrap/js/dist/util"
       }),
 
       // Fix Angular 2

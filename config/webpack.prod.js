@@ -18,7 +18,7 @@ const OptimizeJsPlugin = require('optimize-js-plugin');
  * Webpack Constants
  */
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
-const HOST =  process.env.HOST || 'localhost';
+const HOST = '10.80.23.155';//process.env.HOST || 'localhost';
 const PORT = 9099;//process.env.PORT || 8080;
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,

@@ -18,7 +18,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts', '.js', '.json','.css']
+    extensions: ['.ts', '.js', '.json']
   },
 
   module: {
@@ -26,11 +26,6 @@ module.exports = {
       {
         test: /\.ts$/,
         loaders: 'awesome-typescript-loader'
-      },
-       {
-        est: /\.css$/,
-        use: ['raw-loader','style-loader', 'css-loader','to-string-loader'],
-        include: [/node_modules/]
       }
     ]
   },

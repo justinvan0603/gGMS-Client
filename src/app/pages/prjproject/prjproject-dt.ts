@@ -7,6 +7,7 @@
   EMPLOYEE_CODE: string;
   EMPLOYEE_NAME: string;
   STATE: string;
+
   NOTES: string;
   RECORD_STATUS: string;
   AUTH_STATUS: string;
