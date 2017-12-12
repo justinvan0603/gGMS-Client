@@ -57,6 +57,15 @@ export const routes: Routes = [
      ]
      },
     { path: 'prjproject', loadChildren: 'app/pages/prjproject/prjproject.module#PrjProjectModule' },
+    {path: 'webcontrol', children:[
+      { path: '', loadChildren: 'app/pages/webcontrol/webcontrol.module#WebControlModule' },
+      { path: '', loadChildren: 'app/pages/prjinstalledplugin/prjinstalledplugin.module#PrjInstalledPluginModule' }
+    ]},
+    {path: 'chatbot', children:[
+      { path: '', loadChildren: 'app/pages/botcustomerinfo/botcustomerinfo.module#BotCustomerInfoModule' },
+      { path: '', loadChildren: 'app/pages/botscenario/botscenario.module#BotScenarioModule' },
+      { path: '', loadChildren: 'app/pages/botdomain/botdomain.module#BotDomainModule' }
+    ]}
 
 
     ]

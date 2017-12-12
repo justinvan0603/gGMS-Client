@@ -92,7 +92,7 @@ export class DataService {
     contractVM.Contract = contract;
     contractVM.ContractDetails = contractDt;
 
-    console.log(contractVM);
+    //console.log(contractVM);
 
     return this.http.put(this._baseUrl + '/' + contract.ContractId, JSON.stringify(contractVM), {
         headers: headers

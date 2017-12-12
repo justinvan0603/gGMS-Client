@@ -24,6 +24,7 @@
   DATABASE_NAME: string;
   DOMAIN: string;
   SUB_DOMAIN: string;
+  //OPERATION_STATE: string;
   constructor() {
     this.PROJECT_ID = '';
     this.PROJECT_CODE = '';
@@ -50,5 +51,6 @@
     this.DATABASE_NAME = '';
     this.DOMAIN = '';
     this.SUB_DOMAIN = '';
+    //this.OPERATION_STATE = '';
   }
 }

@@ -400,20 +400,78 @@ export const PAGES_MENU = [
         ],
 
       },
+      
+      {
+        path: 'webcontrol',
+        data: {
+          menu: {
+            title: 'Điều khiển Tenant',
+            icon: 'fa fa-wrench',
+            selected: false,
+            expanded: false,
+            order: 500,
+          }
+        },
+        children: [
+          {
+            path: 'webcontrollist',
+            data: {
+              menu: {
+                title: 'Điều khiển Website',
+              }
+            }
+          },
+          {
+            path: 'installedpluginlist',
+            data: {
+              menu: {
+                title: 'Phân phối Plugin',
+              }
+            }
+          }
+        ]
+      },
+      {
+        path: 'chatbot',
+        data: {
+          menu: {
+            title: 'Quản lý Chatbot',
+            icon: 'fa fa-commenting-o',
+            selected: false,
+            expanded: false,
+            order: 500,
+          }
+        },
+        children: [
+          {
+            path: 'botcustomerinfolist',
+            data: {
+              menu: {
+                title: 'Khách hàng tiềm năng',
+              }
+            }
+          },
+          {
+            path: 'botscenariolist',
+            data: {
+              menu: {
+                title: 'Kịch bản',
+              }
+            }
+          },
+          {
+            path: 'botdomainlist',
+            data: {
+              menu: {
+                title: 'Đăng ký Chatbot',
+              }
+            }
+          }
+        ]
+      }
 
 
-    //   {
-    //     path: '',
-    //     data: {
-    //       menu: {
-    //         title: 'External Link',
-    //         url: 'http://akveo.com',
-    //         icon: 'ion-android-exit',
-    //         order: 800,
-    //         target: '_blank'
-    //       }
-    //     }
-    //  }
+
 
 
     ]

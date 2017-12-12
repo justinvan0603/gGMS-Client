@@ -1,0 +1,154 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="messages">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Thông báo
+   <span class="badge">{{totalItems}}</span>
+</button>-->
+<hr/>
+
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+            <div class="input-group">
+                
+                <input type="text" placeholder="Tìm kiếm theo tên, số điện thoại, email" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn" ><button   (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                
+                <th class="col-md-3"><strong>Tên khách hàng</strong></th>
+                <th class="col-md-3"><strong>Domain</strong></th>
+                <th class="col-md-1"><strong>Số điện thoại</strong></th>
+                <th class="col-md-2"><strong>Email</strong></th>
+                <th class="col-md-3"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of BotCustomerInfos">
+        
+               
+                <td>{{item.NAME}}</td>
+                <td>{{item.DOMAIN_NAME}}</td>
+                <td>{{item.PHONE}}</td>
+                <td>{{item.EMAIL}}</td>
+
+                <td>
+                    <!-- <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor:pointer;" (click)="viewDetail(item)"><i class="fa fa-eye fa-lg" style="color:#1E88E5"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewPluginDetails(item)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a> -->
+
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteBotCustomerInfo(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedPluginLoaded">
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4> Thông tin khách hàng</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #viewPluginForm="ngForm" *ngIf="selectedPluginLoaded" novalidate>
+                    <fieldset>
+                        <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.PluginCode">
+                            
+                            <li>{{formErrors.PluginCode}}</li>
+                        </ul>
+                        <ul *ngIf="formErrors.PluginName">
+                            <li>{{formErrors.PluginName}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.PluginLocation">
+                            <li>{{formErrors.PluginLocation}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.PluginDescription">
+                            <li>{{formErrors.PluginDescription}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Vat">
+                            <li>{{formErrors.Vat}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.DiscountAmt">
+                            <li>{{formErrors.DiscountAmt}}</li>
+                            </ul>
+                            <ul *ngIf="formErrors.Price">
+                            <li>{{formErrors.Price}}</li>
+                            </ul>
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+          <div class="form-group">
+                <label >Mã Plugin:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedPlugin.PluginCode" name="PluginCode" #PluginCodeInput="ngModel" required pattern=".{1,15}"/>
+            </div>
+            <div class="form-group">
+                <label >Tên Plugin:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedPlugin.PluginName" name="PluginName" #PluginNameInput="ngModel" required pattern=".{1,200}"/>
+            </div>
+            <div class="form-group">
+                <label >Vị trí lưu:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedPlugin.PluginLocation" name="PluginLocation" #PluginLocationInput="ngModel" required pattern=".{1,1000}"/>
+            </div>
+            <div class="form-group">
+                <label >Mô tả:</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedPlugin.PluginDescription" name="PluginDescription" #PluginDescriptionInput="ngModel" pattern=".{1,1000}"/>
+            </div>
+             <div class="form-group">
+                <label >Giá gốc:</label>
+                <!-- <input type="text" [readonly]="this.isViewDetail" (change)="priceChange()" class="form-control"  [(ngModel)]="selectedPlugin.Price" name="Price" #PriceInput="ngModel" pattern="^(?:[1-9]\d*|0)$" maxlength="18"  required /> -->
+                <input type="number" [readonly]="this.isViewDetail" (change)="priceChange()" class="form-control"  [(ngModel)]="selectedPlugin.Price" name="Price" #PriceInput="ngModel" pattern="[0-9]{1,9}" maxlength="9"  required />
+            </div>
+            <div class="form-group">
+                <label >Thuế VAT (%):</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control" (change)="vatChange()"  [(ngModel)]="selectedPlugin.Vat" name="Vat" #VatInput="ngModel" required pattern="^[+]?[0-9]{1,9}(?:\.[0-9]{1,2})?$" min="0" />
+            </div>
+            <div class="form-group">
+                <label >Số tiền giảm giá:</label>
+                <input type="number" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedPlugin.DiscountAmt" name="DiscountAmt" #DiscountAmtInput="ngModel" pattern="[0-9]{1,9}" maxlength="9"  required />
+            </div>
+           
+            
+            <div class="form-group">
+                <label >Số tiền VAT:</label>
+                <input type="number" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedPlugin.PriceVat" name="PriceVat" #PriceVatInput="ngModel" pattern="[0-9]{1,9}" maxlength="9"  required/>
+            </div>
+                    <hr/>          
+                    <button [class.hidden]="this.addingPlugin || this.isViewDetail" [disabled]="!viewPluginForm.form.valid " (click)="editPlugin(selectedPlugin)" type="button" class="btn btn-warning">Cập nhật</button>
+                    <button [class.hidden]="!this.addingPlugin || this.isViewDetail" [disabled]="!viewPluginForm.form.valid " (click)="addNewPlugin(selectedPlugin)" type="button" class="btn btn-success">Thêm</button>
+</fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

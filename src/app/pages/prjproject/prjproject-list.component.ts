@@ -199,14 +199,16 @@ export class PrjProjectComponent {
 
 
   generateSource(prjproject: PrjProject) {
+    //console.log(prjproject);
     this.loadingBarService.start();
     if (prjproject.CONTRACT_ID != '') {
       this.contractService.getContractDtByContractId(prjproject.CONTRACT_ID).subscribe(res => {
         var dts: ContractDetail[] = res;
+        //console.log(res);
           //console.log(dts);
         for (let dt of dts) {
           this.productService.getProductFullDetail(dt.ProductId).subscribe((res: PrdProductViewModel) => {
-             // console.log(res);
+            //  console.log(res);
             var product: PrdProduct = res.PrdProduct;
             if (product == null) {
               this.loadingBarService.complete();
@@ -254,6 +256,7 @@ export class PrjProjectComponent {
                 this.notificationService.printErrorMessage("Không tìm thấy destination");
               } else {
                 modelGen.Destination = res[0].Content + modelGen.Destination;
+                console.log(modelGen);
                 this.dataService.generateSource(modelGen).subscribe(res => {
                  // console.log(res);
                //  console.log(res.isSucceeded);

@@ -1,58 +1,56 @@
-﻿import {Injectable} from '@angular/core';
-import {Headers, Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+﻿import { Injectable } from '@angular/core';
+import { Http, Response, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import {ConfigService} from "../shared/utils/config.service";
-import {ItemsService} from "../shared/utils/items.service";
-import {PaginatedResult, Pagination} from "../shared/interfaces";
-import {PrjProject} from "./prjproject";
-import {PrjProjectDt} from "./prjproject-dt";
-import {PrjProjectViewModel} from "./prjprojectviewmodel";
+import { ConfigService } from "../shared/utils/config.service";
+import { ItemsService } from "../shared/utils/items.service";
+import { PaginatedResult, Pagination } from "../shared/interfaces";
+import { PrjProject } from "./prjproject";
+import { PrjProjectDt } from "./prjproject-dt";
+import { PrjProjectViewModel } from "./prjprojectviewmodel";
 import {LookUpProject} from './lookupproject'
-import {MyModelGen} from "./mymodelgen";
-import {PrjProjectOvervieweCommerces} from "./prjproject-overviewecommerces";
-import {PrjProductListPerformanceEcommerce} from "./prjproject-productlist-performancecommerces";
+import { MyModelGen } from "./mymodelgen";
+
 
 
 @Injectable()
 export class DataService {
 
-  _url103: string = 'http://103.7.41.51:60289/api/GenerateSources';
+  _url103: string = 'http://localhost:60288/api/GenerateSources';
 
   _baseUrl: string = '';
-  _baseUrlPrjProjectOvervieweCommerces: string = '';
-  _baseUrlPrjProjectProductListPerformanceEcommerce: string = '';
-  public _token: string;
-
+  public _token:string;
   constructor(private http: Http,
-              private itemsService: ItemsService,
-              private configService: ConfigService) {
-    this._baseUrl = configService.getApiURI() + 'project';
-    this._baseUrlPrjProjectOvervieweCommerces = configService.getApiURI() + 'OverviewEcommerceApi';
-    this._baseUrlPrjProjectProductListPerformanceEcommerce = configService.getApiURI() + 'ProductListPerformanceEcommerceApi';
+    private itemsService: ItemsService,
+    private configService: ConfigService
+  ) {
+    this._baseUrl = configService.getApiURI()+ 'project';
     this._token = '';
   }
 
-  setToken(token: string): void {
-
-    this._token = token;
+  setToken(token:string):void{
+        
+    this._token=token;
 
   }
 
-  getProjects(page?: number, itemsPerPage?: number, searchString?: string): Observable<PaginatedResult<PrjProject[]>> {
+  getProjects(page?: number, itemsPerPage?: number, searchString?:string): Observable<PaginatedResult<PrjProject[]>> {
     var peginatedResult: PaginatedResult<PrjProject[]> = new PaginatedResult<PrjProject[]>();
+    //console.log('t-' +this._token);
     let headers = new Headers();
     if (page != null && itemsPerPage != null) {
       headers.append('Pagination', page + ',' + itemsPerPage);
     }
     headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', 'Bearer ' + this._token);
+    headers.append('Authorization','Bearer '+this._token);
 
-    return this.http.get(this._baseUrl + '?searchString=' + searchString, {
-      headers: headers
-    })
+    return this.http.get(this._baseUrl +'?searchString=' +searchString, {
+        headers: headers
+      })
       .map((res: Response) => {
+        // console.log(res.headers.keys());
         peginatedResult.result = res.json();
 
         if (res.headers.get("Pagination") != null) {
@@ -71,32 +69,32 @@ export class DataService {
     var peginatedResult: PaginatedResult<PrjProject[]> = new PaginatedResult<PrjProject[]>();
     //console.log('t-' +this._token);
     let headers = new Headers();
-    var page: number = 1;
-    var itemsPerPage: number = 10;
+    var page : number = 1;
+    var itemsPerPage : number = 10;
     if (page != null && itemsPerPage != null) {
       headers.append('Pagination', page + ',' + itemsPerPage);
     }
     headers.append('Content-Type', 'application/json');
 
-    return this.http.post(this._baseUrl + '/lookup', JSON.stringify(data), {headers: headers})
-      .map((res: Response) => {
-        peginatedResult.result = res.json();
-        if (res.headers.get("Pagination") != null) {
-          //var pagination = JSON.parse(res.headers.get("Pagination"));
-          var paginationHeader: Pagination = this.itemsService.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
-          // console.log(paginationHeader);
-          peginatedResult.pagination = paginationHeader;
-        }
-        return peginatedResult;
-      })
+  return this.http.post(this._baseUrl + '/lookup', JSON.stringify(data), { headers: headers })
+    .map((res: Response)  => {
+      peginatedResult.result = res.json();
+      if (res.headers.get("Pagination") != null) {
+        //var pagination = JSON.parse(res.headers.get("Pagination"));
+        var paginationHeader: Pagination = this.itemsService.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
+        // console.log(paginationHeader);
+        peginatedResult.pagination = paginationHeader;
+      }
+      return peginatedResult;
+    })
       .catch(this.handleError);
   }
 
   getByCode(code: string): Observable<PrjProject> {
     return this.http.get(this._baseUrl + '/getbycode?code=' + code)
-      .map((res: Response) => {
-        return res.json();
-      }).catch(this.handleError);
+      .map((res:Response) => {return res.json();
+      }).
+      catch(this.handleError);
   }
 
   getById(id: string): Observable<PrjProject> {
@@ -108,19 +106,20 @@ export class DataService {
   }
 
   getProjectDtByProjectId(id: string): Observable<PrjProjectDt[]> {
-    return this.http.get(this._baseUrl + '/GetProjectDtByProjectId?id=' + id).map((res: Response) => {
+    return this.http.get(this._baseUrl + '/GetProjectDtByProjectId?id=' + id).map((res:
+      Response) => {
       return res.json();
     }).catch(this.handleError);
   }
 
 
-  updateProject(prjproject: PrjProject, prjProjectDt: PrjProjectDt[]): Observable<any> {
+  updateProject(prjproject: PrjProject, prjProjectDt : PrjProjectDt[]): Observable<any> {
     // console.log(domain);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     var body = {
       'contr': prjproject,
-      'contr_dt': prjProjectDt
+      'contr_dt' : prjProjectDt
     };
     var prjVM = new PrjProjectViewModel();
     prjVM.Project = prjproject;
@@ -129,8 +128,8 @@ export class DataService {
     console.log(prjVM);
 
     return this.http.put(this._baseUrl + '/' + prjproject.PROJECT_ID, JSON.stringify(prjVM), {
-      headers: headers
-    })
+        headers: headers
+      })
       .map(res => <any>(<Response>res).json())
       .catch(this.handleError);
 
@@ -141,7 +140,7 @@ export class DataService {
     //  .catch(this.handleError);
   }
 
-  createProject(prjproject: PrjProject, prjProjectDt: PrjProjectDt[]): Observable<any> {
+  createProject(prjproject: PrjProject, prjProjectDt :  PrjProjectDt[]): Observable<any> {
     // console.log(user);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -158,7 +157,8 @@ export class DataService {
     prjVM.ProjectDT = prjProjectDt;
 
 
-    return this.http.post(this._baseUrl, JSON.stringify(prjVM), {headers: headers})
+
+    return this.http.post(this._baseUrl, JSON.stringify(prjVM), { headers: headers })
       .map(res => <any>(<Response>res).json())
       .catch(this.handleError);
 
@@ -168,9 +168,12 @@ export class DataService {
   }
 
   generateSource(myModelGen: MyModelGen): Observable<any> {
+    console.log(myModelGen);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(this._url103, JSON.stringify(myModelGen), {headers: headers})
+    var timeout = 1800000;
+    return this.http.post(this._url103, JSON.stringify(myModelGen), { headers: headers })
+      
       .map(res => <any>(<Response>res).json())
       .catch(this.handleError);
   }
@@ -180,57 +183,6 @@ export class DataService {
       .map(res => <any>(<Response>res).json())
       .catch(this.handleError);
   }
-
-  getPrjProjectOvervieweCommercesById(id: string, page?: number, itemsPerPage?: number, searchString?: string): Observable<PaginatedResult<PrjProjectOvervieweCommerces[]>> {
-    var peginatedResult: PaginatedResult<PrjProjectOvervieweCommerces[]> = new PaginatedResult<PrjProjectOvervieweCommerces[]>();
-
-    let headers = new Headers();
-    if (page != null && itemsPerPage != null) {
-      headers.append('Pagination', page + ',' + itemsPerPage);
-    }
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', 'Bearer ' + this._token);
-
-    return this.http.get(this._baseUrlPrjProjectOvervieweCommerces + '/GetOverviewEcommerceByProjectId/' + id + '?searchString=' + searchString, {
-      headers: headers
-    })
-      .map((res: Response) => {
-        peginatedResult.result = res.json();
-
-        if (res.headers.get("Pagination") != null) {
-          var paginationHeader: Pagination = this.itemsService.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
-          peginatedResult.pagination = paginationHeader;
-        }
-        return peginatedResult;
-      })
-      .catch(this.handleError);
-  }
-
-  getPrjProjectProductListPerformanceEcommerceById(id: string, page?: number, itemsPerPage?: number, searchString?: string): Observable<PaginatedResult<PrjProductListPerformanceEcommerce[]>> {
-    var peginatedResult: PaginatedResult<PrjProductListPerformanceEcommerce[]> = new PaginatedResult<PrjProductListPerformanceEcommerce[]>();
-
-    let headers = new Headers();
-    if (page != null && itemsPerPage != null) {
-      headers.append('Pagination', page + ',' + itemsPerPage);
-    }
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', 'Bearer ' + this._token);
-
-    return this.http.get(this._baseUrlPrjProjectProductListPerformanceEcommerce + '/GetProductListPerformanceEcommerceByProjectId/' + id + '?searchString=' + searchString, {
-      headers: headers
-    })
-      .map((res: Response) => {
-        peginatedResult.result = res.json();
-
-        if (res.headers.get("Pagination") != null) {
-          var paginationHeader: Pagination = this.itemsService.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
-          peginatedResult.pagination = paginationHeader;
-        }
-        return peginatedResult;
-      })
-      .catch(this.handleError);
-  }
-
 
   private handleError(error: any) {
     var applicationError = error.headers.get('Application-Error');
@@ -249,6 +201,4 @@ export class DataService {
 
     return Observable.throw(applicationError || modelStateErrors || 'Server error');
   }
-
-
 }

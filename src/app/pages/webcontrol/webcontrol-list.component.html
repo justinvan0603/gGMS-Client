@@ -1,0 +1,66 @@
+
+<hr/>
+
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+            <div class="input-group">
+                
+                <input type="text" placeholder="Tìm kiếm theo mã dự án, tên dự án, subdomain, domain" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn" ><button   (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-2"><strong>Subdomain</strong></th>
+                <th class="col-md-3"><strong>Domain</strong></th>
+                <th class="col-md-3"><strong>Tên dự án</strong></th>
+                <!-- <th class="col-md-1"><strong>Subdomain</strong></th>
+                <th class="col-md-1"><strong>Domain</strong></th> -->
+                <th class="col-md-2"><strong>Trạng thái</strong></th>
+                <th class="col-md-2"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of WebControls">
+                <td>{{item.PrjProjectMaster.SUB_DOMAIN}}</td>
+                <td>{{item.PrjProjectMaster.DOMAIN}}</td>
+                <td>{{item.PrjProjectMaster.PROJECT_NAME}}</td>
+                <td>{{item.CwWebControl.OPERATION_NAME}}</td>
+
+                <td>
+                    <a [class.hidden]="!(item.CwWebControl.OPERATION_STATE == '1')"  data-toggle="tooltip" data-placement="top" title="Dừng Website" style="cursor:pointer;" (click)="updateState(item)"><i class="fa fa-pause-circle-o" style="color:#D50000"></i></a>
+                    <a [class.hidden]="!(item.CwWebControl.OPERATION_STATE == '0')"  data-toggle="tooltip" data-placement="top" title="Khởi động Website" style="cursor:pointer;" (click)="updateState(item)"><i class="fa fa-play-circle-o" style="color:#1E88E5"></i></a>
+                    <!-- <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewPluginDetails(item)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a> -->
+
+
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,104 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="messages">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Thông báo
+   <span class="badge">{{totalItems}}</span>
+</button>-->
+<hr/>
+<button class="btn btn-primary btn-sm" (click)="viewAddDomain()">
+    <i class="fa fa-plus" aria-hidden="true"></i>Thêm Domain</button>
+<div [@flyInOut]="'in'">
+    <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+            <div class="input-group">
+                
+                <input type="text" placeholder="Tìm kiếm theo domain" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <span class="input-group-btn" ><button   (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+            </div>
+    </form>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-9"><strong>Domain đăng ký</strong></th>
+                <th class="col-md-3"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of listBotDomains">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.DOMAIN}}</td>
+
+                <td>
+                    <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor:pointer;" (click)="viewDetail(item)"><i class="fa fa-eye fa-lg" style="color:#1E88E5"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewBotDomainDetails(item)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteBotDomain(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" *ngIf="selectedBotDomainLoaded">
+        <div class="modal-content" style="background-color:whitesmoke;">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                <h4> Thông tin domain</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" #viewDomainForm="ngForm" *ngIf="selectedBotDomainLoaded" novalidate>
+                    <fieldset>
+                        <div class="alert alert-danger" [hidden]="isValid">
+                        <ul *ngIf="formErrors.DOMAIN">
+                            
+                            <li>{{formErrors.DOMAIN}}</li>
+                        </ul>
+
+                            <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                            <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                        
+                            </ul>-->
+                    </div>
+          <div class="form-group">
+                <label >Domain:</label>
+                <input  (change)="ondomainInputChange()"  type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedDomain.DOMAIN" name="DomainName" #DomainNameInput="ngModel" required pattern=".{1,100}"/>
+            </div>
+            <div class="form-group">
+                <label >Code nhúng:</label>
+                <pre>{{this.stringCode}}</pre>
+                <!-- <pre>&lt;iframe&gt;123123&lt;/iframe&gt;</pre> -->
+            </div>
+                    <hr/>          
+                    <button [class.hidden]="this.addingBotDomain || this.isViewDetail" [disabled]="!viewDomainForm.form.valid " (click)="editBotDomain(selectedDomain)" type="button" class="btn btn-warning">Cập nhật</button>
+                    <button [class.hidden]="!this.addingBotDomain || this.isViewDetail" [disabled]="!viewDomainForm.form.valid " (click)="addNewBotDomain(selectedDomain)" type="button" class="btn btn-success">Thêm</button>
+</fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

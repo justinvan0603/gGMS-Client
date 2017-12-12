@@ -1,0 +1,66 @@
+<h4>DANH SÁCH PHÂN PHỐI PLUGIN</h4>
+<hr/>
+<div [@flyInOut]="'in'">
+    <!--<div class="row">
+    <div class="col-md-9">
+    <form class="form-inline" method="post" #domainSearchForm="ngForm"  novalidate >
+            <div class="input-group">
+                <label >Tìm kiếm:</label>
+                <input type="text" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+            <div class="input-group-btn" ><button style="margin-top:15%;"   (click)="search(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+            </div>
+    </form>
+    </div>
+    </div>-->
+    <div class="row">
+    <div class="col-md-9">
+        <form class="form-inline" method="post" #domainSearchForm="ngForm"  novalidate >
+                <div class="input-group" >
+                    <select ngControl="PluginInput" name="Plugin" [(ngModel)]="selectedPlugin" #PluginInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" style="min-width:1000px; max-width:1000px;" >
+                        <option *ngFor="let plugin of listPlugins" [ngValue]="plugin" >{{plugin.PluginName}}</option>
+                    </select>
+                <div class="input-group-btn" ><button    (click)="loadInstalledPlugin()" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></div>
+                </div>
+        </form>
+    </div>
+</div>
+    <div class="row" style="height:370px; overflow:auto;">
+    <table class="table table-hover domaintable"  >
+        <thead>
+            <tr>
+                <th class="col-md-9">Tên Website</th>
+                <!-- <th class="col-md-3">Mô tả</th> -->
+    
+                <th class="col-md-3 text-center">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody >
+            <tr>
+                <td></td>
+                
+                <td class="text-xs-left"><input type="checkbox" data-toggle="tooltip" data-placement="top" title="Chọn tất cả" class="form-check-input form-control form-control-sm"  [checked]="this.isCheckAll" (change)="checkAllEvent($event)"/> </td>
+            </tr>
+            <tr *ngFor="let item of ListInstalledPlugin">
+                <td class="text-xs-left"> {{item.PrjInstalledPlugin.PROJECT_NAME}}</td>
+                
+               <td class="text-xs-left">
+                   <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.IsChecked" (change)="item.IsChecked = $event.target.checked"> 
+                </td>
+        
+
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="row">
+        <div class="col-md-1 offset-md-8">
+            <button class="btn btn-md btn-primary" (click) = "insertInstalledPlugin()"><span class="fa fa-floppy-o"></span> Lưu</button>
+        </div>
+    </div>
+</div>
+<style>
+    .domaintable{
+        overflow-y: auto !important;
+        height:100px !important;
+    }
+</style>

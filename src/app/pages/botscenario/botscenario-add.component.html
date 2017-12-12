@@ -1,0 +1,104 @@
+<!-- <button class="btn btn-outline-primary" [routerLink]="['/pages/prdproduct/productslist']">
+    <span class="fa fa-backward" aria-hidden="true"></span> Quay về
+  </button>
+   -->
+  <h4>NHẬP THÔNG TIN KỊCH BẢN</h4>
+  <hr/>
+  <div [@flyInOut]="'in'">
+      
+      <form method="post" #viewScenarioForm="ngForm"  novalidate>
+                          <div class="alert alert-danger" [hidden]="isValid">
+                          <!-- <ul *ngIf="formErrors.ProductCode">
+                              
+                              <li>{{formErrors.ProductCode}}</li>
+                          </ul> -->
+                          <ul *ngIf="formErrors.NAME">
+                              <li>{{formErrors.NAME}}</li>
+                              </ul>
+
+                              <!--<ul *ngIf="ManageUserInput.dirty && !ManageUserInput.valid && this.selectedManageUser">
+                              <li *ngIf="DescriptionInput.errors.required">User quản lý không được bỏ trống</li>
+                          
+                              </ul>-->
+                      </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="form-group">
+                  <label >Tên kịch bản:</label>
+                  <input type="text" class="form-control"  [(ngModel)]="this.botScenarioViewModel.BotScenario.NAME" name="ScenarioName" #ScenarioNameInput="ngModel" required pattern=".{1,100}"/>
+              </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                <label >Domain:</label>
+                <select ngControl="QuestionTypeInput" name="Domain" [(ngModel)]="selectedBotDomain" #DomainInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" required>
+                    <option *ngFor="let domain of listBotDomain" [ngValue]="domain" [selected]="this.selectedBotDomain.DOMAIN_ID === domain.DOMAIN_ID">{{domain.DOMAIN}}</option>
+                </select>
+            </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                <label >Loại câu hỏi:</label>
+                <select ngControl="QuestionTypeInput" name="QuestionType" [(ngModel)]="selectedBotQuestionType" #QuestionTypeInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" style="margin-top:25px;" required>
+                    <option *ngFor="let type of botQuestionType" [ngValue]="type" [selected]="this.selectedBotQuestionType.QUESTIONTYPE_ID === type.QUESTIONTYPE_ID">{{type.QUESTION_TYPE}}</option>
+                </select>
+            </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label >Câu hỏi:</label>
+                    <textarea type="text" class="form-control"  [(ngModel)]="currentQuestion.CONTENT" name="Question" #QuestionInput="ngModel" pattern=".{1,256}"></textarea>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label >Câu trả lời:</label>
+                    <textarea type="text" class="form-control"  [(ngModel)]="currentAnswer.CONTENT" name="Answer" #AnswerInput="ngModel" pattern=".{1,256}"></textarea>
+                  </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <button class="btn btn-primary" (click)="addQuestion()" style="margin-top:50px;" ><i class="fa fa-plus" ></i>Thêm</button>
+                  </div>
+            </div>
+          </div>
+      </form>
+      <hr/>
+      <h4>CHI TIẾT KỊCH BẢN</h4>
+
+      <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-5"><strong>Câu hỏi</strong></th>
+                <th class="col-md-5"><strong>Câu trả lời</strong></th>
+                
+                <th class="col-md-2"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of ListQuestionAnswerMapper">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.BotQuestion.CONTENT}}</td>
+                <td>{{item.BotAnswer.CONTENT}}</td>             
+                <td>
+
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteQuestionAnswer(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-group text-right">
+        <button class="btn btn-success btn-md" (click)="addScenario()" style="margin-top:50px;" [disabled]="!viewScenarioForm.form.valid" ><i class="fa fa-floppy-o" ></i>Lưu kịch bản</button>
+      </div>
+    </div>
+  
+  
+  

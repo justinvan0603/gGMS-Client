@@ -1,0 +1,72 @@
+<!--<button class="btn btn-primary" type="button" *ngIf="messages">
+   <i class="fa fa-calendar" aria-hidden="true"></i> Thông báo
+   <span class="badge">{{totalItems}}</span>
+</button>-->
+<hr/>
+
+<div [@flyInOut]="'in'">
+                    
+    <div class="col-md-9">
+         <button class="btn btn-primary" [routerLink]="['/pages/chatbot/botscenarioadd']" ><i class="fa fa-plus" ></i>Thêm kịch bản</button>
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+        <label >Tìm kiếm:</label>
+      <div class="input-group">
+        <input type="text" placeholder="Tìm kiếm theo tên kịch bản,domain" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+        <span class="input-group-btn" ><button (click)="searchitem(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+      </div>
+ 
+
+    </form>
+    </div>
+
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+
+                <!--<th>Username</th>-->
+                <th class="col-md-4"><strong>Tên kịch bản</strong></th>
+                <th class="col-md-2"><strong>Trạng thái</strong></th>
+                <th class="col-md-3"><strong>Domain</strong></th>
+                <th class="col-md-3"><strong>Thao tác</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of BotScenarios">
+                <!--<td> {{msg.User}}</td>-->
+                <td>{{item.NAME}}</td>
+                <td *ngIf="item.IS_ACTIVE === true" style="color:#4CAF50; font-weight:bold;" >Đang sử dụng</td>
+                <td *ngIf="item.IS_ACTIVE === false" style="color:#9E9E9E;">Không sử dụng</td>
+                <td>{{item.DOMAIN_NAME}}</td>             
+                <td>
+                        <a data-toggle="tooltip" *ngIf="item.IS_ACTIVE === false"  data-placement="top" title="Kích hoạt kịch bản" style="cursor:pointer;" (click)="changeState(item.SCENARIO_ID)" ><i class="fa fa-check-square-o" style="color:aqua"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor:pointer;"  [routerLink]="['/pages/chatbot/botscenarioview',item.SCENARIO_ID]" ><i class="fa fa-eye fa-lg" style="color:#1E88E5"></i></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;"  [routerLink]="['/pages/chatbot/botscenarioedit',item.SCENARIO_ID]"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+                    <!-- <a data-toggle="tooltip" data-placement="top" title="Tạo Sourcecode" style="cursor:pointer;" (click)="generateSource(item)"><i class="fa fa-file-code-o fa-lg" style="color:#388E3C"></i></a> -->
+                <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="deleteBotScenario(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
+                </td>
+
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!--<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"-->
+        <!--previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>-->
+  <div class="text-center">
+    <div ng-hide="(!_pagesCount || _pagesCount < 2)" style="display:inline">
+      <ul class="pagination pagination-sm">
+        <li><a *ngIf="_page != 0_" (click)="search(0)"><<</a></li>
+        <li><a *ngIf="_page != 0" (click)="search(_page-1)"><</a></li>
+        <li *ngFor="let n of range()" [ngClass]="{active: n == _page}">
+          <a (click)="search(n)" *ngIf="n != _page">{{n+1}}</a>
+          <span *ngIf="n == _page">{{n+1}}</span>
+        </li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(pagePlus(1))">></a></li>
+        <li><a *ngIf="_page != (_pagesCount - 1)" (click)="search(_pagesCount - 1)">>></a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
