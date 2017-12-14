@@ -56,6 +56,7 @@ export class PrdProductService {
     }
     getAllProducts(searchstring?:string):Observable<PrdProduct[]>
     {
+
         let headers = new Headers();
      headers.append('Content-Type', 'application/json');
      headers.append('Authorization','Bearer '+this._token);
@@ -72,6 +73,7 @@ export class PrdProductService {
 
    getProducts(page: number, searchString? : string)
     {
+        console.log(this._baseUrl);
         //console.log("Bearer "+this._token);
      let headers = new Headers();
      headers.append('Content-Type', 'application/json');
