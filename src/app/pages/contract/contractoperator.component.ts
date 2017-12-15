@@ -293,7 +293,7 @@ export class ContractOperatorComponent implements AfterViewChecked {
   }
 
   LoadAddContract() {
-
+    this.LoadCustomers();
   }
 
   LoadEditContract(contractId: string) {
