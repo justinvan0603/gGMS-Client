@@ -322,6 +322,7 @@ updateState(webControl: WebControlViewModel) {
                             if(res.isSucceeded == true)
                             {
                                 this.notificationService.printSuccessMessage(res.Message);
+                                window.location.reload();
                             }
                             else
                             {
