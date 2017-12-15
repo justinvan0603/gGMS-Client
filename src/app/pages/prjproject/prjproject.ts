@@ -24,6 +24,7 @@
   DATABASE_NAME: string;
   DOMAIN: string;
   SUB_DOMAIN: string;
+  VIEW_ID :string;
   //OPERATION_STATE: string;
   constructor() {
     this.PROJECT_ID = '';
@@ -51,6 +52,7 @@
     this.DATABASE_NAME = '';
     this.DOMAIN = '';
     this.SUB_DOMAIN = '';
+    this.VIEW_ID = '';
     //this.OPERATION_STATE = '';
   }
 }

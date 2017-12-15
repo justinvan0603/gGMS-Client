@@ -275,6 +275,8 @@ export class PrjProjectComponent {
                   error => {
                     if (error.status == 401 || error.status == 302 || error.status == 0 || error.status == 404)
                       this.utilityService.navigateToSignIn();
+                      if(error.status === 502)
+                      this.notificationService.printSuccessMessage("Website đang được khởi tạo. Vui lòng chờ!");
                   });
               }
             },
