@@ -58,6 +58,8 @@ export class PrjProjectChartComponent implements AfterViewChecked {
   }
   changeLanguage():void{
 
+
+    $('#embed-api-auth-container > div:nth-child(2)').text('Bạn đang đăng nhập với tài khoản : ');
     $('#view-selector-container > div > div:nth-child(1) > label').text('Tài khoản');
 
     $('#view-selector-container > div > div:nth-child(2) > label').text('Tên website');
