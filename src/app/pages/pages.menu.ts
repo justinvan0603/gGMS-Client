@@ -393,14 +393,14 @@ export const PAGES_MENU = [
             path: 'prjprojectchart',
             data: {
               menu: {
-                title: 'Biểu đồ hoạt động website',
+                title: 'Biểu đồ hoạt động',
               }
             }
           }
         ],
 
       },
-      
+
       {
         path: 'webcontrol',
         data: {

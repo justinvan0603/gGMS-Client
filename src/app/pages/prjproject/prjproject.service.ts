@@ -13,6 +13,7 @@ import {LookUpProject} from './lookupproject'
 import {MyModelGen} from "./mymodelgen";
 import {PrjProjectOvervieweCommerces} from "./prjproject-overviewecommerces";
 import {PrjProductListPerformanceEcommerce} from "./prjproject-productlist-performancecommerces";
+import {PrjProductPageBehaviorCommerces} from "./prjproject-pagebehavior-ecommerces";
 
 
 @Injectable()
@@ -23,6 +24,7 @@ export class DataService {
   _baseUrl: string = '';
   _baseUrlPrjProjectOvervieweCommerces: string = '';
   _baseUrlPrjProjectProductListPerformanceEcommerce: string = '';
+  _baseUrlPrjProjectPageBehaviorEcommerces: string = '';
   public _token: string;
 
   constructor(private http: Http,
@@ -32,6 +34,7 @@ export class DataService {
     this._baseUrlPrjProjectOvervieweCommerces = configService.getApiURI() + 'OverviewEcommerceApi';
     this._baseUrlPrjProjectProductListPerformanceEcommerce = configService.getApiURI() + 'ProductListPerformanceEcommerceApi';
     this._token = '';
+    this._baseUrlPrjProjectPageBehaviorEcommerces = configService.getApiURI() + 'PageBehaviorEcommerceApi';
   }
 
   setToken(token: string): void {
@@ -192,6 +195,31 @@ export class DataService {
     headers.append('Authorization', 'Bearer ' + this._token);
 
     return this.http.get(this._baseUrlPrjProjectOvervieweCommerces + '/GetOverviewEcommerceByProjectId/' + id + '?searchString=' + searchString, {
+      headers: headers
+    })
+      .map((res: Response) => {
+        peginatedResult.result = res.json();
+
+        if (res.headers.get("Pagination") != null) {
+          var paginationHeader: Pagination = this.itemsService.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
+          peginatedResult.pagination = paginationHeader;
+        }
+        return peginatedResult;
+      })
+      .catch(this.handleError);
+  }
+
+  getPrjProjectPageBahaviorEommercesById(id: string, page?: number, itemsPerPage?: number, searchString?: string): Observable<PaginatedResult<PrjProductPageBehaviorCommerces[]>> {
+    var peginatedResult: PaginatedResult<PrjProductPageBehaviorCommerces[]> = new PaginatedResult<PrjProductPageBehaviorCommerces[]>();
+
+    let headers = new Headers();
+    if (page != null && itemsPerPage != null) {
+      headers.append('Pagination', page + ',' + itemsPerPage);
+    }
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + this._token);
+
+    return this.http.get(this._baseUrlPrjProjectPageBehaviorEcommerces + '/GetPageBehaviorEcommerceByProjectId/' + id + '?searchString=' + searchString, {
       headers: headers
     })
       .map((res: Response) => {

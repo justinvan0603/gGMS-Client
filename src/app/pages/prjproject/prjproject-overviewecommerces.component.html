@@ -41,7 +41,7 @@
       <td>{{item.PROJECT_ID}}</td>
       <td>{{item.DOMAIN}}</td>
       <td>{{item.PRODUCT_NAME}}</td>
-      <td>{{item.ITEM_REVENUE}}</td>
+      <td>{{item.ITEM_REVENUE| number}}</td>
       <td>{{item.PRODUCT_DETAIL_VIEWS}}</td>
       <td>{{item.QUANTITY_ADDED_TO_CART}}</td>
       <td>{{item.QUANTITY_CHECKED_OUT}}</td>
@@ -62,7 +62,61 @@
 
 </div>
 
+<br><br>
+<h4>Hiệu suất sản phẩm theo trang (PAGE PATH)</h4>
+<div [@flyInOut]="'in'">
+  <div class="col-md-9">
+    <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
+      <label >Tìm kiếm:</label>
+      <div class="input-group">
 
+        <input type="text" placeholder="Tìm kiếm theo tên trang" class="form-control input-sm"  [(ngModel)]="this.searchString" name="SearchString" #SEARCHInput="ngModel"  pattern=".{1,500}"/>
+        <span class="input-group-btn" ><button   (click)="searchitemPrjProjectPageBehaviorEcommercesEcommerce(this.searchString)" type="button" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Tìm</button></span>
+      </div>
+    </form>
+  </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+
+      <!--<th>Username</th>-->
+      <th><strong>Mã sản phẩm</strong></th>
+      <th><strong>Tên miền</strong></th>
+      <th><strong>Trang</strong></th>
+      <th><strong>Số lượt xem</strong></th>
+      <th><strong>Doanh thu</strong></th>
+      <th><strong>Thời gian xem trang(s)</strong></th>
+      <th><strong>Tỉ lệ thoát</strong></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of prjProductPageBehaviorCommerces">
+      <!--<td> {{msg.User}}</td>-->
+      <td>{{item.PROJECT_ID}}</td>
+      <td>{{item.DOMAIN}}</td>
+      <td>{{item.PAGE_PATH}}</td>
+      <td>{{item.PAGE_VIEW}}</td>
+      <td>{{item.PAGE_VALUE | number}}</td>
+      <td>{{item.TIME_ON_PAGE}}</td>
+      <td>{{item.EXIT_RATE}}</td>
+      <!--<td>-->
+      <!--<a data-toggle="tooltip" data-placement="top" title="Xem chi tiết" style="cursor:pointer;" (click)="viewDetail(item)"><i class="fa fa-eye fa-lg" style="color:#1E88E5" ></i></a>-->
+      <!--<a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewCategoryDetails(item)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>-->
+
+      <!--<a data-toggle="tooltip" data-placement="top" title="Xóa" (click)="deleteCategory(item)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>-->
+      <!--</td>-->
+
+
+    </tr>
+    </tbody>
+  </table>
+
+  <pagination [boundaryLinks]="true" [totalItems]="totalItemsPrjProjectPageBehaviorEcommercesEcommerce" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPageProductListPerformanceEcommerce" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChangedPrjProjectPageBehaviorEcommercesEcommerce($event)"></pagination>
+
+
+</div>
+
+<br><br>
 <h4>Hiệu suất danh sách sản phẩm</h4>
 <div [@flyInOut]="'in'">
   <div class="col-md-9">
@@ -95,7 +149,7 @@
       <td>{{item.PROJECT_ID}}</td>
       <td>{{item.DOMAIN}}</td>
       <td>{{item.PRODUCTLIST}}</td>
-      <td>{{item.ITEM_REVENUE}}</td>
+      <td>{{item.ITEM_REVENUE| number}}</td>
       <td>{{item.PRODUCT_DETAIL_VIEWS}}</td>
       <td>{{item.QUANTITY_ADDED_TO_CART}}</td>
       <td>{{item.QUANTITY_CHECKED_OUT}}</td>

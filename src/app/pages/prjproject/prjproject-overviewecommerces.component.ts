@@ -25,6 +25,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PrjProject} from "./prjproject";
 import {PrjProjectDt} from "./prjproject-dt";
 import {PrjProductListPerformanceEcommerce} from "./prjproject-productlist-performancecommerces";
+import {PrjProductPageBehaviorCommerces} from "./prjproject-pagebehavior-ecommerces";
 
 @Component({
   // moduleId: module.id,
@@ -74,6 +75,9 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
   public prjProjectOvervieweCommerces: PrjProjectOvervieweCommerces[];
   public prjProductListPerformanceEcommerce: PrjProductListPerformanceEcommerce[];
 
+  public prjProductPageBehaviorCommerces: PrjProductPageBehaviorCommerces[];
+
+
   selectedPrjProjectOvervieweCommerces: PrjProjectOvervieweCommerces;
   categoriesParentList: PrjProjectOvervieweCommerces[];
   apiHost: string;
@@ -84,7 +88,10 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
   public totalItems: number = 0;
   public currentPage: number = 1;
   public totalItemsProductListPerformanceEcommerce: number = 0;
+  public totalItemsPrjProjectPageBehaviorEcommercesEcommerce: number = 0;
   public currentPageProductListPerformanceEcommerce: number = 1;
+
+  public currentPagePrjProjectPageBehaviorEcommerces: number = 1;
   public searchString: string;
 
   public addPrjProjectOvervieweCommerces: PrjProjectOvervieweCommerces;
@@ -175,6 +182,7 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
         this.contractId = contractId;
         this.loadViewProjectOvervieweCommerces(contractId,'');
         this.loadViewProductListPerformanceEcommerce(contractId,'');
+        this.loadViewPageBehaviorOvervieweCommerces(contractId,'');
 
         break;
       default:
@@ -207,6 +215,12 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
     this.loadViewProductListPerformanceEcommerce(this.contractId,searchstring);
   }
 
+  searchitemPrjProjectPageBehaviorEcommercesEcommerce(searchstring: string) {
+    console.log(this.searchString);
+    if (!searchstring)
+      searchstring = '';
+    this.loadViewPageBehaviorOvervieweCommerces(this.contractId,searchstring);
+  }
 
 
   loadViewProjectOvervieweCommerces(projectId: string,searchString?: string) {
@@ -247,17 +261,24 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
 
   }
 
+  loadViewPageBehaviorOvervieweCommerces(projectId: string,searchString?: string) {
+    this.loadingBarService.start();
 
-  // public loadViewProjectOvervieweCommerces(projectId: string): void {
-  //   this.dataService.getPrjProjectOvervieweCommercesById(projectId).subscribe((res: PrjProjectOvervieweCommerces[]) => {
-  //       this.prjProjectOvervieweCommerces = res;
-  //     },
-  //     error => {
-  //       this.notificationService.printErrorMessage('Có lỗi khi tải. ' + error);
-  //     });
-  //   this.loadingBarService.complete();
-  // }
+    this.dataService.getPrjProjectPageBahaviorEommercesById(this.projectId,this.currentPagePrjProjectPageBehaviorEcommerces, this.itemsPerPage, searchString)
+      .subscribe((res: PaginatedResult<PrjProductPageBehaviorCommerces[]>) => {
 
+          //          console.log(res);
+          this.prjProductPageBehaviorCommerces = res.result;// schedules;
+
+          this.totalItemsPrjProjectPageBehaviorEcommercesEcommerce = res.pagination.TotalItems;
+          this.loadingBarService.complete();
+        },
+        error => {
+          this.loadingBarService.complete();
+          this.notificationService.printErrorMessage('Có lỗi khi tải. ' + error);
+        });
+
+  }
 
 
 
@@ -271,11 +292,21 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
   };
 
   pageChangedProductListPerformanceEcommerce(event: any): void {
-    this.currentPage = event.page;
+    this.currentPageProductListPerformanceEcommerce = event.page;
     if (!this.searchString)
       this.loadViewProductListPerformanceEcommerce('');
     else
       this.loadViewProductListPerformanceEcommerce(this.searchString);
+
+  };
+
+  pageChangedPrjProjectPageBehaviorEcommercesEcommerce(event: any): void {
+    console.log(event.page);
+    this.currentPagePrjProjectPageBehaviorEcommerces = event.page;
+    if (!this.searchString)
+      this.loadViewPageBehaviorOvervieweCommerces('');
+    else
+      this.loadViewPageBehaviorOvervieweCommerces(this.searchString);
 
   };
 

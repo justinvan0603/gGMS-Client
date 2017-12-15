@@ -65,7 +65,7 @@ export class PrjProjectChartComponent implements AfterViewChecked {
     $('body > app > main > pages > div > div > prjproject > prjprojectchart > div:nth-child(12) > h4').text('Tổng quan thương mại điện tử');
     $('#chart-container > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(2) > g > text').text('Doanh thu');
     $('#chart-container > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(3) > g > text').text('Số lượt xem chi tiết');
-    $('#chart-container > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(4) > g > text').text('Số lượng thêm vào giỏ hàng');
+    $('#chart-container > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(4) > g > text').text('SL thêm vào giỏ hàng');
     $('#chart-container > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(5) > g > text').text('Số lượng thanh toán');
 
 
@@ -73,6 +73,7 @@ export class PrjProjectChartComponent implements AfterViewChecked {
 
 
     $('#productListPerformance > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(2) > rect:nth-child(1)').text('Doanh thu');
+    $('#productListPerformance > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(2) > g > text').text('Doanh thu');
     $('#productListPerformance > div > div > div:nth-child(1) > div > svg > g:nth-child(3) > g:nth-child(3) > g > text').text('Số lượng thêm vào giỏ hàng');
     $('#productListPerformance > div > div > div:nth-child(1) > div > svg > g:nth-child(4) > g:nth-child(4) > g:nth-child(1) > text').text('Sản phẩm từ danh mục Category');
     $('#productListPerformance > div > div > div:nth-child(1) > div > svg > g:nth-child(4) > g:nth-child(4) > g:nth-child(2) > text').text('Sản phẩm liên quan');
