@@ -14,8 +14,8 @@ import { WebControlViewModel } from './webcontrolviewmodel';
 
 @Injectable()
 export class WebControlService {
-    _webControlURL = 'http://localhost:60288/api/TenantControl';
-    //_webControlURL = 'http://103.7.41.51:60289/api/TenantControl';
+    //_webControlURL = 'http://localhost:60288/api/TenantControl';
+    _webControlURL = 'http://103.7.41.51:60289/api/TenantControl';
     _baseUrl: string = '';
     public _token:string;
     public _pageSize: number;

@@ -20,7 +20,8 @@ import { PrjInstalledPluginViewModel } from './prjinstalledpluginviewmodel';
 
 @Injectable()
 export class PluginDistributionService {
-    _url103: string = 'http://localhost:60288/api/PluginDistribution';
+  //  _url103: string = 'http://localhost:60288/api/PluginDistribution';
+    _url103: string = 'http://103.7.41.51:60289/api/PluginDistribution';
     _baseUrl: string = '';
     public _token : string;
     constructor(private http: Http,

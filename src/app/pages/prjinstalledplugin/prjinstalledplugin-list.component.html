@@ -41,7 +41,7 @@
                 <td class="text-xs-left"><input type="checkbox" data-toggle="tooltip" data-placement="top" title="Chọn tất cả" class="form-check-input form-control form-control-sm"  [checked]="this.isCheckAll" (change)="checkAllEvent($event)"/> </td>
             </tr>
             <tr *ngFor="let item of ListInstalledPlugin">
-                <td class="text-xs-left"> {{item.PrjInstalledPlugin.PROJECT_NAME}}</td>
+                <td class="text-xs-left"> {{item.PrjProjectMaster.PROJECT_NAME}}</td>
                 
                <td class="text-xs-left">
                    <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.IsChecked" (change)="item.IsChecked = $event.target.checked"> 

@@ -256,7 +256,7 @@ export class PrjProjectComponent {
                 this.notificationService.printErrorMessage("Không tìm thấy destination");
               } else {
                 modelGen.Destination = res[0].Content + modelGen.Destination;
-                console.log(modelGen);
+                //console.log(modelGen);
                 this.dataService.generateSource(modelGen).subscribe(res => {
                  // console.log(res);
                //  console.log(res.isSucceeded);
