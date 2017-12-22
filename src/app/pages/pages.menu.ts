@@ -253,29 +253,29 @@ export const PAGES_MENU = [
         ]
       },
       
-      {
-        path: '',
-        data: {
-          menu: {
-            title: 'Menu',
-            icon: 'fa fa-bars',
-            selected: false,
-            expanded: false,
-            order: 650,
-          }
-        },
-        children: [
-          {
-            path: ['menurole'],
-            data: {
-              menu: {
-                title: 'Danh mục Menu'
-              }
-            }
-          }
+      // {
+      //   path: '',
+      //   data: {
+      //     menu: {
+      //       title: 'Menu',
+      //       icon: 'fa fa-bars',
+      //       selected: false,
+      //       expanded: false,
+      //       order: 650,
+      //     }
+      //   },
+      //   children: [
+      //     {
+      //       path: ['menurole'],
+      //       data: {
+      //         menu: {
+      //           title: 'Danh mục Menu'
+      //         }
+      //       }
+      //     }
 
-        ]
-      },
+      //   ]
+      // },
 
 
 
