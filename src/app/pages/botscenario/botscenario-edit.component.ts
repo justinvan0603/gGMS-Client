@@ -208,8 +208,11 @@ export class BotScenarioEditComponent implements AfterViewChecked    {
         
         if(this.currentQuestion.CONTENT === '' ||this.currentQuestion.CONTENT === undefined|| this.currentAnswer.CONTENT === '' || this.currentAnswer.CONTENT === undefined)
         {
-            this.notificationService.printErrorMessage("Nội dung câu hỏi và câu trả lời không được để trống!");
-            return;
+            if(this.selectedBotQuestionType.QUESTIONTYPE_ID !=1)
+            {
+                this.notificationService.printErrorMessage("Nội dung câu hỏi và câu trả lời không được để trống!");
+                return;
+            }
         }
         this.currentAnswer.LEVEL = 1;
         this.currentQuestion.QUESTION_TYPE = this.selectedBotQuestionType.QUESTIONTYPE_ID;
