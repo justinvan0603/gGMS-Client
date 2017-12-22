@@ -83,7 +83,7 @@ export class SourceListComponent implements AfterViewChecked {
   formErrors = {
     'SourceCode': '',
     'SourceName': '',
-    'SourceLocation': '',
+    // 'SourceLocation': '',
     };
   public isValid: boolean = true;
   validationMessages = {
@@ -96,10 +96,10 @@ export class SourceListComponent implements AfterViewChecked {
       'maxlength': 'Tên source phải từ 1-200 ký tự',
     }
     ,
-    'SourceLocation': {
-      'required': 'Đường dẫn không được để trống',
-      'maxlength': 'Đường dẫn phải dài 1-1000 ký tự',
-    }, 
+    // 'SourceLocation': {
+    //   'required': 'Đường dẫn không được để trống',
+    //   'maxlength': 'Đường dẫn phải dài 1-1000 ký tự',
+    // }, 
     'Price': {
         'required': 'Trường giá là bắt buộc',
         'maxlength': 'Giá không được nhập quá 18 số',

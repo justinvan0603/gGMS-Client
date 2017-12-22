@@ -299,7 +299,7 @@ ngAfterViewChecked(): void {
   
 
 updateState(webControl: WebControlViewModel) {
-        console.log(webControl);
+        //console.log(webControl);
         
         //console.log(this.selectedManageUser);
         var _user = this.membershipService.getLoggedInUser();
@@ -307,26 +307,28 @@ updateState(webControl: WebControlViewModel) {
         this.selectedWebControl.CwWebControl.EDITOR_ID = _user.Username;
         this.loadingBarService.start();
         this.onEdit = true;
-        if(this.selectedWebControl.CwWebControl.OPERATION_STATE == '0')
+        if(this.selectedWebControl.CwWebControl.OPERATION_STATE === '0')
             this.selectedWebControl.CwWebControl.OPERATION_STATE = '1';
         else
         this.selectedWebControl.CwWebControl.OPERATION_STATE = '0';
+        console.log(this.selectedWebControl.CwWebControl.OPERATION_STATE);
         this.dataService.updateState(this.selectedWebControl)
             .subscribe(res => {
                 if(res.Succeeded)
                 {
                     this.notificationService.printSuccessMessage(res.Message);
                     this.dataService.changeStateWebsite(webControl).subscribe(
-                        res =>
+                        rs =>
                         {
-                            if(res.isSucceeded == true)
+                            console.log(rs);
+                            if(rs.isSucceeded == true)
                             {
-                                this.notificationService.printSuccessMessage(res.Message);
+                                this.notificationService.printSuccessMessage(rs.ErrorMessage);
                                 window.location.reload();
                             }
                             else
                             {
-                                this.notificationService.printErrorMessage(res.Message);
+                                this.notificationService.printErrorMessage(rs.ErrorMessage);
                             }
                         },
                         error =>

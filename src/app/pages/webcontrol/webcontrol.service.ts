@@ -81,7 +81,7 @@ export class WebControlService {
 
 
     updateState(webControl: WebControlViewModel): Observable<any> {
-        console.log(webControl);
+        //console.log(webControl);
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
      headers.append('Authorization','Bearer '+this._token);

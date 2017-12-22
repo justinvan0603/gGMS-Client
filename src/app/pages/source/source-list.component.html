@@ -18,7 +18,7 @@
       <tr>
         <th> <label class="col-md-1">Mã source</label></th>
         <th><label class="col-md-2">Tên souce</label></th>
-        <th><label class="col-md-1"> Vị trí</label></th>
+        <!-- <th><label class="col-md-1"> Vị trí</label></th> -->
         <th><label class="col-md-2"> Giá</label></th>
         <th><label class="col-md-2">Giá bao gồm VAT</label></th>
         <th><label class="col-md-1">VAT</label></th>
@@ -30,7 +30,7 @@
       <tr *ngFor="let item of this.sourceModel">
         <td > {{item.SourceCode}}</td>
         <td >{{item.SourceName}}</td>
-        <td >{{item.SourceLocation}}</td>
+        <!-- <td >{{item.SourceLocation}}</td> -->
         <td >{{item.Price | number}}</td>
         <td >{{item.PriceVat | number}}</td>
         <td >{{item.Vat | number}}</td>
@@ -67,9 +67,9 @@
               <ul *ngIf="formErrors.SourceName">
                 <li>{{formErrors.SourceName}}</li>
               </ul>
-              <ul *ngIf="formErrors.SourceLocation">
+              <!-- <ul *ngIf="formErrors.SourceLocation">
                 <li>{{formErrors.SourceLocation}}</li>
-              </ul>
+              </ul> -->
               <ul *ngIf="formErrors.Price">
                 <li>{{formErrors.Price}}</li>
               </ul>
@@ -96,10 +96,10 @@
               <label>Tên source:</label>
               <input placeholder="Tên source" type="text" class="form-control" [(ngModel)]="this.selectedSourceModel.SourceName" name="SourceName" #SourceNameInput="ngModel" required pattern=".{1,70}" />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label>Vị trí:</label>
               <input placeholder="Vị trị lưu source" type="text" class="form-control" [(ngModel)]="this.selectedSourceModel.SourceLocation" name="SourceLocation" #SourceLocationInput="ngModel" required  />
-            </div>
+            </div> -->
             <div class="form-group">
               <label>Giá:</label>
               <input placeholder="Giá trị của sản phẩm" type="number" class="form-control" [(ngModel)]="this.selectedSourceModel.Price" name="Price" #PriceInput="ngModel" required maxlength="18" min="0" (change)="changePrice()"/>
