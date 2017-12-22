@@ -4,199 +4,8 @@ export const PAGES_MENU = [
   {
     path: 'pages',
     children: [
-      // {
-      //   path: 'messages',
-      //   data: {
-      //     menu: {
-      //       title: 'Thông báo',
-      //       icon: 'ion-android-notifications-none',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 500,
-      //     }
-      //   },
-      //   children: [
-      //     {
-      //       path: 'messagelist',
-      //       data: {
-      //         menu: {
-      //           title: 'Danh sách thông báo',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: 'charts',
-      //   data: {
-      //     menu: {
-      //       title: 'Charts',
-      //       icon: 'ion-stats-bars',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 200,
-      //     }
-      //   },
-      //   children: [
-      //     {
-      //       path: 'chartist-js',
-      //       data: {
-      //         menu: {
-      //           title: 'Chartist.Js',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-      {
-        path: 'users',
-        data: {
-          menu: {
-            title: 'Người dùng',
-            icon: 'ion-person',
-            selected: false,
-            expanded: false,
-            order: 500,
-          }
-        },
-        children: [
-          // {
-          //   path: 'userlist',
-          //   data: {
-          //     menu: {
-          //       title: 'Danh sách User',
-          //     }
-          //   }
-          // }
-          // ,
-          {
-            path: 'usergroup',
-            data: {
-              menu: {
-                title: 'Nhóm người dùng',
-              }
-            }
-          }
-          ,
-          {
-            path: 'usermanager',
-            data: {
-              menu: {
-                title: 'Danh sách User',
-              }
-            }
-          } ,
-          {
-            path: 'userrole',
-            data: {
-              menu: {
-                title: 'Quyền hệ thống',
-              }
-            }
-          }
-        ]
-      },
-      // {
-      //   path: 'messageconfigurations',
-      //   data: {
-      //     menu: {
-      //       title: 'Cấu hình',
-      //       icon: 'ion-gear-a',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 500,
-      //     }
-      //   },
-      //   children: [
-      //     {
-      //       path: 'messageconfigurationslist',
-      //       data: {
-      //         menu: {
-      //           title: 'Cấu hình thông báo',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: 'domains',
-      //   data: {
-      //     menu: {
-      //       title: 'Domain',
-      //       icon: 'ion-link',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 500,
-      //     }
-      //   },
-      //   children: [
-      //     {
-      //       path: 'domainlist',
-      //       data: {
-      //         menu: {
-      //           title: 'Danh sách Domain',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: 'tables',
-      //   data: {
-      //     menu: {
-      //       title: 'Tables',
-      //       icon: 'ion-grid',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 500,
-      //     }
-      //   },
 
-
-
-      //   children: [
-      //     {
-      //       path: 'basictables',
-      //       data: {
-      //         menu: {
-      //           title: 'Basic Tables',
-      //         }
-      //       }
-      //     },
-      //     {
-      //       path: 'smarttables',
-      //       data: {
-      //         menu: {
-      //           title: 'Smart Tables',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-
-      {
-        path: '',
-        data: {
-          menu: {
-            title: 'Menu',
-            icon: 'fa fa-bars',
-            selected: false,
-            expanded: false,
-            order: 650,
-          }
-        },
-        children: [
-          {
-            path: ['menurole'],
-            data: {
-              menu: {
-                title: 'Danh mục Menu'
-              }
-            }
-          }
-
-        ]
-      },
+      
       {
         path: 'customers',
         data: {
@@ -219,72 +28,6 @@ export const PAGES_MENU = [
           }
         ]
       },
-      // {
-      //   path: 'prdtemplates',
-      //   data: {
-      //     menu: {
-      //       title: 'Template',
-      //       icon: 'ion-crop',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 500,
-      //     }
-      //   },
-      //   children: [
-      //     {
-      //       path: 'templateslist',
-      //       data: {
-      //         menu: {
-      //           title: 'Danh mục Template',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-      // {
-      //   path: 'source',
-      //   data: {
-      //     menu: {
-      //       title: 'Source',
-      //       icon: 'fa fa-code',
-      //       selected: false,
-      //       expanded: false,
-      //       order: 500,
-      //     }
-      //   },
-      //   children: [
-      //     {
-      //       path: 'sourcelist',
-      //       data: {
-      //         menu: {
-      //           title: 'Danh sách source',
-      //         }
-      //       }
-      //     }
-      //   ]
-      // },
-// {
-//         path: 'prdplugins',
-//         data: {
-//           menu: {
-//             title: 'Plugin',
-//             icon: 'fa fa-cogs',
-//             selected: false,
-//             expanded: false,
-//             order: 500,
-//           }
-//         },
-//         children: [
-//           {
-//             path: 'pluginslist',
-//             data: {
-//               menu: {
-//                 title: 'Danh sách Plugin',
-//               }
-//             }
-//           }
-//         ]
-//       },
       {
         path: 'prdproduct',
         data: {
@@ -468,7 +211,71 @@ export const PAGES_MENU = [
             }
           }
         ]
-      }
+      },
+      {
+        path: 'users',
+        data: {
+          menu: {
+            title: 'Người dùng',
+            icon: 'ion-person',
+            selected: false,
+            expanded: false,
+            order: 500,
+          }
+        },
+        children: [
+
+          {
+            path: 'usergroup',
+            data: {
+              menu: {
+                title: 'Nhóm người dùng',
+              }
+            }
+          }
+          ,
+          {
+            path: 'usermanager',
+            data: {
+              menu: {
+                title: 'Danh sách User',
+              }
+            }
+          } ,
+          {
+            path: 'userrole',
+            data: {
+              menu: {
+                title: 'Quyền hệ thống',
+              }
+            }
+          }
+        ]
+      },
+      
+      {
+        path: '',
+        data: {
+          menu: {
+            title: 'Menu',
+            icon: 'fa fa-bars',
+            selected: false,
+            expanded: false,
+            order: 650,
+          }
+        },
+        children: [
+          {
+            path: ['menurole'],
+            data: {
+              menu: {
+                title: 'Danh mục Menu'
+              }
+            }
+          }
+
+        ]
+      },
 
 
 

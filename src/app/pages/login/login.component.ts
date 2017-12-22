@@ -55,7 +55,7 @@ export class Login implements OnInit {
             //console.log( _authenticationResult.Access_token);
             localStorage.setItem('user', JSON.stringify(this._user));
             localStorage.setItem('access_token', _authenticationResult.Access_token);
-            this.router.navigate(['pages/users/usermanager']);
+            this.router.navigate(['pages/customers/customerslist']);
           }
           else {
             this.notificationService.printErrorMessage(_authenticationResult.Message);
