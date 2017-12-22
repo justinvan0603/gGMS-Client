@@ -214,6 +214,7 @@ export class PrjProjectComponent {
               this.loadingBarService.complete();
               this.notificationService.printErrorMessage("Hợp đồng chưa có sản phẩm!");
             } else {
+              this.notificationService.printSuccessMessage("Bắt đầu khởi tạo Website. Có thể sẽ mất vài phút...");
               this.generateSourceFromProduct(product, prjproject);
             }
 

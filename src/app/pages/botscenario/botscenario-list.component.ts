@@ -32,6 +32,7 @@ import {
 
 import { BotScenarioService } from './botscenario.service';
 import { BotScenario } from './botscenario';
+
   
   @Component({
     // moduleId: module.id,
@@ -188,7 +189,7 @@ import { BotScenario } from './botscenario';
             if(rs.Succeeded)
             {
                 this.notificationService.printSuccessMessage(rs.Message);
-               
+                window.location.reload();
                  
             }
             else
