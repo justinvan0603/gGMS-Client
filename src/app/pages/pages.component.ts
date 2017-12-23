@@ -66,29 +66,35 @@ export class Pages {
   loadMessages() {
    // console.log(this.PAGES_MENU2);
     //var _userData = JSON.parse(localStorage.getItem('user'));
+
+
+
     this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
-    // this.dataService.getMenu()
-    //   .subscribe(res => {
-    //    //   console.log("res"+res.json());
-    //       var data: any = res.json();
-    //       this.PAGES_MENU2 =data;
-
-    //       // console.log("menu"+this.PAGES_MENU);
-    //       this._menuService.updateMenuByRoutes(<Routes>this.PAGES_MENU2);
-    //     },
-    //     error => {
-    //     //  if((<String>error.url).includes('Login?ReturnUrl'))
-    //     //  {
-    //     //    console.log("Bat duoc loi khong dang nhap");
-    //     //  }
-    //       if (error.status == 401 || error.status == 302 ||error.status==0 || error.status ==404) {
-    //       //  this.utilityService.navigateToSignIn();
-    //     }
-      
-    //       this.notificationService.printErrorMessage('Không tải được danh sách menu ' + error);
 
 
-    //     });
+
+    this.dataService.getMenu()
+      .subscribe(res => {
+       //   console.log("res"+res.json());
+          var data: any = res.json();
+          this.PAGES_MENU2 =data;
+
+          // console.log("menu"+this.PAGES_MENU);
+          this._menuService.updateMenuByRoutes(<Routes>this.PAGES_MENU2);
+        },
+        error => {
+        //  if((<String>error.url).includes('Login?ReturnUrl'))
+        //  {
+        //    console.log("Bat duoc loi khong dang nhap");
+        //  }
+          if (error.status == 401 || error.status == 302 ||error.status==0 || error.status ==404) {
+          //  this.utilityService.navigateToSignIn();
+        }
+
+          this.notificationService.printErrorMessage('Không tải được danh sách menu ' + error);
+
+
+        });
   }
   // @HostListener('window:beforeunload', [ '$event' ])
   // beforeUnloadHander(event) {
