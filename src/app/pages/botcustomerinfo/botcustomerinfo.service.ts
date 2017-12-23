@@ -34,7 +34,7 @@ export class BotCustomerInfoService {
         this._pageSize = pageSize;
     }
 
-   getBotCustomerInfos(page: number, searchString? : string)
+   getBotCustomerInfos(page: number, searchString? : string, username?: string)
     {
         //console.log("Bearer "+this._token);
      let headers = new Headers();
@@ -44,7 +44,7 @@ export class BotCustomerInfoService {
      //console.log(page);
     // console.log(this._pageSize);
      //var uri=this._baseUrl + page.toString() + '/' + this._pageSize.toString() + '/' + searchString;
-        var uri = this._baseUrl +'/' + page.toString() + '/' + this._pageSize.toString()  + '/' + searchString;
+        var uri = this._baseUrl +'/' + page.toString() + '/' + this._pageSize.toString()  + '/' + username+ '/' + searchString;
 
       //console.log(uri);
         return this.http.get(uri, {

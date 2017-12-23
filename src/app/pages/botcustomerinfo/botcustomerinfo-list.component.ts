@@ -184,8 +184,8 @@ export class BotCustomerInfoListComponent extends Paginated implements AfterView
 
     loadPlugins(searchString?:string) {
         this.loadingBarService.start();
-        
-        this.dataService.getBotCustomerInfos(this._page,searchString)
+        var user = this.membershipService.getLoggedInUser();
+        this.dataService.getBotCustomerInfos(this._page,searchString,user.Username)
             .subscribe(res => {
                 var data: any = res.json();
 

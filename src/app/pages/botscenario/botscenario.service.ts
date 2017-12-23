@@ -48,8 +48,9 @@ export class BotScenarioService {
               })
               .catch(this.handleError);
     }
-   getScenarios(page: number, searchString? : string)
+   getScenarios(page: number, searchString? : string, username?:string)
     {
+        
         //console.log("Bearer "+this._token);
      let headers = new Headers();
      headers.append('Content-Type', 'application/json');
@@ -58,7 +59,7 @@ export class BotScenarioService {
      //console.log(page);
     // console.log(this._pageSize);
      //var uri=this._baseUrl + page.toString() + '/' + this._pageSize.toString() + '/' + searchString;
-        var uri = this._baseUrl +'/' + page.toString() + '/' + this._pageSize.toString()  + '/' + searchString;
+        var uri = this._baseUrl +'/' + page.toString() + '/' + this._pageSize.toString()  + '/' + username + '/' + searchString;
 
       //console.log(uri);
         return this.http.get(uri, {

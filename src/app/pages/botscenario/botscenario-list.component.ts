@@ -139,9 +139,12 @@ import { BotScenario } from './botscenario';
     }
   
     loadScenarios(searchString?: string) {
+      
+      var user = this.membershipService.getLoggedInUser();
+      console.log(user);
       this.loadingBarService.start();
       
-      this.dataService.getScenarios(this._page, searchString)
+      this.dataService.getScenarios(this._page, searchString,user.Username)
         .subscribe(res => {
           this.loadingBarService.complete();
           var data: any = res.json();
