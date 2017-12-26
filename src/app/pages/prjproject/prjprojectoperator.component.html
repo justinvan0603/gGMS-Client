@@ -87,12 +87,7 @@
               <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.BEGIN_DATE | date : 'dd/MM/yyyy'}}</label>
             </div>
             <div class="form-group">
-              <label>Ngày kết thúc:</label>
-              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày kết thúc dự án" class="form-control" [(ngModel)]="this.project.END_DATE" name="END_DATE" #END_DATEInput="ngModel" required (change)="validDate()" />
-              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.END_DATE | date : 'dd/MM/yyyy'}}</label>
-            </div>
-            <div class="form-group">
-              <label>Ngày dự kiến:</label>
+              <label>Ngày dự kiến hoàn thành:</label>
               <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Ngày bắt đầu dự án" class="form-control" [(ngModel)]="project.ESTIMATE_DATE" name="BEGIN_DATE" #ESTIMATE_DATEInput="ngModel" (change)="validDate()" required />
               <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.ESTIMATE_DATE | date : 'dd/MM/yyyy'}}</label>
             </div>
@@ -101,6 +96,13 @@
               <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày kết thúc dự án" class="form-control" [(ngModel)]="this.project.COMPLETION_DATE" name="COMPLETION_DATE" #COMPLETION_DATEInput="ngModel" required (change)="validDate()" />
               <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.COMPLETION_DATE | date : 'dd/MM/yyyy'}}</label>
             </div>
+            <div class="form-group">
+              <label>Ngày kết thúc:</label>
+              <input [class.hidden]="(type=='v')" type="datetime-local" placeholder="Chọn ngày kết thúc dự án" class="form-control" [(ngModel)]="this.project.END_DATE" name="END_DATE" #END_DATEInput="ngModel" required (change)="validDate()" />
+              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.END_DATE | date : 'dd/MM/yyyy'}}</label>
+            </div>
+            
+            
             <div class="form-group">
               <label>Trạng thái</label>
               <select class="form-control" [disabled]="(type=='v')" [(ngModel)]="this.project.STATE" #STATESelect="ngModel" name="STATE" >

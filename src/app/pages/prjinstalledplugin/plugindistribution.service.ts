@@ -35,7 +35,7 @@ export class PluginDistributionService {
 
     }
 
-   distributePlugin(listInstalledPlugin : PrjInstalledPluginViewModel[])
+   distributePlugin(listInstalledPlugin : PrjInstalledPluginViewModel[]):Observable<any>
    {
             let headers = new Headers();
             //var body = {listPrjInstalledPlugin: listInstalledPlugin};
@@ -45,7 +45,7 @@ export class PluginDistributionService {
         return this.http.post(this._url103, JSON.stringify(listInstalledPlugin), {
             headers: headers
         })
-            .map(res => <any>(<Response>res).json())
+        .map(res => <any>(<Response>res).json())
             .catch(this.handleError);
    }
 

@@ -195,10 +195,18 @@ export class PrjInstalledPluginListComponent  {
                     this.pluginDistributionService.distributePlugin(this.ListInstalledPlugin).subscribe(
                         res => 
                         {
-                            
+                            console.log(res);
+                            if(res.isSucceeded === true)
+                            {
+                                this.notificationService.printSuccessMessage(res.errorMessage);
+                            }
+                            else
+                            {
+                                this.notificationService.printSuccessMessage(res.errorMessage);
+                            }
                         },
                         error => {
-                            
+                            this.notificationService.printErrorMessage("Có lỗi xảy ra vui lòng thử lại sau!");
                         }
                     );
                 }

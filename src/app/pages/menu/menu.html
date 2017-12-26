@@ -34,8 +34,11 @@
       <td class="text-xs-left"> {{usr.MenuLink}}</td>
       <td class="text-xs-left"> {{usr.Icon}}</td>
       <td class="text-xs-left"> {{usr.RoleName}}</td>
-      <td><a class="btn btn-warning" (click)="viewDetails(usr)"><i class="fa fa-pencil-square-o" ></i> Cập nhật</a>
-        <a class="btn btn-danger" (click)="delete(usr)"><i class="fa fa-trash-o" ></i> Xóa</a>
+      <td>
+        <!-- <a class="btn btn-warning" (click)="viewDetails(usr)"><i class="fa fa-pencil-square-o" ></i> Cập nhật</a>
+        <a class="btn btn-danger" (click)="delete(usr)"><i class="fa fa-trash-o" ></i> Xóa</a> -->
+        <a data-toggle="tooltip" data-placement="top" title="Cập nhật" style="cursor:pointer;" (click)="viewDetails(usr)"><i class="fa fa-pencil-square-o fa-lg" style="color:#EF6C00"></i></a>
+        <a data-toggle="tooltip" data-placement="top" title="Xóa" style="cursor:pointer;" (click)="delete(usr)"><i class="fa fa-trash-o fa-lg" style="color:#D50000"></i></a>
       </td>
 
 
@@ -43,8 +46,8 @@
     </tbody>
   </table>
 
-  <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
-              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+  <!-- <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" class="pagination-sm"
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination> -->
 </div>
 
 <div bsModal #childModal="bs-modal" class="modal fade popup" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
