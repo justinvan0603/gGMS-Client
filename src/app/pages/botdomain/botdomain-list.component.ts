@@ -141,7 +141,10 @@ export class BotDomainListComponent extends Paginated implements AfterViewChecke
             scriptResult.setAttribute('Access-Control-Allow-Origin', "*");
             var s0 = document.getElementsByTagName("script")[0];
             s0.parentNode.insertBefore(scriptResult, s0);
-        }</script>`;
+        }
+        CallWebAPI();
+        </script>
+        `;
     }
 
     search(i): void {
@@ -426,7 +429,9 @@ editBotDomain(botDomain: BotDomain) {
             scriptResult.setAttribute('Access-Control-Allow-Origin', "*");
             var s0 = document.getElementsByTagName("script")[0];
             s0.parentNode.insertBefore(scriptResult, s0);
-        }</script>`;
+        }
+        CallWebAPI();
+        </script>`;
         this.childModal.show();
         this.isViewDetail = true;
     }
@@ -448,7 +453,9 @@ editBotDomain(botDomain: BotDomain) {
             scriptResult.setAttribute('Access-Control-Allow-Origin', "*");
             var s0 = document.getElementsByTagName("script")[0];
             s0.parentNode.insertBefore(scriptResult, s0);
-        }</script>`;
+        }
+        CallWebAPI();
+        </script>`;
         this.loadingBarService.complete();
         this.selectedBotDomainLoaded = true;
 
