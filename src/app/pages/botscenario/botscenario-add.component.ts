@@ -165,6 +165,9 @@ export class BotScenarioAddComponent implements AfterViewChecked    {
     }
     deleteQuestionAnswer(target: QuestionAnswerMapper)
     {
+
+        this.itemsService.removeItemFromArray<BotQuestion>(this.botScenarioViewModel.BotQuestions,target.BotQuestion);
+        this.itemsService.removeItemFromArray<BotAnswer>(this.botScenarioViewModel.BotAnswers,target.BotAnswer);
         this.itemsService.removeItemFromArray<QuestionAnswerMapper>(this.ListQuestionAnswerMapper, target);
     }
     addQuestion()
@@ -197,6 +200,8 @@ export class BotScenarioAddComponent implements AfterViewChecked    {
         questionMapper.BotQuestion =  duplicateQuestionObj;
         questionMapper.BotAnswer = duplicateAnswerObj;
         this.ListQuestionAnswerMapper.push(questionMapper);
+        this.currentQuestion.CONTENT = '';
+        this.currentAnswer.CONTENT = '';
        // console.log(this.ListQuestionAnswerMapper.length);
     }
     loadDomainByUser()

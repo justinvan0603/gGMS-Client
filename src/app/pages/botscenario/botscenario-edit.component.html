@@ -28,15 +28,21 @@
                    <input type="text" class="form-control"  [(ngModel)]="this.botScenarioViewModel.BotScenario.NAME" name="ScenarioName" #ScenarioNameInput="ngModel" required pattern=".{1,100}"/>
                </div>
                </div>
- 
                <div class="col-md-6">
+                <div class="form-group">
+                <label >Domain:</label>
+                <input type="text" class="form-control"  [(ngModel)]="this.botScenarioViewModel.BotScenario.DOMAIN_NAME" name="DomainName" #DomainNameInput="ngModel" required pattern=".{1,100}" readonly/>
+
+            </div>
+            </div>
+               <!-- <div class="col-md-6">
                  <div class="form-group">
                  <label >Domain:</label>
                  <select ngControl="QuestionTypeInput" name="Domain" [(ngModel)]="selectedBotDomain" #DomainInput="ngModel" [ngModelOptions]="{standalone: true}" class="form-control form-control-sm" required>
                      <option *ngFor="let domain of listBotDomain" [ngValue]="domain" [selected]="this.selectedBotDomain.DOMAIN_ID === domain.DOMAIN_ID">{{domain.DOMAIN}}</option>
                  </select>
              </div>
-             </div>
+             </div> -->
            </div>
            <div class="row">
              <div class="col-md-3">
@@ -50,13 +56,13 @@
              <div class="col-md-4">
                  <div class="form-group">
                      <label >Câu hỏi:</label>
-                     <textarea type="text" class="form-control"  [(ngModel)]="currentQuestion.CONTENT" name="Question" #QuestionInput="ngModel" pattern=".{1,256}"></textarea>
+                     <textarea type="text" class="form-control"  [(ngModel)]="currentQuestion.CONTENT" name="Question" #QuestionInput="ngModel" pattern=".{1,500}"></textarea>
                    </div>
              </div>
              <div class="col-md-4">
                  <div class="form-group">
                      <label >Câu trả lời:</label>
-                     <textarea type="text" class="form-control"  [(ngModel)]="currentAnswer.CONTENT" name="Answer" #AnswerInput="ngModel" pattern=".{1,256}"></textarea>
+                     <textarea type="text" class="form-control"  [(ngModel)]="currentAnswer.CONTENT" name="Answer" #AnswerInput="ngModel" pattern=".{1,500}"></textarea>
                    </div>
              </div>
              <div class="col-md-1">

@@ -160,9 +160,11 @@ export class BotScenarioEditComponent implements AfterViewChecked    {
          this.dataService.setToken(this.membershipService.getTokenUser()); 
         this.botQuestionTypeService.setToken(this.membershipService.getTokenUser());
         this.botDomainService.setToken(this.membershipService.getTokenUser());
-        this.loadScenarioById(this.botScenarioViewModel.BotScenario.SCENARIO_ID);
+        
         this.loadQuestionType();
         this.loadDomainByUser();
+        this.loadScenarioById(this.botScenarioViewModel.BotScenario.SCENARIO_ID);
+        
 
     }
     loadScenarioById(id:number)
@@ -181,6 +183,8 @@ export class BotScenarioEditComponent implements AfterViewChecked    {
                        item.BotAnswer.CONTENT = '(Câu trả lời theo form nhập)';
                    }
                    this.ListQuestionAnswerMapper.push(item);
+                  // console.log(this.ListQuestionAnswerMapper);
+                   //console.log(this.botScenarioViewModel);
                 }
             },
             error=>{
@@ -201,6 +205,8 @@ export class BotScenarioEditComponent implements AfterViewChecked    {
     }
     deleteQuestionAnswer(target: QuestionAnswerMapper)
     {
+        this.itemsService.removeItemFromArray<BotQuestion>(this.botScenarioViewModel.BotQuestions,target.BotQuestion);
+        this.itemsService.removeItemFromArray<BotAnswer>(this.botScenarioViewModel.BotAnswers,target.BotAnswer);
         this.itemsService.removeItemFromArray<QuestionAnswerMapper>(this.ListQuestionAnswerMapper, target);
     }
     addQuestion()
@@ -222,14 +228,19 @@ export class BotScenarioEditComponent implements AfterViewChecked    {
             this.currentQuestion.FORM_ID = 1;
             this.currentQuestion.FORM_NAME = 'CustomerInfoFormModel';
         }
-        this.currentQuestion.DOMAIN_ID = this.selectedBotDomain.DOMAIN_ID;
-        this.currentQuestion.DOMAIN_NAME = this.selectedBotDomain.DOMAIN;
+        this.currentQuestion.DOMAIN_ID = this.botScenarioViewModel.BotScenario.DOMAIN_ID;
+        this.currentQuestion.DOMAIN_NAME = this.botScenarioViewModel.BotScenario.DOMAIN_NAME;
         this.currentQuestion.LEVEL = 1;
 
         var questionMapper = new QuestionAnswerMapper();
-        questionMapper.BotQuestion = this.currentQuestion;
-        questionMapper.BotAnswer = this.currentAnswer;
+        var duplicateQuestionObj = <BotQuestion> JSON.parse(JSON.stringify(this.currentQuestion));
+        var duplicateAnswerObj = <BotAnswer> JSON.parse(JSON.stringify(this.currentAnswer));
+     
+        questionMapper.BotQuestion =  duplicateQuestionObj;
+        questionMapper.BotAnswer = duplicateAnswerObj;
         this.ListQuestionAnswerMapper.push(questionMapper);
+        this.currentQuestion.CONTENT = '';
+        this.currentAnswer.CONTENT = '';
        // console.log(this.ListQuestionAnswerMapper.length);
     }
     loadDomainByUser()
@@ -317,15 +328,17 @@ ngAfterViewChecked(): void {
     }
     updateScenario()
     {
-
+      //  console.log(this.ListQuestionAnswerMapper);
+        this.botScenarioViewModel.BotQuestions = new Array<BotQuestion>();
+        this.botScenarioViewModel.BotAnswers = new Array<BotAnswer>();
         for(let item of this.ListQuestionAnswerMapper)
         {
             this.botScenarioViewModel.BotQuestions.push(item.BotQuestion);
             this.botScenarioViewModel.BotAnswers.push(item.BotAnswer);
         }
         this.botScenarioViewModel.BotScenario.IS_ACTIVE = false;
-        this.botScenarioViewModel.BotScenario.DOMAIN_ID = this.selectedBotDomain.DOMAIN_ID;
-        this.botScenarioViewModel.BotScenario.DOMAIN_NAME = this.selectedBotDomain.DOMAIN;
+        this.botScenarioViewModel.BotScenario.DOMAIN_ID = this.botScenarioViewModel.BotScenario.DOMAIN_ID;
+        this.botScenarioViewModel.BotScenario.DOMAIN_NAME = this.botScenarioViewModel.BotScenario.DOMAIN_NAME;
         this.dataService.updateScenario(this.botScenarioViewModel).subscribe(
             rs=>{
                 if(rs.Succeeded)

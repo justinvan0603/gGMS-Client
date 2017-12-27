@@ -50,13 +50,13 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label >Câu hỏi:</label>
-                    <textarea type="text" class="form-control"  [(ngModel)]="currentQuestion.CONTENT" name="Question" #QuestionInput="ngModel" pattern=".{1,256}"></textarea>
+                    <textarea type="text" class="form-control"  [(ngModel)]="currentQuestion.CONTENT" name="Question" #QuestionInput="ngModel" pattern=".{1,500}"></textarea>
                   </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label >Câu trả lời:</label>
-                    <textarea type="text" class="form-control"  [(ngModel)]="currentAnswer.CONTENT" name="Answer" #AnswerInput="ngModel" pattern=".{1,256}"></textarea>
+                    <textarea type="text" class="form-control"  [(ngModel)]="currentAnswer.CONTENT" name="Answer" #AnswerInput="ngModel" pattern=".{1,500}"></textarea>
                   </div>
             </div>
             <div class="col-md-1">
