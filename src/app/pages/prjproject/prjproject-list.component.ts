@@ -241,7 +241,7 @@ export class PrjProjectComponent {
     modelGen.DatabaseUser = prjproject.MYSQL_USERNAME;
     modelGen.Password = prjproject.MYSQL_PASSWORD;
     modelGen.Source = product.ProductLocation;
-    modelGen.Destination = prjproject.PROJECT_CODE;
+    modelGen.Destination = prjproject.SUB_DOMAIN;
     modelGen.ScriptLocation = product.Scripts;
     modelGen.Domain = prjproject.DOMAIN;
     modelGen.Subdomain = prjproject.SUB_DOMAIN;

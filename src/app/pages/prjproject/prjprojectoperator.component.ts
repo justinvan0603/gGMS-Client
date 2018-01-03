@@ -149,6 +149,7 @@ export class PrjProjectOperatorComponent implements AfterViewChecked {
     private router: Router,
     private el: ElementRef) {
     this.project = new PrjProject();
+    this.project.DOMAIN = 'gwebsite.net';
     this.projectDts = new Array<PrjProjectDt>();
     this.contracts = new Array<ContractModel>();
     this.selectedContract = new ContractModel();
@@ -274,7 +275,21 @@ export class PrjProjectOperatorComponent implements AfterViewChecked {
   }
 
   addNewProject() {
-
+    if(this.project.MYSQL_USERNAME.length > 17 || this.project.DATABASE_NAME.length > 17)
+    {
+      this.notificationService.printErrorMessage("Username Mysql và Mysql Database không vượt quá 17 ký tự!");
+      return;
+    }
+    if(this.project.PROJECT_CODE === '' || this.project.PROJECT_NAME === '' || this.project.MYSQL_USERNAME === '' || this.project.MYSQL_PASSWORD === '' || this.project.DATABASE_NAME === '' || this.project.SUB_DOMAIN ==='' || this.project.DOMAIN === '')
+    {
+      this.notificationService.printErrorMessage("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
+    if(this.project.DOMAIN != 'gwebsite.net')
+    {
+      this.notificationService.printErrorMessage("Hiện tại chỉ chấp nhận domain gwebsite.net!");
+      return;
+    }
     this.loadingBarService.start();
 
     var user = this.membershipService.getLoggedInUser();

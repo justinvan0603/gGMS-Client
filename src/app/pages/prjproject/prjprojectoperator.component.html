@@ -37,13 +37,13 @@
 
             <div class="form-group">
               <label>Hợp đồng</label>
-              <select class="form-control" [class.hidden]="(type=='v')" [(ngModel)]="this.project.CONTRACT_ID" #CONTRACT_IDSelect="ngModel" name="CONTRACT_ID" (change)="selectedContractOnChange(this.project.CONTRACT_ID)">
+              <select class="form-control" [class.hidden]="(type=='v') ||(type=='e')" [(ngModel)]="this.project.CONTRACT_ID" #CONTRACT_IDSelect="ngModel" name="CONTRACT_ID" (change)="selectedContractOnChange(this.project.CONTRACT_ID)">
                 <option value=""></option>
                 <option *ngFor="let item of contracts" [ngValue]="item.ContractId">
                   {{item.ContractCode}}
                 </option>
               </select>
-              <label class="form-control" [class.hidden]="!(type=='v')">{{this.project.CONTRACT_CODE}} - {{this.project.CONTRACT_NAME}}</label>
+              <label class="form-control" [class.hidden]="!(type=='v') && !(type=='e')">{{this.project.CONTRACT_CODE}} - {{this.project.CONTRACT_NAME}}</label>
             </div>
             <div class="form-group" style="height: 280px; overflow: auto">
               <label>Các nhân viên đang tham gia: </label>
@@ -119,28 +119,28 @@
             </div>
             <div class="form-group">
               <label>MySQL User Name:</label>
-              <input [class.hidden]="(type=='v')" rows="3" placeholder="MySql user name" class="form-control" [(ngModel)]="this.project.MYSQL_USERNAME" name="USERNAME" #MYSQL_USRNAME="ngModel"/>
-              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.MYSQL_USERNAME}}</label>
+              <input [class.hidden]="(type=='v') || (type=='e')" rows="3" placeholder="MySql user name" class="form-control" [(ngModel)]="this.project.MYSQL_USERNAME" name="USERNAME" #MYSQL_USRNAME="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v') && !(type=='e')">{{this.project.MYSQL_USERNAME}}</label>
             </div>
             <div class="form-group">
               <label>MySQL Password:</label>
-              <input [class.hidden]="(type=='v')" rows="3" placeholder="MySql password " class="form-control" [(ngModel)]="this.project.MYSQL_PASSWORD" name="PASSWORD" #MYSQL_PASSWORD="ngModel"/>
-              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.MYSQL_PASSWORD}}</label>
+              <input [class.hidden]="(type=='v') || (type=='e')" rows="3" placeholder="MySql password " class="form-control" [(ngModel)]="this.project.MYSQL_PASSWORD" name="PASSWORD" #MYSQL_PASSWORD="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v') && !(type=='e')">{{this.project.MYSQL_PASSWORD}}</label>
             </div>
             <div class="form-group">
               <label>MySQL Database:</label>
-              <input [class.hidden]="(type=='v')" rows="3" placeholder="MySql database" class="form-control" [(ngModel)]="this.project.DATABASE_NAME" name="DATABASE_NAME" #DATABASE_NAME="ngModel"/>
-              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.DATABASE_NAME}}</label>
+              <input [class.hidden]="(type=='v') || (type=='e')" rows="3" placeholder="MySql database" class="form-control" [(ngModel)]="this.project.DATABASE_NAME" name="DATABASE_NAME" #DATABASE_NAME="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v') && !(type=='e')">{{this.project.DATABASE_NAME}}</label>
             </div>
             <div class="form-group">
               <label>Domain:</label>
-              <input [class.hidden]="(type=='v')" rows="3" placeholder="Domain " class="form-control" [(ngModel)]="this.project.DOMAIN" name="DOMAIN" #DOMAIN="ngModel"/>
-              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.DOMAIN}}</label>
+              <input [class.hidden]="(type=='v') || (type=='e')" rows="3" placeholder="Domain " class="form-control" [(ngModel)]="this.project.DOMAIN" name="DOMAIN" #DOMAIN="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v') && !(type=='e')">{{this.project.DOMAIN}}</label>
             </div>
             <div class="form-group">
               <label>Subdomain:</label>
-              <input [class.hidden]="(type=='v')" rows="3" placeholder="Subdomain" class="form-control" [(ngModel)]="this.project.SUB_DOMAIN" name="DATABASE" #SUB_DOMAIN="ngModel"/>
-              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v')">{{this.project.SUB_DOMAIN}}</label>
+              <input [class.hidden]="(type=='v') || (type=='e')" rows="3" placeholder="Subdomain" class="form-control" [(ngModel)]="this.project.SUB_DOMAIN" name="DATABASE" #SUB_DOMAIN="ngModel"/>
+              <label class="form-control" style="line-height: initial; display: inline-table; line-height: 1.5;" [class.hidden]="!(type=='v') && !(type=='e')">{{this.project.SUB_DOMAIN}}</label>
             </div>
           </div>
           <!--End column 2-->

@@ -19,7 +19,7 @@ import {PrjProductPageBehaviorCommerces} from "./prjproject-pagebehavior-ecommer
 @Injectable()
 export class DataService {
 
- // _url103: string = 'http://localhost:60288/api/GenerateSources';
+  //_url103: string = 'http://localhost:60288/api/GenerateSources';
   _url103: string = 'http://103.7.41.51:60289/api/GenerateSources';
   _baseUrl: string = '';
   _baseUrlPrjProjectOvervieweCommerces: string = '';
