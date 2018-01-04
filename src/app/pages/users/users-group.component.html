@@ -56,8 +56,8 @@
         <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 *ngIf="!this.addingApplicationGroup"> Cập nhật tài khoản: {{selectedApplicationGroup.Name}}</h4>
-        <h4 *ngIf="this.addingApplicationGroup"> Thêm tài khoản</h4>
+        <h4 *ngIf="!this.addingApplicationGroup"> Cập nhật nhóm người dùng: {{selectedApplicationGroup.Name}}</h4>
+        <h4 *ngIf="this.addingApplicationGroup"> Thêm nhóm người dùng</h4>
       </div>
       <div class="modal-body">
         <form method="post" #viewUserForm="ngForm" *ngIf="selectedApplicationGroupLoaded" novalidate>

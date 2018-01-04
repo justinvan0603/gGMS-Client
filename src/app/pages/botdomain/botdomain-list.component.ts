@@ -169,8 +169,8 @@ export class BotDomainListComponent extends Paginated implements AfterViewChecke
 
     loadBotDomains(searchString?:string) {
         this.loadingBarService.start();
-        
-        this.dataService.getDomains(this._page,searchString)
+        var user = this.membershipService.getLoggedInUser();
+        this.dataService.getDomains(this._page,searchString,user.Username)
             .subscribe(res => {
                 var data: any = res.json();
 
