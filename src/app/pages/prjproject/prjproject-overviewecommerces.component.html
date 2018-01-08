@@ -7,10 +7,8 @@
 <h3>Tổng quan hoạt động Website: {{domain}}</h3>
 <br />
 <br />
-<h4>Hiệu suất theo sản phẩm</h4>
+<h4>Hiệu suất theo sản phẩm (Product Performance)</h4>(Số tiền đơn đặt hàng, lượt xem chi tiết, số lượng sản phẩm được thêm vào giỏ hàng, số lượng sản phẩm được thanh toán theo <strong>sản phẩm</strong>)
 
-<!--<button class="btn btn-primary btn-sm" (click)="viewAddCategory()">-->
-  <!--<i class="fa fa-plus" aria-hidden="true"></i>Thêm lĩnh vực</button>-->
 <div [@flyInOut]="'in'">
   <div class="col-md-9">
     <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
@@ -30,7 +28,7 @@
       <th><strong>Mã sản phẩm</strong></th>
       <th><strong>Tên miền</strong></th>
       <th><strong>Tên sản phẩm</strong></th>
-      <th><strong>Doanh thu</strong></th>
+      <th><strong>Số tiền</strong></th>
       <th><strong>Lượt xem chi tiết</strong></th>
       <th><strong>Số lượng SP thêm vào giỏ hàng</strong></th>
       <th><strong>Số lượng SP thanh toán</strong></th>
@@ -64,7 +62,8 @@
 </div>
 
 <br><br>
-<h4>Hiệu suất sản phẩm theo trang (PAGE PATH)</h4>
+<h4>Hành vi của người dùng trên trang (Behavior Page)</h4>
+(Số tiền, số lượt xem, thời gian xem của<strong> trang</strong>)
 <div [@flyInOut]="'in'">
   <div class="col-md-9">
     <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
@@ -85,9 +84,9 @@
       <th><strong>Tên miền</strong></th>
       <th><strong>Trang</strong></th>
       <th><strong>Số lượt xem</strong></th>
-      <th><strong>Doanh thu</strong></th>
+      <th><strong>Số tiền</strong></th>
       <th><strong>Thời gian xem trang(s)</strong></th>
-      <th><strong>Tỉ lệ thoát</strong></th>
+      <th><strong>Tỉ lệ thoát (%)</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -118,7 +117,8 @@
 </div>
 
 <br><br>
-<h4>Hiệu suất danh sách sản phẩm</h4>
+<h4>Hiệu suất danh sách sản phẩm (Product List Performance)</h4>
+(Số tiền đơn đặt hàng, lượt xem chi tiết, số lượng sản phẩm được thêm vào giỏ hàng, số lượng sản phẩm được thanh toán theo <strong>tên của danh sách sản phẩm mà trong đó sản phẩm xuất hiện</strong>)
 <div [@flyInOut]="'in'">
   <div class="col-md-9">
     <form class="span12" method="post" #domainSearchForm="ngForm"  novalidate >
@@ -138,7 +138,7 @@
       <th><strong>Mã sản phẩm</strong></th>
       <th><strong>Tên miền</strong></th>
       <th><strong>Tên danh sách sản phẩm</strong></th>
-      <th><strong>Doanh thu</strong></th>
+      <th><strong>Số tiền</strong></th>
       <th><strong>Lượt xem chi tiết</strong></th>
       <th><strong>Số lượng SP thêm vào giỏ hàng</strong></th>
       <th><strong>Số lượng SP thanh toán</strong></th>
