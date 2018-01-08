@@ -14,6 +14,10 @@ import {MyModelGen} from "./mymodelgen";
 import {PrjProjectOvervieweCommerces} from "./prjproject-overviewecommerces";
 import {PrjProductListPerformanceEcommerce} from "./prjproject-productlist-performancecommerces";
 import {PrjProductPageBehaviorCommerces} from "./prjproject-pagebehavior-ecommerces";
+import {
+  PrjProjectCountOverviewEcommerces,
+  StatisticsTrafficSourcesEcommerce
+} from "./prjproject-count_overviewecommerces";
 
 
 @Injectable()
@@ -23,8 +27,10 @@ export class DataService {
   _url103: string = 'http://103.7.41.51:60289/api/GenerateSources';
   _baseUrl: string = '';
   _baseUrlPrjProjectOvervieweCommerces: string = '';
+  _baseUrlPrjProjectCountOvervieweCommerces: string = '';
   _baseUrlPrjProjectProductListPerformanceEcommerce: string = '';
   _baseUrlPrjProjectPageBehaviorEcommerces: string = '';
+  _baseUrlPrjProjectTraffic: string = '';
   public _token: string;
 
   constructor(private http: Http,
@@ -35,6 +41,8 @@ export class DataService {
     this._baseUrlPrjProjectProductListPerformanceEcommerce = configService.getApiURI() + 'ProductListPerformanceEcommerceApi';
     this._token = '';
     this._baseUrlPrjProjectPageBehaviorEcommerces = configService.getApiURI() + 'PageBehaviorEcommerceApi';
+    this._baseUrlPrjProjectCountOvervieweCommerces = configService.getApiURI() + 'OverviewEcommerceSumApi';
+    this._baseUrlPrjProjectTraffic = configService.getApiURI() + 'TrafficSourcesEcommerceApi';
   }
 
   setToken(token: string): void {
@@ -110,6 +118,11 @@ export class DataService {
       .catch(this.handleError);
   }
 
+
+
+
+
+
   getProjectDtByProjectId(id: string): Observable<PrjProjectDt[]> {
     return this.http.get(this._baseUrl + '/GetProjectDtByProjectId?id=' + id).map((res: Response) => {
       return res.json();
@@ -174,7 +187,7 @@ export class DataService {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(this._url103, JSON.stringify(myModelGen), {headers: headers})
-     
+
       .map(res => <any>(<Response>res).json())
       .catch(this.handleError);
   }
@@ -256,6 +269,22 @@ export class DataService {
           peginatedResult.pagination = paginationHeader;
         }
         return peginatedResult;
+      })
+      .catch(this.handleError);
+  }
+
+  getStatistics(): Observable<PrjProjectCountOverviewEcommerces> {
+    return this.http.get(this._baseUrlPrjProjectCountOvervieweCommerces + '/GetCountView/' + "1")
+      .map((res: Response) => {
+        return res.json();
+      })
+      .catch(this.handleError);
+  }
+
+  getStatisticsTrafficSources(): Observable<StatisticsTrafficSourcesEcommerce[]> {
+    return this.http.get(this._baseUrlPrjProjectTraffic + '/GetCountView/' + "1")
+      .map((res: Response) => {
+        return res.json();
       })
       .catch(this.handleError);
   }

@@ -95,6 +95,8 @@ export class Pages {
 
 
         });
+
+
   }
   // @HostListener('window:beforeunload', [ '$event' ])
   // beforeUnloadHander(event) {

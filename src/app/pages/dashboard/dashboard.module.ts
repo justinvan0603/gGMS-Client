@@ -21,6 +21,12 @@ import { PieChartService } from './pieChart/pieChart.service';
 import { TodoService } from './todo/todo.service';
 import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { UsersMapService } from './usersMap/usersMap.service';
+import {DataService} from "../prjproject/prjproject.service";
+import {UtilityService} from "../shared/services/utility.service";
+import {CmAllCodeService as AllCodeService} from "../cmallcode/cmallcode.service";
+import {DataService as ContractService} from "../contract/contract.service";
+import {UserManagerService} from "../users/user-manager.service";
+import {PrdProductService} from "../prdproducts/prdproducts.service";
 
 @NgModule({
   imports: [
@@ -47,7 +53,16 @@ import { UsersMapService } from './usersMap/usersMap.service';
     PieChartService,
     TodoService,
     TrafficChartService,
-    UsersMapService
+    UsersMapService,
+    DataService,
+    UtilityService,
+    UserManagerService,
+    AllCodeService,
+    ContractService,
+    PrdProductService
+
   ]
+
+
 })
 export class DashboardModule {}

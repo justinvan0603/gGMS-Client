@@ -8,6 +8,7 @@ import { PrjProjectComponent } from "./prjproject-list.component";
 import {PrjProjectOperatorComponent} from "./prjprojectoperator.component";
 import {PrjProjectOvervieweCommercesComponent} from "./prjproject-overviewecommerces.component";
 import {PrjProjectChartComponent} from "./prjproject-chart.component";
+import {Dashboard} from "../dashboard";
 
 //import { OptionLinkComponent } from "./option-link/option-link.component";
 // noinspection TypeScriptValidateTypes
@@ -18,6 +19,7 @@ export const routes: Routes = [
     children: [
       { path: 'prjprojectlist', component:  PrjProjectComponent},
       { path: 'prjprojectchart', component:  PrjProjectChartComponent},
+     // { path: 'dashboard', component:  Dashboard},
       { path: 'prjproject-overviewecommerces/:type/:projectId', component: PrjProjectOvervieweCommercesComponent },
       { path: 'prjprojectoperator/:type/:projectId', component: PrjProjectOperatorComponent },
       { path: 'prjprojectoperator/:type/:projectId', component: PrjProjectOperatorComponent },

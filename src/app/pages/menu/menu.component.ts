@@ -177,7 +177,8 @@ export class Menu implements AfterViewChecked {
     {
     menuRole.MenuParent = this.selectedMenuParrent.MenuId;
     }
-      
+    console.log(this.selectedApplicationGroup);
+
     this.dataService.create(this.selectedApplicationGroup)
       .subscribe(res => {
           if(res.Succeeded)

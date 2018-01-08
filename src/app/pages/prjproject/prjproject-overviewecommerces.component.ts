@@ -114,6 +114,7 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
   projectId: string;
 
   contractId:string;
+  domain:string;
   formErrors = {
     'PrjProjectOvervieweCommercesCode': '',
     'PrjProjectOvervieweCommercesName': '',
@@ -230,6 +231,7 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
       .subscribe((res: PaginatedResult<PrjProjectOvervieweCommerces[]>) => {
 
           //          console.log(res);
+          this.domain = res.result[0].DOMAIN;
           this.prjProjectOvervieweCommerces = res.result;// schedules;
 
           this.totalItems = res.pagination.TotalItems;

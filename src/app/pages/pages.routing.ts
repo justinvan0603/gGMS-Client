@@ -31,6 +31,10 @@ export const routes: Routes = [
 
 //     { path: 'chart', loadChildren: 'app/pages/charts/charts.module#Charts' },
 
+    //  { path: 'dashboard', loadChildren: 'app/pages/dashboard/dashboard.module#DashboardModule' },
+
+       { path: 'prjproject/dashboard', loadChildren: 'app/pages/dashboard/dashboard.module#DashboardModule' },
+
 
       { path: 'messages', loadChildren: 'app/pages/messages/messages.module#MessageModule' },
       //{ path: 'messageconfigurations', loadChildren: 'app/pages/messageconfigurations/messageconfigurations.module#MessageConfigurationModule' },
