@@ -121,8 +121,8 @@
                 <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.PhoneNumber" name="PhoneNumber" #DescriptionInput="ngModel" required pattern="[0-9]{1,50}" maxlength="50"/>
             </div>
             <div class="form-group">
-                <label >Mã số thuế:</label>
-                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.TaxCode" name="TaxCode" #DescriptionInput="ngModel" pattern="[0-9]{1,50}" maxlength="50" required />
+                <label >Mã số thuế (nếu có):</label>
+                <input type="text" [readonly]="this.isViewDetail" class="form-control"  [(ngModel)]="selectedCustomer.TaxCode" name="TaxCode" #DescriptionInput="ngModel" pattern="[0-9]{1,50}" maxlength="50"  />
             </div>
                     <hr/>          
                     <button [class.hidden]="this.addingCustomer || this.isViewDetail" [disabled]="!viewCustomerForm.form.valid " (click)="editCustomer(selectedCustomer)" type="button" class="btn btn-warning">Cập nhật</button>

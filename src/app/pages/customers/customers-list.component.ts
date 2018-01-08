@@ -122,7 +122,7 @@ export class CustomerListComponent implements AfterViewChecked {
     }
     ,
     'TaxCode': {
-      'required':      'Mã số thuế không được để trống', 
+      
       'maxlength':     'Mã số thuế phải từ 1-200 ký tự',
       'pattern': 'Mã số thuế không hợp lệ'
     }
