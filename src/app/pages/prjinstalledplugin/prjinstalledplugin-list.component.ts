@@ -145,6 +145,7 @@ export class PrjInstalledPluginListComponent  {
         this.dataService.getInstalledPlugins(this.selectedPlugin.PluginId).subscribe((data: PrjInstalledPluginViewModel[])=>{
             this.ListInstalledPlugin = data;
             this.ListInstalledPluginBeforeSearch = data;
+            
            // console.log(this.ListInstalledPlugin);
             //console.log(this.ListDomainUser.length);
             this.loadingBarService.complete();

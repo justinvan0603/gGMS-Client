@@ -28,21 +28,25 @@
     <table class="table table-hover domaintable"  >
         <thead>
             <tr>
-                <th class="col-md-9">Tên Website</th>
+                <th class="col-md-3">Tên dự án</th>
                 <!-- <th class="col-md-3">Mô tả</th> -->
-    
+                <th class="col-md-3 text-center">Subdomain</th>
+                <th class="col-md-3 text-center">Domain</th>
+                
                 <th class="col-md-3 text-center">Thao tác</th>
             </tr>
         </thead>
         <tbody >
             <tr>
                 <td></td>
-                
+                <td></td>
+                <td></td>
                 <td class="text-xs-left"><input type="checkbox" data-toggle="tooltip" data-placement="top" title="Chọn tất cả" class="form-check-input form-control form-control-sm"  [checked]="this.isCheckAll" (change)="checkAllEvent($event)"/> </td>
             </tr>
             <tr *ngFor="let item of ListInstalledPlugin">
                 <td class="text-xs-left"> {{item.PrjProjectMaster.PROJECT_NAME}}</td>
-                
+                <td class="text-xs-left"> {{item.PrjProjectMaster.SUB_DOMAIN}}</td>
+                <td class="text-xs-left"> {{item.PrjProjectMaster.DOMAIN}}</td>
                <td class="text-xs-left">
                    <input type="checkbox" class="form-check-input form-control form-control-sm"  [checked]="item.IsChecked" (change)="item.IsChecked = $event.target.checked"> 
                 </td>
