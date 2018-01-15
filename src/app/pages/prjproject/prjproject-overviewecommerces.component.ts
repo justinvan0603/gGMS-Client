@@ -114,7 +114,7 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
   projectId: string;
 
   contractId:string;
-  domain:string;
+  domain:string ='';
   formErrors = {
     'PrjProjectOvervieweCommercesCode': '',
     'PrjProjectOvervieweCommercesName': '',
@@ -230,8 +230,12 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
     this.dataService.getPrjProjectOvervieweCommercesById(this.projectId,this.currentPage, this.itemsPerPage, searchString)
       .subscribe((res: PaginatedResult<PrjProjectOvervieweCommerces[]>) => {
 
-          //          console.log(res);
-          this.domain = res.result[0].DOMAIN;
+           console.log(res.pagination.TotalItems);
+          if(res.pagination.TotalItems>0){
+         //   console.log(res.result[0].DOMAIN);
+            this.domain = res.result[0].DOMAIN;
+          }
+
           this.prjProjectOvervieweCommerces = res.result;// schedules;
 
           this.totalItems = res.pagination.TotalItems;
@@ -249,6 +253,11 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
 
     this.dataService.getPrjProjectProductListPerformanceEcommerceById(this.projectId,this.currentPageProductListPerformanceEcommerce, this.itemsPerPage, searchString)
       .subscribe((res: PaginatedResult<PrjProductListPerformanceEcommerce[]>) => {
+
+          if(res.pagination.TotalItems>0){
+         //   console.log(res.result[0].DOMAIN);
+            this.domain = res.result[0].DOMAIN;
+          }
 
           //          console.log(res);
           this.prjProductListPerformanceEcommerce = res.result;// schedules;
@@ -268,6 +277,11 @@ export class PrjProjectOvervieweCommercesComponent extends Paginated {
 
     this.dataService.getPrjProjectPageBahaviorEommercesById(this.projectId,this.currentPagePrjProjectPageBehaviorEcommerces, this.itemsPerPage, searchString)
       .subscribe((res: PaginatedResult<PrjProductPageBehaviorCommerces[]>) => {
+
+          if(res.pagination.TotalItems>0){
+         //   console.log(res.result[0].DOMAIN);
+            this.domain = res.result[0].DOMAIN;
+          }
 
           //          console.log(res);
           this.prjProductPageBehaviorCommerces = res.result;// schedules;

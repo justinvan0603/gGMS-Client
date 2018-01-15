@@ -279,21 +279,30 @@ gapi.analytics.ready(function () {
     query({
       'ids': ids,
       'dimensions': 'ga:browser',
+      'end-date': 'today',
       'metrics': 'ga:pageviews',
       'sort': '-ga:pageviews',
       'max-results': 5
     })
       .then(function (response) {
 
+
+        console.log(response.totalResults);
         var data = [];
         var colors = ['#4D5360', '#949FB1', '#D4CCC5', '#E2EAE9', '#F7464A'];
 
-        response.rows.forEach(function (row, i) {
-          data.push({ value: +row[1], color: colors[i], label: row[0] });
-        });
+        if(response.totalResults>0){
+          response.rows.forEach(function (row, i) {
+            data.push({ value: +row[1], color: colors[i], label: row[0] });
+          });
 
-        new Chart(makeCanvas('chart-3-container')).Doughnut(data);
-        generateLegend('legend-3-container', data);
+          new Chart(makeCanvas('chart-3-container')).Doughnut(data);
+          generateLegend('legend-3-container', data);
+        }
+        else{
+          $('#chartbyview').hide();
+        }
+
       });
   }
 
@@ -303,6 +312,7 @@ gapi.analytics.ready(function () {
     query({
       'ids': ids,
       'dimensions': 'ga:country',
+      'end-date': 'today',
       'metrics': 'ga:sessions',
       'sort': '-ga:sessions',
       'max-results': 5
@@ -312,16 +322,24 @@ gapi.analytics.ready(function () {
         var data = [];
         var colors = ['#4D5360', '#949FB1', '#D4CCC5', '#E2EAE9', '#F7464A'];
 
-        response.rows.forEach(function (row, i) {
-          data.push({
-            label: row[0],
-            value: +row[1],
-            color: colors[i]
+        if(response.totalResults>0){
+          response.rows.forEach(function (row, i) {
+            data.push({
+              label: row[0],
+              value: +row[1],
+              color: colors[i]
+            });
           });
-        });
 
-        new Chart(makeCanvas('chart-4-container')).Doughnut(data);
-        generateLegend('legend-4-container', data);
+          new Chart(makeCanvas('chart-4-container')).Doughnut(data);
+          generateLegend('legend-4-container', data);
+        }
+        else{
+          $('#chartbysessions').hide();
+
+        }
+
+
       });
   }
 
